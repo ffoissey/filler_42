@@ -2,7 +2,8 @@
 
 void	speak(t_game *game, char **line)
 {
-	(void)game;
+	ft_printf("%d %d\n", game->to_play.x, game->to_play.y);
+	game->action = E_GET_BOARD_SIZE;
 	ft_strdel(line);
 }
 
@@ -44,9 +45,17 @@ void	get_board_size(t_game *game, char **line)
 	else
 	{
 		game->action = E_GET_BOARD;
-		ft_printf("Plateau:\nX = %d\nY = %d",
-					game->board_size.x,
-					game->board_size.y);
+		ft_strdel(line);
+	}
+}
+
+void	get_piece_size(t_game *game, char **line)
+{
+	if (get_size(&game->piece_size, *line, PLATEAU) == FAILURE)
+		error(game, line);
+	else
+	{
+		game->action = E_GET_BOARD;
 		ft_strdel(line);
 	}
 }
@@ -54,13 +63,13 @@ void	get_board_size(t_game *game, char **line)
 void	get_board(t_game *game, char **line)
 {
 	(void)game;
-	ft_strdel(line);
-}
-
-void	get_piece_size(t_game *game, char **line)
-{
-	(void)game;
-	ft_strdel(line);
+	if (check_first_line_board(game->board_size.y, *line) == FALSE)
+		error(game, line);
+	else
+	{
+		ft_putendl("OK");
+		ft_strdel(line);
+	}
 }
 
 void	get_piece(t_game *game, char **line)

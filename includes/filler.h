@@ -47,7 +47,8 @@ typedef struct		s_point
 typedef	struct		s_game
 {
 	enum e_state	**board;
-	enum e_state	**cur_piece;
+	enum e_state	**piece;
+	unsigned int	row;
 	t_point			board_size;
 	t_point			piece_size;
 	t_point			adv_nearest;
@@ -78,5 +79,11 @@ void				speak(t_game *game, char **line);
 */
 
 int					get_size(t_point *game_size, char *line, char *type);
+
+/*
+*** Get Board
+*/
+
+unsigned char		check_first_line_board(unsigned int row, char *line);
 
 #endif
