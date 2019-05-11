@@ -16,15 +16,15 @@
 ################################               #################################
 ################################################################################
 
-# Main Variables >>>>>>>>>>>>>> line  46
-# Print Var 	 >>>>>>>>>>>>>>	line  62 
-# Includes	 	 >>>>>>>>>>>>>>	line  84
-# Headers 		 >>>>>>>>>>>>>>	line  96 
-# Path Sources   >>>>>>>>>>>>>>	line 111
-# Sources     	 >>>>>>>>>>>>>>	line 119
-# Objs    	 	 >>>>>>>>>>>>>>	line 133
-# Rules     	 >>>>>>>>>>>>>>	line 145
-# End  		   	 >>>>>>>>>>>>>>	line 198
+# Main Variables >>>>>>>>>>>>>> line  34
+# Print Var 	 >>>>>>>>>>>>>>	line  67 
+# Includes	 	 >>>>>>>>>>>>>>	line  89
+# Headers 		 >>>>>>>>>>>>>>	line 101 
+# Path Sources   >>>>>>>>>>>>>>	line 116
+# Sources     	 >>>>>>>>>>>>>>	line 124
+# Objs    	 	 >>>>>>>>>>>>>>	line 138
+# Rules     	 >>>>>>>>>>>>>>	line 150
+# End  		   	 >>>>>>>>>>>>>>	line 213
 
 ################################################################################
 ################################                ################################
@@ -38,6 +38,11 @@ DEBUG_NAME = debug_ffoissey.filler
 
 # Compiler
 CC = clang
+
+# Lib
+PATH_LIBFT = libft/
+LIBFT = $(PATH_LIBFT)libft.a
+DEBUG_LIBFT = $(PATH_LIBFT)db_libft.a
 
 # Compiler Flags
 CFLAGS += -Wall
@@ -83,7 +88,7 @@ ONELINE =\e[1A\r
 ################################################################################
 
 INCLUDES_LIBFT = libft/includes/
-INCLUDES_FILER = includes/
+INCLUDES_FILLER = includes/
 
 I_INCLUDES += -I $(INCLUDES_LIBFT)
 I_INCLUDES += -I $(INCLUDES_FILLER)
@@ -94,14 +99,14 @@ I_INCLUDES += -I $(INCLUDES_FILLER)
 #################################               ################################
 ################################################################################
 
+vpath %.h $(INCLUDES_LIBFT)
+vpath %.h $(INCLUDES_FILLER)
+
 # libft
 HEADER += libft.h
 
 # filler
 HEADER += filler.h
-
-vpath %.h $(INCLUDES_LIBFT)
-vpath %.h $(INCLUDES_FILLER)
 
 ################################################################################
 #################################               ################################
@@ -147,8 +152,8 @@ DEBUG_OBJS = $(patsubst %.c, $(DEBUG_PATH_OBJS)%.o, $(SRCS))
 
 all: $(PATH_OBJS) $(NAME)
 
-$(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(I_INCLUDES) $^ -o $@
+$(NAME): $(LIBFT) $(OBJS)
+	$(CC) $(CFLAGS) $(LIBFT) $(I_INCLUDES) $(OBJS) -o $@
 	printf "$(GREEN)$@ is ready.\n$(NC)"
 
 $(OBJS): $(PATH_OBJS)%.o: %.c $(HEADER) Makefile
@@ -159,12 +164,15 @@ $(OBJS): $(PATH_OBJS)%.o: %.c $(HEADER) Makefile
 $(PATH_OBJS):
 	mkdir $@
 
+$(LIBFT): FORCE 
+	$(MAKE) -C $(PATH_LIBFT)
+
 #------------------------------------ DEBUG -----------------------------------#
 
 debug: $(DEBUG_PATH_OBJS) $(DEBUG_NAME)
 
-$(DEBUG_NAME): $(DEBUG_OBJS)
-	$(CC) $(DFLAGS) $(I_INCLUDES) $^ -o $@
+$(DEBUG_NAME): $(DEBUG_LIBFT) $(DEBUG_OBJS)
+	$(CC) $(DFLAGS) $(DEBUG_LIBFT) $(I_INCLUDES) $(DEBUG_OBJS) -o $@
 	printf "$(GREEN)$@ is ready.\n$(NC)"
 
 $(DEBUG_OBJS): $(DEBUG_PATH_OBJS)%.o: %.c $(HEADER) Makefile
@@ -175,6 +183,9 @@ $(DEBUG_OBJS): $(DEBUG_PATH_OBJS)%.o: %.c $(HEADER) Makefile
 $(DEBUG_PATH_OBJS):
 	mkdir $@
 
+$(DEBUG_LIBFT): FORCE 
+	$(MAKE) -C $(PATH_LIBFT) debug
+
 #--------------------------------- Basic Rules --------------------------------#
 
 clean:
@@ -183,14 +194,18 @@ clean:
 	$(RM) -R $(PATH_OBJS)
 	$(RM) -R $(DEBUG_PATH_OBJS)
 	$(RM) -R $(DSYM)
+	$(MAKE) -C $(PATH_LIBFT) clean
 	printf "$(RED)Objs from filler removed\n$(NC)"
 
 fclean: clean
 	$(RM) $(NAME)
 	$(RM) $(DEBUG_NAME)
+	$(MAKE) -C $(PATH_LIBFT) fclean
 	printf "$(RED)$(NAME) removed\n$(NC)"
 
 re: fclean all
+
+FORCE:
 
 #----------------------------------- Special ----------------------------------#
 
