@@ -3,5 +3,58 @@
 
 # include "libft.h"
 
+# define PLAYER_ONE 	"$$$ exec p1 : [ffoissey.filler]\n"
+# define PLAYER_TWO 	"$$$ exec p2 : [ffoissey.filler]\n"
+# define EMPTY			'*'
+# define P1_CHAR		'O'
+# define P1_LAST_CHAR	'o'
+# define P2_CHAR		'X'
+# define P2_LAST_CHAR	'x'
+
+enum				e_action
+{
+	E_WAIT,
+	E_GET_PLAYER,
+	E_GET_BOARD,
+	E_GET_PIECE,
+	E_SPEAK,
+	E_ERROR
+};
+
+enum				e_state
+{
+	E_EMPTY,
+	E_ADV,
+	E_LAST_ADV,
+	E_MINE,
+	E_LAST_MINE,
+	E_FULL,
+	E_LAST,
+	E_UNKNOW
+};
+
+
+typedef struct		s_point
+{
+	unsigned int	x;
+	unsigned int	y;
+}					t_point;
+
+typedef	struct		s_game
+{
+	enum e_state	**board;
+	t_point			board_size;
+	enum e_state	**cur_piece;
+	t_point			piece_size;
+	t_point			adv_nearest;
+	t_point			to_play;
+	char			adv_char;
+	char			adv_last_char;
+	char			my_char;
+	char			my_last_char;
+	enum e_action	action;
+}					t_game;
+
+typedef void (*t_process)(t_game *, char *);
 
 #endif

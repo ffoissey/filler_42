@@ -53,3 +53,7 @@ dkms.conf
 
 # Swap
 .*.sw*
+
+# Exec
+*ffoissey.filler
+

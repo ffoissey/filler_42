@@ -153,7 +153,7 @@ DEBUG_OBJS = $(patsubst %.c, $(DEBUG_PATH_OBJS)%.o, $(SRCS))
 all: $(PATH_OBJS) $(NAME)
 
 $(NAME): $(LIBFT) $(OBJS)
-	$(CC) $(CFLAGS) $(LIBFT) $(I_INCLUDES) $(OBJS) -o $@
+	$(CC) $(CFLAGS) $(I_INCLUDES) $(OBJS) $(LIBFT) -o $@
 	printf "$(GREEN)$@ is ready.\n$(NC)"
 
 $(OBJS): $(PATH_OBJS)%.o: %.c $(HEADER) Makefile
@@ -172,7 +172,7 @@ $(LIBFT): FORCE
 debug: $(DEBUG_PATH_OBJS) $(DEBUG_NAME)
 
 $(DEBUG_NAME): $(DEBUG_LIBFT) $(DEBUG_OBJS)
-	$(CC) $(DFLAGS) $(DEBUG_LIBFT) $(I_INCLUDES) $(DEBUG_OBJS) -o $@
+	$(CC) $(DFLAGS) $(I_INCLUDES) $(DEBUG_OBJS) $(DEBUG_LIBFT) -o $@
 	printf "$(GREEN)$@ is ready.\n$(NC)"
 
 $(DEBUG_OBJS): $(DEBUG_PATH_OBJS)%.o: %.c $(HEADER) Makefile
