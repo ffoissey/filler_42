@@ -3,22 +3,26 @@
 
 # include "libft.h"
 
-# define PLAYER_ONE 	"$$$ exec p1 : [ffoissey.filler]\n"
-# define PLAYER_TWO 	"$$$ exec p2 : [ffoissey.filler]\n"
+# define PLAYER_ONE 	"$$$ exec p1 : [ffoissey.filler]"
+# define PLAYER_TWO 	"$$$ exec p2 : [ffoissey.filler]"
 # define EMPTY			'*'
 # define P1_CHAR		'O'
 # define P1_LAST_CHAR	'o'
 # define P2_CHAR		'X'
 # define P2_LAST_CHAR	'x'
+# define PLATEAU		"Plateau"
+# define PIECE			"Piece"
 
 enum				e_action
 {
-	E_WAIT,
 	E_GET_PLAYER,
+	E_GET_BOARD_SIZE,
 	E_GET_BOARD,
+	E_GET_PIECE_SIZE,
 	E_GET_PIECE,
 	E_SPEAK,
-	E_ERROR
+	E_ERROR,
+	E_WAIT
 };
 
 enum				e_state
@@ -43,8 +47,8 @@ typedef struct		s_point
 typedef	struct		s_game
 {
 	enum e_state	**board;
-	t_point			board_size;
 	enum e_state	**cur_piece;
+	t_point			board_size;
 	t_point			piece_size;
 	t_point			adv_nearest;
 	t_point			to_play;
@@ -55,6 +59,24 @@ typedef	struct		s_game
 	enum e_action	action;
 }					t_game;
 
-typedef void (*t_process)(t_game *, char *);
+typedef void (*t_process)(t_game *, char **);
+
+/*
+*** Action
+*/
+
+void				error(t_game *game, char **line);
+void				get_player(t_game *game, char **line);
+void				get_board_size(t_game *game, char **line);
+void				get_board(t_game *game, char **line);
+void				get_piece_size(t_game *game, char **line);
+void				get_piece(t_game *game, char **line);
+void				speak(t_game *game, char **line);
+
+/*
+*** Get Size
+*/
+
+int					get_size(t_point *game_size, char *line, char *type);
 
 #endif
