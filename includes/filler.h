@@ -5,7 +5,8 @@
 
 # define PLAYER_ONE 	"$$$ exec p1 : [ffoissey.filler]"
 # define PLAYER_TWO 	"$$$ exec p2 : [ffoissey.filler]"
-# define EMPTY			'*'
+# define EMPTY			'.'
+# define FULL			'*'
 # define P1_CHAR		'O'
 # define P1_LAST_CHAR	'o'
 # define P2_CHAR		'X'
@@ -17,6 +18,7 @@ enum				e_action
 {
 	E_GET_PLAYER,
 	E_GET_BOARD_SIZE,
+	E_GET_BOARD_FIRST_LINE,
 	E_GET_BOARD,
 	E_GET_PIECE_SIZE,
 	E_GET_PIECE,
@@ -33,7 +35,6 @@ enum				e_state
 	E_MINE,
 	E_LAST_MINE,
 	E_FULL,
-	E_LAST,
 	E_UNKNOW
 };
 
@@ -69,6 +70,7 @@ typedef void (*t_process)(t_game *, char **);
 void				error(t_game *game, char **line);
 void				get_player(t_game *game, char **line);
 void				get_board_size(t_game *game, char **line);
+void				get_board_first_line(t_game *game, char **line);
 void				get_board(t_game *game, char **line);
 void				get_piece_size(t_game *game, char **line);
 void				get_piece(t_game *game, char **line);
@@ -78,12 +80,21 @@ void				speak(t_game *game, char **line);
 *** Get Size
 */
 
-int					get_size(t_point *game_size, char *line, char *type);
+int					get_size(t_point *game_size, enum e_state ***mx,
+								char *line, char *type);
 
 /*
 *** Get Board
 */
 
 unsigned char		check_first_line_board(unsigned int row, char *line);
+int					get_line_board(t_game *game, char *line);
+int					get_line_piece(t_game *game, char *line);
+
+/*
+*** Process
+*/
+
+void	ft_process(t_game *game);
 
 #endif

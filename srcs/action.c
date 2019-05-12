@@ -11,6 +11,8 @@ void	error(t_game *game, char **line)
 {
 	ft_strdel(line);
 	game->action = E_ERROR;
+	/// FREE PIECE
+	/// FREE BOARD
 	ft_putendl_fd("Error", 2);
 }
 
@@ -40,18 +42,31 @@ void	get_player(t_game *game, char **line)
 
 void	get_board_size(t_game *game, char **line)
 {
-	if (get_size(&game->board_size, *line, PLATEAU) == FAILURE)
+	game->row = 0;
+	if (get_size(&game->board_size, &game->board, *line, PLATEAU) == FAILURE)
 		error(game, line);
 	else
 	{
-		game->action = E_GET_BOARD;
+		game->action = E_GET_BOARD_FIRST_LINE;
 		ft_strdel(line);
 	}
 }
 
 void	get_piece_size(t_game *game, char **line)
 {
-	if (get_size(&game->piece_size, *line, PLATEAU) == FAILURE)
+	game->row = 0;
+	if (get_size(&game->piece_size, &game->piece, *line, PIECE) == FAILURE)
+		error(game, line);
+	else
+	{
+		game->action = E_GET_PIECE;
+		ft_strdel(line);
+	}
+}
+
+void	get_board_first_line(t_game *game, char **line)
+{
+	if (check_first_line_board(game->board_size.x, *line) == FALSE)
 		error(game, line);
 	else
 	{
@@ -62,18 +77,38 @@ void	get_piece_size(t_game *game, char **line)
 
 void	get_board(t_game *game, char **line)
 {
-	(void)game;
-	if (check_first_line_board(game->board_size.y, *line) == FALSE)
+	if (game->row == game->board_size.y - 1)
+	{
+		game->action = E_GET_PIECE_SIZE;
+		ft_strdel(line);
+	}
+	else if (game->row >= game->board_size.y)
+		error(game, line);
+	else if (get_line_board(game, *line) == FAILURE)
 		error(game, line);
 	else
 	{
-		ft_putendl("OK");
+		game->row++;
 		ft_strdel(line);
 	}
 }
 
 void	get_piece(t_game *game, char **line)
 {
-	(void)game;
-	ft_strdel(line);
+	if (game->row == game->board_size.y - 1)
+	{
+		game->action = E_GET_BOARD_SIZE;
+		ft_strdel(line);
+		ft_process(game);
+		///free_piece;
+	}
+	else if (game->row >= game->board_size.y)
+		error(game, line);
+	else if (get_line_piece(game, *line) == FAILURE)
+		error(game, line);
+	else
+	{
+		game->row++;
+		ft_strdel(line);
+	}
 }

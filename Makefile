@@ -22,9 +22,9 @@
 # Headers 		 >>>>>>>>>>>>>>	line 101 
 # Path Sources   >>>>>>>>>>>>>>	line 116
 # Sources     	 >>>>>>>>>>>>>>	line 124
-# Objs    	 	 >>>>>>>>>>>>>>	line 139
-# Rules     	 >>>>>>>>>>>>>>	line 151
-# End  		   	 >>>>>>>>>>>>>>	line 214
+# Objs    	 	 >>>>>>>>>>>>>>	line 140
+# Rules     	 >>>>>>>>>>>>>>	line 152
+# End  		   	 >>>>>>>>>>>>>>	line 215
 
 ################################################################################
 ################################                ################################
@@ -126,6 +126,7 @@ SRCS += main.c
 SRCS += action.c
 SRCS += get_size.c
 SRCS += get_board.c
+SRCS += process.c
 
 ################# ATTRIBUTION
 
@@ -173,11 +174,11 @@ $(LIBFT): FORCE
 debug: $(DEBUG_PATH_OBJS) $(DEBUG_NAME)
 
 $(DEBUG_NAME): $(DEBUG_LIBFT) $(DEBUG_OBJS)
-	$(CC) $(DFLAGS) $(I_INCLUDES) $(DEBUG_OBJS) $(DEBUG_LIBFT) -o $@
+	$(CC) $(DBFLAGS) $(I_INCLUDES) $(DEBUG_OBJS) $(DEBUG_LIBFT) -o $@
 	printf "$(GREEN)$@ is ready.\n$(NC)"
 
 $(DEBUG_OBJS): $(DEBUG_PATH_OBJS)%.o: %.c $(HEADER) Makefile
-	$(CC) $(DFLAGS) $(I_INCLUDES) -c $< -o $@
+	$(CC) $(DBFLAGS) $(I_INCLUDES) -c $< -o $@
 	printf "$(ONELINE)$(PURPLE)Compiling for DEBUG $<"
 	printf "                                                            \n$(NC)"
 
