@@ -2,9 +2,9 @@
 
 void	speak(t_game *game, char **line)
 {
+	ft_strdel(line);
 	ft_printf("%d %d\n", game->to_play.x, game->to_play.y);
 	game->action = E_GET_BOARD_SIZE;
-	ft_strdel(line);
 }
 
 void	error(t_game *game, char **line)
@@ -98,9 +98,9 @@ void	get_piece(t_game *game, char **line)
 	if (game->row == game->board_size.y - 1)
 	{
 		game->action = E_GET_BOARD_SIZE;
-		ft_strdel(line);
 		ft_process(game);
 		///free_piece;
+		speak(game, line);
 	}
 	else if (game->row >= game->board_size.y)
 		error(game, line);
