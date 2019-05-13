@@ -67,8 +67,12 @@ int						get_line_board(t_game *game, char *line)
 	if (ft_strnequ(row_str, line, 4) == FALSE)
 		return (FAILURE);
 	line += 4;
-	if (ft_strlen(line) != game->board_size.x)
+	if (((int)ft_strlen(line) != game->board_size.x)
+		|| (game->row > game->board_size.y))
+	{
+	ft_printf("wefwef\n");
 		return (FAILURE);
+	}
 	while (line[i] != '\0')
 	{
 		game->board[game->row][i] = board_char_is_ok(game, line[i]);
@@ -84,7 +88,8 @@ int						get_line_piece(t_game *game, char *line)
 	size_t	i;
 
 	i = 0;
-	if (ft_strlen(line) != game->piece_size.x)
+	if (((int)ft_strlen(line) != game->piece_size.x)
+		|| (game->row > game->piece_size.y))
 		return (FAILURE);
 	while (line[i] != '\0')
 	{

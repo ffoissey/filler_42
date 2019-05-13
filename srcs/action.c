@@ -70,27 +70,29 @@ void	get_board_first_line(t_game *game, char **line)
 
 void	get_board(t_game *game, char **line)
 {
-	if (get_line_board(game, *line) == FAILURE)
-		error(game, line);
-	else if (game->row < game->board_size.y - 1)
-		game->row++;
-	else
+	if (game->row + 1 == game->board_size.y)
 		game->action = E_GET_PIECE_SIZE;
+	else if (get_line_board(game, *line) == FAILURE)
+		error(game, line);
+	else
+		game->row++;
 	ft_strdel(line);
 }
 
 void	get_piece(t_game *game, char **line)
 {
-	if (get_line_piece(game, *line) == FAILURE)
-		error(game, line);
-	else if (game->row < game->piece_size.y - 1)
-		game->row++;
-	else
+	if (game->row + 1 == game->piece_size.y)
 	{
-		game->action = E_GET_BOARD_SIZE;
 		ft_process(game);
 		///free_piece;
 		speak(game, line);
+		game->action = E_GET_BOARD_SIZE;
 	}
+	else if (get_line_piece(game, *line) == FAILURE)
+	{
+		error(game, line);
+	}
+	else
+		game->row++;
 	ft_strdel(line);
 }

@@ -23,7 +23,7 @@ static unsigned char	check_size_format(char *line, t_point *size)
 
 static int			alloc_game(enum e_state ***mx, t_point *size)
 {
-	size_t		i;
+	int		i;
 
 	i = 0;
 	*mx = (enum e_state **)malloc(sizeof(enum e_state *) * size->y);
@@ -43,7 +43,7 @@ int					get_size(t_point *game_size, enum e_state ***mx,
 								char *line, char *type)
 {
 	t_point		size;
-	size_t		len;
+	int			len;
 
 	bzero(&size, sizeof(t_point));
 	len = ft_strlen(type);

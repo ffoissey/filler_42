@@ -40,17 +40,18 @@ enum				e_state
 
 typedef struct		s_point
 {
-	unsigned int	x;
-	unsigned int	y;
+	int				x;
+	int				y;
 }					t_point;
 
 typedef	struct		s_game
 {
 	enum e_state	**board;
 	enum e_state	**piece;
-	unsigned int	row;
+	int				row;
 	t_point			board_size;
 	t_point			piece_size;
+	t_point			piece_start_size;
 	t_point			adv_nearest;
 	t_point			to_play;
 	char			adv_char;
