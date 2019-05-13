@@ -38,7 +38,6 @@ enum				e_state
 	E_UNKNOW
 };
 
-
 typedef struct		s_point
 {
 	unsigned int	x;
