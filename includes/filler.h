@@ -3,8 +3,8 @@
 
 # include "libft.h"
 
-# define PLAYER_ONE 	"$$$ exec p1 : [ffoissey.filler]"
-# define PLAYER_TWO 	"$$$ exec p2 : [ffoissey.filler]"
+# define PLAYER_ONE 	"$$$ exec p1 : [./ffoissey.filler]"
+# define PLAYER_TWO 	"$$$ exec p2 : [./ffoissey.filler]"
 # define EMPTY			'.'
 # define FULL			'*'
 # define P1_CHAR		'O'

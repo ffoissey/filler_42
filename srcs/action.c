@@ -1,11 +1,30 @@
 #include "filler.h"
 
+
+void	free_piece(t_game *game)
+{
+	int		x;
+
+	x = 0;
+	while (x < game->piece_size.x)
+	{
+		free(game->piece[x]);
+		game->piece[x] = NULL;
+		x++;
+	}
+	free(game->piece);
+	game->piece = NULL;
+	game->piece_size.x = 0;
+	game->piece_size.y = 0;
+}
+
 void	speak(t_game *game, char **line)
 {
 	(void)line;
-	ft_printf("%d %d\n", game->to_play.y, game->to_play.x);
+	ft_printf("%d %d\n", game->to_play.x, game->to_play.y);
 	game->to_play.x = game->last_mine.x;
 	game->to_play.y = game->last_mine.y;
+	free_piece(game);
 	game->action = E_GET_BOARD_SIZE;
 }
 
@@ -44,8 +63,13 @@ void	get_player(t_game *game, char **line)
 void	get_board_size(t_game *game, char **line)
 {
 	game->row = 0;
-	if (get_size(&game->board_size, &game->board, *line, PLATEAU) == FAILURE)
-		error(game, line);
+	if (game->board == NULL)
+	{
+		if (get_size(&game->board_size, &game->board, *line, PLATEAU) == FAILURE)
+			error(game, line);
+		else
+			game->action = E_GET_BOARD_FIRST_LINE;
+	}
 	else
 		game->action = E_GET_BOARD_FIRST_LINE;
 	ft_strdel(line);
@@ -63,24 +87,21 @@ void	get_piece_size(t_game *game, char **line)
 
 void	get_board_first_line(t_game *game, char **line)
 {
-	if (check_first_line_board(game->board_size.x, *line) == FALSE)
+	if (check_first_line_board(game->board_size.y, *line) == FALSE)
 		error(game, line);
 	else
 		game->action = E_GET_BOARD;
 	ft_strdel(line);
 }
 
-int	get_delta(t_point *a, t_point *b)
-{
-	return ((b->x - a->x) + (b->y - a->y));
-}
-
 void	get_board(t_game *game, char **line)
 {
-	if (game->row + 1 == game->board_size.y)
+	if (game->row + 1 == game->board_size.x)
 	{
 		if (get_line_board(game, *line) == FAILURE)
+		{
 			error(game, line);
+		}
 		else
 		{
 			if (game->delta.advcore_to_mycore == 0)
@@ -108,7 +129,7 @@ void	get_board(t_game *game, char **line)
 
 void	get_piece(t_game *game, char **line)
 {
-	if (game->row + 1 == game->piece_size.y)
+	if (game->row + 1 == game->piece_size.x)
 	{
 		if (get_line_piece(game, *line) == FAILURE)
 			error(game, line);

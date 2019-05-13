@@ -1,4 +1,4 @@
-$$$ exec p2 : [ffoissey.filler]
+$$$ exec p2 : [./ffoissey.filler]
 Plateau 15 17:
     01234567890123456
 000 .................

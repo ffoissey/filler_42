@@ -32,43 +32,43 @@ void		print_debug(enum e_state **mx, t_point *size, t_game *game)
 	ft_putchar('\n');
 }
 
-unsigned char	check_piece(t_game *game, int pos_y, int pos_x)
+unsigned char	check_piece(t_game *game, int pos_x, int pos_y)
 {
-	int		i;
-	int		j;
+	int		x;
+	int		y;
 	int		contact;
 
 	contact = 0;
-	i = 0;
-	while (i < game->piece_size.y)
+	x = 0;
+	while (x < game->piece_size.x)
 	{
-		j = 0;
-		while (j < game->piece_size.x)
+		y = 0;
+		while (y < game->piece_size.y)
 		{
-			if (pos_y + i < 0 || pos_x + j < 0
-				|| pos_y + i >= game->board_size.y
-				|| pos_x + j >= game->board_size.x)
+			if (pos_x + x < 0 || pos_y + y < 0
+				|| pos_x + x >= game->board_size.x
+				|| pos_y + y >= game->board_size.y)
 			{
-				if (game->piece[i][j] == E_FULL)
+				if (game->piece[x][y] == E_FULL)
 					return (FALSE);
 			}
-			else if ((game->board[pos_y + i][pos_x + j] == E_ADV
-					|| game->board[pos_y + i][pos_x + j] == E_LAST_ADV)
-					&& game->piece[i][j] == E_FULL)
+			else if ((game->board[pos_x + x][pos_y + y] == E_ADV
+					|| game->board[pos_x + x][pos_y + y] == E_LAST_ADV)
+					&& game->piece[x][y] == E_FULL)
 				return (FALSE);
 			else if (contact > 1)
 				return (FALSE);
-			else if (((game->board[pos_y + i][pos_x + j] == E_MINE)
-					|| (game->board[pos_y + i][pos_x + j] == E_LAST_MINE))
-					&& game->piece[i][j] == E_FULL)
+			else if (((game->board[pos_x + x][pos_y + y] == E_MINE)
+					|| (game->board[pos_x + x][pos_y + y] == E_LAST_MINE))
+					&& game->piece[x][y] == E_FULL)
 			{
-				game->contact.y = pos_y + i;
-				game->contact.x = pos_x + j;
+				game->contact.x = pos_x + x;
+				game->contact.y = pos_y + y;
 				contact++;
 			}
-			j++;
+			y++;
 		}
-		i++;
+		x++;
 	}
 	return (contact == 1);
 }
@@ -79,37 +79,43 @@ void			find_potential(t_game *game)
 	t_point end;
 	t_point	start;
 
-	start.y = 0 - game->piece_size.y + 1;
-	end.y = game->board_size.y + game->piece_size.y - 1;
-	end.x = game->board_size.x + game->piece_size.x - 1;
-	while (start.y < end.y)
+	start.x = 0 - game->piece_size.x;
+	end.x = game->board_size.x + game->piece_size.x;
+	end.y = game->board_size.y + game->piece_size.y;
+	while (start.x < end.x)
 	{
-		start.x = 0 - game->board_size.x + 1;
-		while (start.x < end.x)
+		start.y = 0 - game->piece_size.y;
+		while (start.y < end.y)
 		{
-			if (check_piece(game, start.y, start.x) == TRUE)
+			if (check_piece(game, start.x, start.y) == TRUE)
 			{
-				
 				if (game->to_play.x == -1
 					|| get_delta(&start, &game->core_adv) < get_delta(&game->to_play, &game->core_adv))
 				{
 					game->to_play.x = start.x;
 					game->to_play.y = start.y;
 				}
-			//	ft_printf("Potential: \033[32mx[%d] y[%d]\033[0m\n", start.y, start.x);
+			//	ft_dprintf(2, "Potential: \033[32mx[%d] y[%d]\033[0m\n", start.x, start.y);
 			}
-			start.x++;
+			start.y++;
 		}
-		start.y++;
+		start.x++;
 	}
 }
 
 void			ft_process(t_game *game)
 {
+//	ft_dprintf(2, "GAME ACTION: %s\n", "process");
 //	ft_printf("\nBOARD : mine: %c, adv: %c\n", game->my_char, game->adv_char);
 //	print_debug(game->board, &game->board_size, game);
 //	ft_printf("\nPIECE : \n");
 //	print_debug(game->piece, &game->piece_size, game);
 	find_potential(game);
 //	ft_printf("\n\n");
+}
+
+
+int	get_delta(t_point *a, t_point *b)
+{
+	return ((b->x - a->x) * (b->x - a->x) + (b->y - a->y) * (b->y - a->y));
 }

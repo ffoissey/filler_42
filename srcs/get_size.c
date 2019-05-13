@@ -11,9 +11,9 @@ static unsigned char	check_size_format(char *line, t_point *size)
 			return (FALSE);
 		line++;
 		if (count == 0)
-			size->y = ft_atoi(line);
-		else
 			size->x = ft_atoi(line);
+		else
+			size->y = ft_atoi(line);
 		while (ft_isdigit(*line) == TRUE)
 			line++;
 		count++;
@@ -26,12 +26,12 @@ static int			alloc_game(enum e_state ***mx, t_point *size)
 	int		i;
 
 	i = 0;
-	*mx = (enum e_state **)malloc(sizeof(enum e_state *) * size->y);
+	*mx = (enum e_state **)malloc(sizeof(enum e_state *) * size->x);
 	if (*mx == NULL)
 		return (FAILURE);
-	while (i < size->y)
+	while (i < size->x)
 	{
-		(*mx)[i] = (enum e_state *)malloc(sizeof(enum e_state) * size->x);
+		(*mx)[i] = (enum e_state *)malloc(sizeof(enum e_state) * size->y);
 		if ((*mx)[i] == NULL)
 			return (FAILURE);
 		i++;
@@ -61,7 +61,9 @@ int					get_size(t_point *game_size, enum e_state ***mx,
 		if (alloc_game(mx, &size) == FAILURE)
 			return (FAILURE);
 	}
-	else if (size.x != game_size->x || size.y != game_size->y)
+/*	else if (size.x != game_size->x || size.y != game_size->y)
+	{
 		return (FAILURE);
+	}*/
 	return (SUCCESS);
 }

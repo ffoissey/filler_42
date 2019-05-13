@@ -7,6 +7,7 @@ unsigned char			check_first_line_board(unsigned int row, char *line)
 	size_t	count;
 
 	i = 0;
+//	ft_dprintf(2, "LINE: ", *line);
 	max = row + 4;
 	if (ft_strlen(line) != max)
 		return (FALSE);
@@ -27,12 +28,12 @@ unsigned char			check_first_line_board(unsigned int row, char *line)
 	return (TRUE);
 }
 
-static enum e_state		board_char_is_ok(t_game *game, char c, int i , int j)
+static enum e_state		board_char_is_ok(t_game *game, char c, int x , int y)
 {
 	t_point	pos;
 
-	pos.x = i;
-	pos.y = j;
+	pos.x = x;
+	pos.y = y;
 	if (c == EMPTY)
 		return (E_EMPTY);
 	else if (c == P1_CHAR || c == P2_CHAR)
@@ -41,19 +42,19 @@ static enum e_state		board_char_is_ok(t_game *game, char c, int i , int j)
 		{
 			if (game->core_mine.x == -1)
 			{
-				game->last_mine.y = j;
-				game->last_mine.x = i;
-				game->core_mine.y = j;
-				game->core_mine.x = i;
+				game->last_mine.y = y;
+				game->last_mine.x = x;
+				game->core_mine.y = y;
+				game->core_mine.x = x;
 			}
 			return (E_MINE);
 		}
 		if (game->core_adv.x == -1)
 		{
-				game->last_adv.y = j;
-				game->last_adv.x = i;
-				game->core_adv.y= j;
-				game->core_adv.x = i;
+				game->last_adv.y = y;
+				game->last_adv.x = x;
+				game->core_adv.y = y;
+				game->core_adv.x = x;
 		}
 		return (E_ADV);
 	}
@@ -66,8 +67,8 @@ static enum e_state		board_char_is_ok(t_game *game, char c, int i , int j)
 			if (game->last_adv.x == -1
 				|| get_delta(&pos, &game->core_mine) < get_delta(&game->last_adv, &game->core_mine))
 			{
-				game->last_adv.y = j;
-				game->last_adv.x = i;
+				game->last_adv.y = y;
+				game->last_adv.x = x;
 			}
 		}
 		return (E_LAST_ADV);
@@ -88,10 +89,10 @@ static enum e_state		piece_char_is_ok(char c)
 
 int						get_line_board(t_game *game, char *line)
 {
-	size_t	i;
+	size_t	y;
 	char	row_str[5];
 
-	i = 0;
+	y = 0;
 	row_str[4] = '\0';
 	row_str[3] = ' ';
 	row_str[2] = game->row % 10 + '0';
@@ -100,33 +101,33 @@ int						get_line_board(t_game *game, char *line)
 	if (ft_strnequ(row_str, line, 4) == FALSE)
 		return (FAILURE);
 	line += 4;
-	if (((int)ft_strlen(line) != game->board_size.x)
-		|| (game->row > game->board_size.y))
+	if (((int)ft_strlen(line) != game->board_size.y)
+		|| (game->row > game->board_size.x))
 		return (FAILURE);
-	while (line[i] != '\0')
+	while (line[y] != '\0')
 	{
-		game->board[game->row][i] = board_char_is_ok(game, line[i], i , game->row);
-		if (game->board[game->row][i] == E_UNKNOW)
+		game->board[game->row][y] = board_char_is_ok(game, line[y], game->row, y);
+		if (game->board[game->row][y] == E_UNKNOW)
 			return (FAILURE);
-		i++;
+		y++;
 	}
 	return (SUCCESS);
 }
 
 int						get_line_piece(t_game *game, char *line)
 {
-	size_t	i;
+	size_t	y;
 
-	i = 0;
-	if (((int)ft_strlen(line) != game->piece_size.x)
-		|| (game->row > game->piece_size.y))
+	y = 0;
+	if (((int)ft_strlen(line) > game->piece_size.y)
+		|| (game->row > game->piece_size.x))
 		return (FAILURE);
-	while (line[i] != '\0')
+	while (line[y] != '\0')
 	{
-		game->piece[game->row][i] = piece_char_is_ok(line[i]);
-		if (game->piece[game->row][i] == E_UNKNOW)
+		game->piece[game->row][y] = piece_char_is_ok(line[y]);
+		if (game->piece[game->row][y] == E_UNKNOW)
 			return (FAILURE);
-		i++;
+		y++;
 	}
 	return (SUCCESS);
 }
