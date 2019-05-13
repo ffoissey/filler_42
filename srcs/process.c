@@ -89,13 +89,30 @@ void			find_potential(t_game *game)
 		{
 			if (check_piece(game, start.x, start.y) == TRUE)
 			{
-				if (game->to_play.x == -1
-					|| get_delta(&start, &game->core_adv) < get_delta(&game->to_play, &game->core_adv))
+				if (game->to_play.x == 0 && game->to_play.y == 0)
 				{
 					game->to_play.x = start.x;
 					game->to_play.y = start.y;
 				}
-			//	ft_dprintf(2, "Potential: \033[32mx[%d] y[%d]\033[0m\n", start.x, start.y);
+				else if (game->mode == E_SPIDER
+					&& ((start.x - game->last_adv.x < game->to_play.x - game->last_adv.x)
+					|| (start.y - game->last_adv.y < game->to_play.y - game->last_adv.y)))
+				{
+				}
+				else if (game->mode == E_ATTACK
+					&& get_delta(&start, &game->last_adv) < get_delta(&game->to_play, &game->last_adv))
+				{
+					game->to_play.x = start.x;
+					game->to_play.y = start.y;
+				}
+				else if (game->mode == E_EXPANSION
+					&& get_delta(&start, &game->last_adv) > get_delta(&game->to_play, &game->last_adv)
+					&& get_delta(&start, &game->core_adv) < get_delta(&game->to_play, &game->core_adv))
+				{
+					game->to_play.x = start.x;
+					game->to_play.y = start.y;
+				}
+				//ft_dprintf(2, "\nPotential: \033[32mx[%d] y[%d]\033[0m\n", start.x, start.y);
 			}
 			start.y++;
 		}
@@ -105,13 +122,24 @@ void			find_potential(t_game *game)
 
 void			ft_process(t_game *game)
 {
-//	ft_dprintf(2, "GAME ACTION: %s\n", "process");
-//	ft_printf("\nBOARD : mine: %c, adv: %c\n", game->my_char, game->adv_char);
-//	print_debug(game->board, &game->board_size, game);
-//	ft_printf("\nPIECE : \n");
-//	print_debug(game->piece, &game->piece_size, game);
+/*	if ((game->board_size.x - game->last_adv.x > 0 && game->board_size.x - game->last_adv.x < 5)
+		|| (game->board_size.y - game->last_adv.y > 0 && game->board_size.y - game->last_adv.y < 5))
+	{
+		game->mode = E_SPIDER; 
+		ft_dprintf(2, "\033[33mSpider\033[0m\n");
+	}
+	else*/ if (get_delta(&game->contact, &game->last_adv) <= 5)
+	{
+		game->mode = E_EXPANSION; 
+		ft_dprintf(2, "\033[32mExpansion\033[0m\n");
+	}
+	else
+	{
+		game->mode = E_ATTACK; 
+		ft_dprintf(2, "\033[31mAttack\033[0m\n");
+	}
+	//ft_dprintf(2, "\033[34mLast_adv: x[%d] y[%d]\033[0m\n", game->last_adv.x, game->last_adv.y);
 	find_potential(game);
-//	ft_printf("\n\n");
 }
 
 

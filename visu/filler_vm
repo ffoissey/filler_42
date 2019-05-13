@@ -10,7 +10,10 @@
 #    Updated: 2013/11/20 14:37:26 by abanlin           ###   ########.fr        #
 #                                                                               #
 # ***************************************************************************** #
-
+#                                                                               #
+#    Updated by lcharbon   on 2017/10/13                                        #
+#                                                                               #
+# ***************************************************************************** #
 require 'timeout'
 require 'open3'
 
@@ -53,14 +56,24 @@ class Plateau
 
 	def gene_piece()
 
+		# lch modif ###################
+		tmpmap_row = @map_row   #######
+		tmpmap_col = @map_col   #######
+		if tmpmap_row > 100      #######
+			tmpmap_row = 100     #######
+		end                     #######
+		if tmpmap_col > 100      #######
+			tmpmap_col = 100     #######
+		end                     #######
+		# fin de modif ################
 		if (rand(100) == 0)
 			ratio = rand(100)
-			@piece_row = rand((@map_row - 1) * ratio / 100) + 1
+			@piece_row = rand((tmpmap_row - 1) * ratio / 100) + 1
 			ratio = rand(100)
-			@piece_col = rand((@map_col - 1) * ratio / 100) + 1
+			@piece_col = rand((tmpmap_col - 1) * ratio / 100) + 1
 		else
-			@piece_row = rand((@map_row - 1) / 5) + 1
-			@piece_col = rand((@map_col - 1) / 5) + 1
+			@piece_row = rand((tmpmap_row - 1) / 5) + 1
+			@piece_col = rand((tmpmap_col - 1) / 5) + 1
 		end
 
 		@piece_row = @piece_row.to_i
@@ -259,12 +272,35 @@ class Plateau
 	end
 end
 
-class Player
-	attr_accessor :score, :piece_char, :score, :stdin, :live, :file_name
+# lch modif #################################################################
+class Visual                                                          #######
+	attr_accessor :stdin, :file_name                                  #######
+                                                                      #######
+	def initialize(path, char)                                        #######
+		self.file_name = "./visual_filler.bin"                        #######
+	end                                                               #######
+	def launch()                                                      #######
+		begin                                                         #######
+			self.stdin, @stdout, @wait_thr = Open3.popen2(@file_name) #######
+		end                                                           #######
+	end                                                               #######
+	def read_from_visual()                                            #######
+		begin                                                         #######
+			@stdout.readline                                          #######
+		rescue                                                        #######
+			return "exit"                                             #######
+		end                                                           #######
+	end                                                               #######
+end                                                                   #######
+# fin de modif ##############################################################
 
-	def initialize(path, char)
+class Player
+	attr_accessor :score, :piece_char, :lchcolor, :score, :stdin, :live, :file_name
+
+	def initialize(path, char, lchcol)
 		self.file_name = path
 		self.piece_char = char
+		self.lchcolor = lchcol
 		self.score = 0
 		self.live = 1
 	end
@@ -320,7 +356,7 @@ class Player
 		end
 	end
 	def score_show()
-		puts "== #{self.piece_char} fin: " + self.score.to_s
+		puts "== #{self.piece_char} fin: " + self.score.to_s + " (" + self.lchcolor.to_s + ")"
 		if @segfault != nil
 		   puts "#{self.file_name} #{@segfault}"
 		end
@@ -360,14 +396,21 @@ class Trace
 end
 
 class	Vm_filler
-	attr_accessor :map, :player, :challenger, :interactif, :sid, :verbose, :time, :modif_time
+	attr_accessor :map, :visu, :player, :lchplayer3, :lchplayer, :lchplayer2, :lchplayer4, :challenger, :interactif, :sid, :verbose, :time, :modif_time, :clean
 
 	def	initialize(argv = nil)
 		self.time = 10
 		self.modif_time = 0
 		self.map = nil
 		self.player = nil
-		self.challenger = nil
+		# lch modif ####################
+		self.lchplayer = nil     #######
+		self.lchplayer2 = nil    #######
+		self.lchplayer3 = nil    #######
+		self.lchplayer4 = nil    #######
+		self.challenger = nil    #######
+		self.visu = 0            #######
+		# fin de modif #################
 		self.interactif = 0
 		self.verbose = 1
 		self.sid = -1
@@ -380,6 +423,23 @@ class	Vm_filler
 		versus = Proc.new do |av|
 			self.challenger = av
 		end
+	# lch modif ##########################
+		lchuser = Proc.new do |av| #######
+			self.lchplayer = av    #######
+		end                        #######
+		lchuser2 = Proc.new do |av|#######
+			self.lchplayer2 = av   #######
+		end                        #######
+		lchuser3 = Proc.new do |av|#######
+			self.lchplayer3 = av   #######
+		end                        #######
+		lchuser4 = Proc.new do |av|#######
+			self.lchplayer4 = av   #######
+		end                        #######
+		visu = Proc.new do |av|    #######
+			self.visu = av         #######
+		end                        #######
+	#fin de modif ########################
 		inter = Proc.new do |av|
 			self.interactif = 1
 		end
@@ -400,6 +460,16 @@ class	Vm_filler
 			"-p1" => user,
 			"--player2" => versus,
 			"-p2" => versus,
+			"--player3" => lchuser,
+			"-p3" => lchuser,
+			"--player4" => lchuser2,
+			"-p4" => lchuser2,
+			"--player5" => lchuser3,
+			"-p5" => lchuser3,
+			"--player6" => lchuser4,
+			"-p6" => lchuser4,
+			"-v" => visu,
+			"--visu" => visu,
 			"--interactive" => inter,
 			"-i" => inter,
 			"--seed" => sid_ran,
@@ -424,6 +494,13 @@ class	Vm_filler
 		puts "   -i  --interactive	interactive mode(default)"
 		puts "   -p1 --player1	use filler binary as a first player"
 		puts "   -p2 --player2	use filler binary as a second player"
+		# lch modif ##########################################################
+		puts "   -p3 --player3	use filler binary as a third player"   #######
+		puts "   -p4 --player4	use filler binary as a fourth player"  #######
+		puts "   -p5 --player6	use filler binary as a fifth player"   #######
+		puts "   -p6 --player6	use filler binary as a sixth player"   #######
+		puts "   -v  --visual	Visualisator (To good for you)"        #######
+		# fin de modif #######################################################
 		puts "   -f  --file		use a map file (required)"
 		puts "   -s  --seed		use the seed number (initialization random) (man srand)"
 	end
@@ -474,11 +551,28 @@ if __FILE__ == $0
 
 		players = []
 		if init.player != nil
-			players << Player.new(init.player, 'O')
+			players << Player.new(init.player, 'O', "Rouge")
 		end
 		if init.challenger != nil
-			players << Player.new(init.challenger, 'X')
+			players << Player.new(init.challenger, 'X', "Bleu")
 		end
+	#lch modif ###########################################################
+		if init.lchplayer != nil                                   #######
+			players << Player.new(init.lchplayer, 'C', "Blanc")    #######
+		end                                                        #######
+		if init.lchplayer2 != nil                                  #######
+			players << Player.new(init.lchplayer2, 'D', "Vert")    #######
+		end                                                        #######
+		if init.lchplayer3 != nil                                  #######
+			players << Player.new(init.lchplayer3, 'E', "Jaune")   #######
+		end                                                        #######
+		if init.lchplayer4 != nil                                  #######
+			players << Player.new(init.lchplayer4, 'F', "Violet")  #######
+		end                                                        #######
+		if init.visu != 0                                          #######
+			visu = Visual.new(init.visu, 'V')                      #######
+		end                                                        #######
+	# fin de modif #######################################################
 		if init.interactif == 1 && init.player != nil
 			puts "#{$0}: Wrong given arguments"
 			init.help
@@ -499,12 +593,21 @@ if __FILE__ == $0
 		end
 
 		if init.interactif && players[0].nil?
-			players << Player.new(init.player, 'O')
+			players << Player.new(init.player, 'O', "Rouge")
 			players[0].mode_interactive
 		end
 
 
-		if (init.verbose > 0)
+		# lch modif ########################
+		begin                        #######
+			if init.visu != 0        #######
+				visu.launch          #######
+			end                      #######
+			rescue                   #######
+				init.visu = 0        #######
+		end                          #######
+		# fin de modif #####################
+		if (init.visu == 0 && init.verbose > 0)
 			map.show_mapcontent($stdout)
 		end
 
@@ -518,7 +621,7 @@ if __FILE__ == $0
 					end
 					map.show_piececontent(player.stdin)
 
-					if (init.verbose > 0 && init.interactif == 0)
+					if (init.visu == 0 && init.verbose > 0 && init.interactif == 0)
 						map.show_piececontent($stdout)
 					end
                                   rescue
@@ -539,7 +642,7 @@ if __FILE__ == $0
 						player.end_player trace
 					end
 
-					if (player.live > 0 && init.verbose > 0)
+					if (init.visu == 0 && player.live > 0 && init.verbose > 0)
 						puts "<got (#{player.piece_char}): [#{nb[0]}, #{nb[1]}]"
 					end
 
@@ -549,13 +652,28 @@ if __FILE__ == $0
 					else
 						player.end_player trace
 					end
-
-					if (init.verbose > 0 && player.live > 0)
-						puts `clear`
+					if (init.visu == 0 && init.verbose > 0 && player.live > 0)
 						map.show_mapcontent($stdout, player.piece_char.downcase, nb[0].to_i, nb[1].to_i)
 					end
 				end
 			end
+			# lch modif ####################################################
+			if init.visu != 0                                        #######
+				map.show_mapcontent(visu.stdin)                      #######
+				begin                                                #######
+					visu_time = Timeout::timeout(init.time) do       #######
+						vm_report = visu.read_from_visual()          #######
+						if vm_report.casecmp("Leave\n") == 0         #######
+							init.visu = 0                            #######
+						end                                          #######
+				end                                                  #######
+				rescue Timeout::Error                                #######
+					puts "Visual: Error"                             #######
+					visu.stdin.close                                 #######
+					init.visu = 0                                    #######
+				end                                                  #######
+			end                                                      #######
+			# fin de modif #################################################
 		end
 
 		for player in players

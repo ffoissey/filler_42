@@ -38,6 +38,15 @@ enum				e_state
 	E_UNKNOW
 };
 
+enum				e_mode
+{
+	E_ATTACK,
+	E_CORE,
+	E_SPIDER,
+	E_BLOCK,
+	E_EXPANSION
+};
+
 typedef struct		s_point
 {
 	int				x;
@@ -56,23 +65,25 @@ typedef	struct		s_game
 {
 	enum e_state	**board;
 	enum e_state	**piece;
+	t_point			board_size;
+	t_point			piece_size;
 	char			adv_char;
 	char			adv_last_char;
 	char			my_char;
 	char			my_last_char;
-	enum e_action	action;
 	int				row;
+	enum e_action	action;
+	enum e_mode		mode;
 
-	t_point			contact;
 	t_delta			delta;
+
 	t_point			last_adv;
 	t_point			last_mine;
 	t_point			core_adv;
 	t_point			core_mine;
-	t_point			board_size;
-	t_point			piece_size;
-	t_point			adv_nearest;
+
 	t_point			to_play;
+	t_point			contact; // USE ?
 }					t_game;
 
 typedef void (*t_process)(t_game *, char **);

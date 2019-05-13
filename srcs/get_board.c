@@ -7,7 +7,6 @@ unsigned char			check_first_line_board(unsigned int row, char *line)
 	size_t	count;
 
 	i = 0;
-//	ft_dprintf(2, "LINE: ", *line);
 	max = row + 4;
 	if (ft_strlen(line) != max)
 		return (FALSE);
@@ -40,7 +39,7 @@ static enum e_state		board_char_is_ok(t_game *game, char c, int x , int y)
 	{
 		if (c == game->my_char)
 		{
-			if (game->core_mine.x == -1)
+			if (game->core_mine.x == 0 && game->core_mine.x == 0)
 			{
 				game->last_mine.y = y;
 				game->last_mine.x = x;
@@ -49,29 +48,23 @@ static enum e_state		board_char_is_ok(t_game *game, char c, int x , int y)
 			}
 			return (E_MINE);
 		}
-		if (game->core_adv.x == -1)
+		if (game->core_adv.x == 0 && game->core_adv.y == 0)
 		{
-				game->last_adv.y = y;
-				game->last_adv.x = x;
-				game->core_adv.y = y;
-				game->core_adv.x = x;
+			game->last_adv.y = y;
+			game->last_adv.x = x;
+			game->core_adv.y = y;
+			game->core_adv.x = x;
 		}
-		return (E_ADV);
-	}
-	else if (c == P1_LAST_CHAR || c == P2_LAST_CHAR)
-	{
-		if (c == game->my_last_char)
-			return (E_LAST_MINE);
-		if (game->last_adv.x)
+		else if (game->board[x][y] == E_EMPTY)
 		{
-			if (game->last_adv.x == -1
-				|| get_delta(&pos, &game->core_mine) < get_delta(&game->last_adv, &game->core_mine))
+			if ((game->last_adv.x == 0 && game->last_adv.y == 0)
+					|| get_delta(&pos, &game->core_mine) < get_delta(&game->last_adv, &game->core_mine))
 			{
 				game->last_adv.y = y;
 				game->last_adv.x = x;
 			}
 		}
-		return (E_LAST_ADV);
+		return (E_ADV);
 	}
 	else
 		return (E_UNKNOW);
@@ -102,7 +95,7 @@ int						get_line_board(t_game *game, char *line)
 		return (FAILURE);
 	line += 4;
 	if (((int)ft_strlen(line) != game->board_size.y)
-		|| (game->row > game->board_size.x))
+			|| (game->row > game->board_size.x))
 		return (FAILURE);
 	while (line[y] != '\0')
 	{
@@ -120,7 +113,7 @@ int						get_line_piece(t_game *game, char *line)
 
 	y = 0;
 	if (((int)ft_strlen(line) > game->piece_size.y)
-		|| (game->row > game->piece_size.x))
+			|| (game->row > game->piece_size.x))
 		return (FAILURE);
 	while (line[y] != '\0')
 	{

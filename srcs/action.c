@@ -1,6 +1,5 @@
 #include "filler.h"
 
-
 void	free_piece(t_game *game)
 {
 	int		x;
@@ -21,10 +20,19 @@ void	free_piece(t_game *game)
 void	speak(t_game *game, char **line)
 {
 	(void)line;
-	ft_printf("%d %d\n", game->to_play.x, game->to_play.y);
-	game->to_play.x = game->last_mine.x;
-	game->to_play.y = game->last_mine.y;
 	free_piece(game);
+	if (game->to_play.x != game->piece_size.x + game->board_size.x
+		&& game->to_play.y != game->piece_size.y + game->board_size.y)
+	{
+		ft_printf("%d %d\n", game->to_play.x, game->to_play.y);
+		game->to_play.x = game->last_mine.x;
+		game->to_play.y = game->last_mine.y;
+	}
+	else
+	{
+		ft_printf("0 0\n");
+		ft_printf("\n");
+	}
 	game->action = E_GET_BOARD_SIZE;
 }
 
@@ -62,6 +70,8 @@ void	get_player(t_game *game, char **line)
 
 void	get_board_size(t_game *game, char **line)
 {
+	game->last_adv.x = 0;
+	game->last_adv.y = 0;
 	game->row = 0;
 	if (game->board == NULL)
 	{
@@ -135,8 +145,9 @@ void	get_piece(t_game *game, char **line)
 			error(game, line);
 		else
 		{
+			game->to_play.x = 0;
+			game->to_play.y = 0;
 			ft_process(game);
-			///free_piece;
 			speak(game, line);
 			game->action = E_GET_BOARD_SIZE;
 		}
