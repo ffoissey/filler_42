@@ -94,14 +94,19 @@ void			find_potential(t_game *game)
 					game->to_play.x = start.x;
 					game->to_play.y = start.y;
 				}
-				else if (game->mode == E_SPIDER_X
-					&& (start.x - game->last_adv.x < game->to_play.x - game->last_adv.x))
+				
+				else if (game->mode == E_SPIDER_Y
+					&& (game->board_size.x - start.x < game->board_size.x - game->to_play.x
+					|| start.x < game->to_play.x)
+					&& get_delta(&start, &game->last_adv) <= get_delta(&game->to_play, &game->last_adv))
 				{
 					game->to_play.x = start.x;
 					game->to_play.y = start.y;
 				}
-				else if (game->mode == E_SPIDER_Y
-					|| (start.y - game->last_adv.y < game->to_play.y - game->last_adv.y))
+				else if (game->mode == E_SPIDER_X
+					&& (game->board_size.y - start.y < game->board_size.y - game->to_play.y
+					|| start.y < game->to_play.y)
+					&& get_delta(&start, &game->last_adv) <= get_delta(&game->to_play, &game->last_adv))
 				{
 					game->to_play.x = start.x;
 					game->to_play.y = start.y;
@@ -112,13 +117,26 @@ void			find_potential(t_game *game)
 					game->to_play.x = start.x;
 					game->to_play.y = start.y;
 				}
+				else if (game->mode == E_CORE
+					&& get_delta(&start, &game->core_adv) < get_delta(&game->to_play, &game->core_adv))
+				{
+					game->to_play.x = start.x;
+					game->to_play.y = start.y;
+				}
 				else if (game->mode == E_EXPANSION
 					&& get_delta(&start, &game->core_adv) > get_delta(&game->to_play, &game->core_adv))
 				{
 					game->to_play.x = start.x;
 					game->to_play.y = start.y;
 				}
-				//ft_dprintf(2, "\nPotential: \033[32mx[%d] y[%d]\033[0m\n", start.x, start.y);
+				else if (game->mode == E_ANGLE
+					&& (get_delta(&start, &game->angle) < get_delta(&game->to_play, &game->angle)
+					|| (get_delta(&start, &game->angle) == get_delta(&game->to_play, &game->angle)
+					&& get_delta(&start, &game->last_adv) < get_delta(&game->to_play, &game->last_adv))))
+				{
+					game->to_play.x = start.x;
+					game->to_play.y = start.y;
+				}
 			}
 			start.y++;
 		}
@@ -126,30 +144,67 @@ void			find_potential(t_game *game)
 	}
 }
 
+static int		scanner(t_game *game, t_point *target, enum e_state state, int zone)
+{
+	int		x;
+	int		max_x;
+	int		y;
+	int		max_y;
+
+	x = target->x - zone < 0 ? 0 : target->x - zone;
+	max_x = target->x + zone > game->board_size.x ? game->board_size.x : target->x + zone;
+	max_y = target->y + zone > game->board_size.y ? game->board_size.y : target->y + zone;
+	while (x < max_x)
+	{
+		y = target->y - zone < 0 ? 0 : target->y - zone;
+		while (y < max_y)
+		{
+			if (game->board[x][y] == state)
+				return (TRUE);
+			y++;
+		}
+		x++;
+	}
+	return (FALSE);
+}
+
 void			ft_process(t_game *game)
 {
-	if (get_delta(&game->contact, &game->core_adv) > get_delta(&game->contact, &game->last_adv))
+	if (game->last_mine.x != 0 && game->last_mine.y != 0 && game->last_adv.x == 0 && game->last_adv.y == 0)
 	{
 		game->mode = E_EXPANSION; 
 		ft_dprintf(2, "\033[32mExpansion\033[0m\n");
 	}
-	if (game->board_size.x - game->last_adv.x > 0 && game->board_size.x - game->last_adv.x < 10)
+	else if (get_delta(&game->last_mine, &game->core_adv) > get_delta(&game->last_mine, &game->last_adv)
+			&& scanner(game, &game->last_adv, E_MINE, 5) == FALSE)
 	{
-		game->mode = E_SPIDER_X; 
-		ft_dprintf(2, "\033[36mSpider X\033[0m\n");
+		game->mode = E_CORE; 
+		ft_dprintf(2, "\033[35mCore\033[0m\n");
 	}
-	else if  (game->board_size.y - game->last_adv.y > 0 && game->board_size.y - game->last_adv.y < 10)
-	{
-		game->mode = E_SPIDER_Y; 
-		ft_dprintf(2, "\033[33mSpider Y\033[0m\n");
-	}
-	else
+	else if (scanner(game, &game->last_adv, E_MINE, 3) == TRUE)
 	{
 		game->mode = E_ATTACK; 
 		ft_dprintf(2, "\033[31mAttack\033[0m\n");
 	}
+	else if ((game->board_size.y - game->last_adv.y <= 10 && game->board_size.y - game->last_adv.y > 1)
+		|| (game->last_adv.y > 1 && game->last_adv.y <= 10))
+	{
+		game->mode = E_SPIDER_X; 
+		ft_dprintf(2, "\033[33mSpider X\033[0m\n");
+	}
+	else if ((game->board_size.x - game->last_adv.x <= 10 && game->board_size.x - game->last_adv.x > 1)
+		|| (game->last_adv.x > 1 && game->last_adv.x <= 10))
+	{
+		game->mode = E_SPIDER_Y; 
+		ft_dprintf(2, "\033[36mSpider Y\033[0m\n");
+	}
+	else
+		ft_dprintf(2, "\033[34mAngle\033[0m\n");
 	//ft_dprintf(2, "\033[34mLast_adv: x[%d] y[%d]\033[0m\n", game->last_adv.x, game->last_adv.y);
 	find_potential(game);
+	game->last_mine.x = game->contact.x;
+	game->last_mine.y = game->contact.y;
+	game->mode = E_ANGLE;
 }
 
 

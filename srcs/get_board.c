@@ -27,6 +27,18 @@ unsigned char			check_first_line_board(unsigned int row, char *line)
 	return (TRUE);
 }
 
+static void				get_angle(t_game *game)
+{
+	if (game->board_size.x - game->core_adv.x > game->board_size.x / 2)
+		game->angle.x = 0;
+	else
+		game->angle.x = game->board_size.x;
+	if (game->board_size.y - game->core_adv.y > game->board_size.y / 2)
+		game->angle.y = 0;
+	else
+		game->angle.y = game->board_size.y;
+}
+
 static enum e_state		board_char_is_ok(t_game *game, char c, int x , int y)
 {
 	t_point	pos;
@@ -35,9 +47,9 @@ static enum e_state		board_char_is_ok(t_game *game, char c, int x , int y)
 	pos.y = y;
 	if (c == EMPTY)
 		return (E_EMPTY);
-	else if (c == P1_CHAR || c == P2_CHAR)
+	else if (c == P1_CHAR || c == P2_CHAR || c == P1_LAST_CHAR || c == P2_LAST_CHAR)
 	{
-		if (c == game->my_char)
+		if (c == game->my_char || c == game->my_last_char)
 		{
 			if (game->core_mine.x == 0 && game->core_mine.x == 0)
 			{
@@ -46,7 +58,7 @@ static enum e_state		board_char_is_ok(t_game *game, char c, int x , int y)
 				game->core_mine.y = y;
 				game->core_mine.x = x;
 			}
-			return (E_MINE);
+			return (c == game->my_last_char ? E_LAST_MINE : E_MINE);
 		}
 		if (game->core_adv.x == 0 && game->core_adv.y == 0)
 		{
@@ -54,6 +66,7 @@ static enum e_state		board_char_is_ok(t_game *game, char c, int x , int y)
 			game->last_adv.x = x;
 			game->core_adv.y = y;
 			game->core_adv.x = x;
+			get_angle(game);
 		}
 		else if (game->board[x][y] == E_EMPTY)
 		{
@@ -63,6 +76,7 @@ static enum e_state		board_char_is_ok(t_game *game, char c, int x , int y)
 				game->last_adv.y = y;
 				game->last_adv.x = x;
 			}
+			return (E_LAST_ADV);
 		}
 		return (E_ADV);
 	}

@@ -40,11 +40,11 @@ enum				e_state
 
 enum				e_mode
 {
+	E_ANGLE,
 	E_ATTACK,
-	E_CORE,
 	E_SPIDER_X,
 	E_SPIDER_Y,
-	E_BLOCK,
+	E_CORE,
 	E_EXPANSION
 };
 
@@ -82,6 +82,7 @@ typedef	struct		s_game
 	t_point			last_mine;
 	t_point			core_adv;
 	t_point			core_mine;
+	t_point			angle;
 
 	t_point			to_play;
 	t_point			contact; // USE ?

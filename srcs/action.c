@@ -25,8 +25,8 @@ void	speak(t_game *game, char **line)
 		&& game->to_play.y != game->piece_size.y + game->board_size.y)
 	{
 		ft_printf("%d %d\n", game->to_play.x, game->to_play.y);
-		game->to_play.x = game->last_mine.x;
-		game->to_play.y = game->last_mine.y;
+		game->to_play.x = 0;
+		game->to_play.y = 0;
 	}
 	else
 	{
