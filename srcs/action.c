@@ -3,7 +3,9 @@
 void	speak(t_game *game, char **line)
 {
 	(void)line;
-	ft_printf("%d %d\n", game->to_play.x, game->to_play.y);
+	ft_printf("%d %d\n", game->to_play.y, game->to_play.x);
+	game->to_play.x = game->last_mine.x;
+	game->to_play.y = game->last_mine.y;
 	game->action = E_GET_BOARD_SIZE;
 }
 
@@ -68,10 +70,35 @@ void	get_board_first_line(t_game *game, char **line)
 	ft_strdel(line);
 }
 
+int	get_delta(t_point *a, t_point *b)
+{
+	return ((b->x - a->x) + (b->y - a->y));
+}
+
 void	get_board(t_game *game, char **line)
 {
 	if (game->row + 1 == game->board_size.y)
-		game->action = E_GET_PIECE_SIZE;
+	{
+		if (get_line_board(game, *line) == FAILURE)
+			error(game, line);
+		else
+		{
+			if (game->delta.advcore_to_mycore == 0)
+			{
+				game->delta.advcore_to_mycore = get_delta(&game->core_adv, &game->core_mine);
+				game->delta.advcore_to_mylast = game->delta.advcore_to_mycore;
+				game->delta.advlast_to_mycore = game->delta.advcore_to_mycore;
+				game->delta.advlast_to_mylast = game->delta.advcore_to_mycore;
+			}
+			else
+			{
+				game->delta.advlast_to_mycore = get_delta(&game->last_adv, &game->core_mine);
+				game->delta.advcore_to_mylast = get_delta(&game->core_adv, &game->last_mine);
+				game->delta.advlast_to_mylast = get_delta(&game->last_adv, &game->last_mine);
+			}
+			game->action = E_GET_PIECE_SIZE;
+		}
+	}
 	else if (get_line_board(game, *line) == FAILURE)
 		error(game, line);
 	else
@@ -83,15 +110,18 @@ void	get_piece(t_game *game, char **line)
 {
 	if (game->row + 1 == game->piece_size.y)
 	{
-		ft_process(game);
-		///free_piece;
-		speak(game, line);
-		game->action = E_GET_BOARD_SIZE;
+		if (get_line_piece(game, *line) == FAILURE)
+			error(game, line);
+		else
+		{
+			ft_process(game);
+			///free_piece;
+			speak(game, line);
+			game->action = E_GET_BOARD_SIZE;
+		}
 	}
 	else if (get_line_piece(game, *line) == FAILURE)
-	{
 		error(game, line);
-	}
 	else
 		game->row++;
 	ft_strdel(line);

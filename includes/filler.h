@@ -44,21 +44,35 @@ typedef struct		s_point
 	int				y;
 }					t_point;
 
+typedef struct		s_delta
+{
+	int		advcore_to_mycore;
+	int		advcore_to_mylast;
+	int		advlast_to_mycore;
+	int		advlast_to_mylast;
+}					t_delta;
+
 typedef	struct		s_game
 {
 	enum e_state	**board;
 	enum e_state	**piece;
-	int				row;
-	t_point			board_size;
-	t_point			piece_size;
-	t_point			piece_start_size;
-	t_point			adv_nearest;
-	t_point			to_play;
 	char			adv_char;
 	char			adv_last_char;
 	char			my_char;
 	char			my_last_char;
 	enum e_action	action;
+	int				row;
+
+	t_point			contact;
+	t_delta			delta;
+	t_point			last_adv;
+	t_point			last_mine;
+	t_point			core_adv;
+	t_point			core_mine;
+	t_point			board_size;
+	t_point			piece_size;
+	t_point			adv_nearest;
+	t_point			to_play;
 }					t_game;
 
 typedef void (*t_process)(t_game *, char **);
@@ -96,5 +110,9 @@ int					get_line_piece(t_game *game, char *line);
 */
 
 void	ft_process(t_game *game);
+
+
+
+int	get_delta(t_point *a, t_point *b);
 
 #endif

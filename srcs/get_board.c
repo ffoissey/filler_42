@@ -27,18 +27,51 @@ unsigned char			check_first_line_board(unsigned int row, char *line)
 	return (TRUE);
 }
 
-static enum e_state		board_char_is_ok(t_game *game, char c)
+static enum e_state		board_char_is_ok(t_game *game, char c, int i , int j)
 {
+	t_point	pos;
+
+	pos.x = i;
+	pos.y = j;
 	if (c == EMPTY)
 		return (E_EMPTY);
-	else if (c == P1_CHAR)
-		return (c == game->my_char ? E_MINE : E_ADV);
-	else if (c == P2_CHAR)
-		return (c == game->my_char ? E_MINE : E_ADV);
-	else if (c == P1_LAST_CHAR)
-		return (c == game->my_last_char ? E_LAST_MINE : E_LAST_ADV);
-	else if (c == P2_LAST_CHAR)
-		return (c == game->my_last_char ? E_LAST_MINE : E_LAST_ADV);
+	else if (c == P1_CHAR || c == P2_CHAR)
+	{
+		if (c == game->my_char)
+		{
+			if (game->core_mine.x == -1)
+			{
+				game->last_mine.y = j;
+				game->last_mine.x = i;
+				game->core_mine.y = j;
+				game->core_mine.x = i;
+			}
+			return (E_MINE);
+		}
+		if (game->core_adv.x == -1)
+		{
+				game->last_adv.y = j;
+				game->last_adv.x = i;
+				game->core_adv.y= j;
+				game->core_adv.x = i;
+		}
+		return (E_ADV);
+	}
+	else if (c == P1_LAST_CHAR || c == P2_LAST_CHAR)
+	{
+		if (c == game->my_last_char)
+			return (E_LAST_MINE);
+		if (game->last_adv.x)
+		{
+			if (game->last_adv.x == -1
+				|| get_delta(&pos, &game->core_mine) < get_delta(&game->last_adv, &game->core_mine))
+			{
+				game->last_adv.y = j;
+				game->last_adv.x = i;
+			}
+		}
+		return (E_LAST_ADV);
+	}
 	else
 		return (E_UNKNOW);
 }
@@ -69,13 +102,10 @@ int						get_line_board(t_game *game, char *line)
 	line += 4;
 	if (((int)ft_strlen(line) != game->board_size.x)
 		|| (game->row > game->board_size.y))
-	{
-	ft_printf("wefwef\n");
 		return (FAILURE);
-	}
 	while (line[i] != '\0')
 	{
-		game->board[game->row][i] = board_char_is_ok(game, line[i]);
+		game->board[game->row][i] = board_char_is_ok(game, line[i], i , game->row);
 		if (game->board[game->row][i] == E_UNKNOW)
 			return (FAILURE);
 		i++;
