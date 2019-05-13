@@ -42,7 +42,8 @@ enum				e_mode
 {
 	E_ATTACK,
 	E_CORE,
-	E_SPIDER,
+	E_SPIDER_X,
+	E_SPIDER_Y,
 	E_BLOCK,
 	E_EXPANSION
 };

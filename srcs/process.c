@@ -94,10 +94,17 @@ void			find_potential(t_game *game)
 					game->to_play.x = start.x;
 					game->to_play.y = start.y;
 				}
-				else if (game->mode == E_SPIDER
-					&& ((start.x - game->last_adv.x < game->to_play.x - game->last_adv.x)
-					|| (start.y - game->last_adv.y < game->to_play.y - game->last_adv.y)))
+				else if (game->mode == E_SPIDER_X
+					&& (start.x - game->last_adv.x < game->to_play.x - game->last_adv.x))
 				{
+					game->to_play.x = start.x;
+					game->to_play.y = start.y;
+				}
+				else if (game->mode == E_SPIDER_Y
+					|| (start.y - game->last_adv.y < game->to_play.y - game->last_adv.y))
+				{
+					game->to_play.x = start.x;
+					game->to_play.y = start.y;
 				}
 				else if (game->mode == E_ATTACK
 					&& get_delta(&start, &game->last_adv) < get_delta(&game->to_play, &game->last_adv))
@@ -106,8 +113,7 @@ void			find_potential(t_game *game)
 					game->to_play.y = start.y;
 				}
 				else if (game->mode == E_EXPANSION
-					&& get_delta(&start, &game->last_adv) > get_delta(&game->to_play, &game->last_adv)
-					&& get_delta(&start, &game->core_adv) < get_delta(&game->to_play, &game->core_adv))
+					&& get_delta(&start, &game->core_adv) > get_delta(&game->to_play, &game->core_adv))
 				{
 					game->to_play.x = start.x;
 					game->to_play.y = start.y;
@@ -122,16 +128,20 @@ void			find_potential(t_game *game)
 
 void			ft_process(t_game *game)
 {
-/*	if ((game->board_size.x - game->last_adv.x > 0 && game->board_size.x - game->last_adv.x < 5)
-		|| (game->board_size.y - game->last_adv.y > 0 && game->board_size.y - game->last_adv.y < 5))
-	{
-		game->mode = E_SPIDER; 
-		ft_dprintf(2, "\033[33mSpider\033[0m\n");
-	}
-	else*/ if (get_delta(&game->contact, &game->last_adv) <= 5)
+	if (get_delta(&game->contact, &game->core_adv) > get_delta(&game->contact, &game->last_adv))
 	{
 		game->mode = E_EXPANSION; 
 		ft_dprintf(2, "\033[32mExpansion\033[0m\n");
+	}
+	if (game->board_size.x - game->last_adv.x > 0 && game->board_size.x - game->last_adv.x < 10)
+	{
+		game->mode = E_SPIDER_X; 
+		ft_dprintf(2, "\033[36mSpider X\033[0m\n");
+	}
+	else if  (game->board_size.y - game->last_adv.y > 0 && game->board_size.y - game->last_adv.y < 10)
+	{
+		game->mode = E_SPIDER_Y; 
+		ft_dprintf(2, "\033[33mSpider Y\033[0m\n");
 	}
 	else
 	{
