@@ -55,7 +55,6 @@ typedef struct		s_point
 	int				y;
 }					t_point;
 
-
 typedef struct		s_mx
 {
 	t_point			size;
