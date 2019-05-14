@@ -100,6 +100,10 @@ void	get_pos(t_game *game, char **line)
 			game->last_pos.y = ft_atoi(tmp);
 		}
 		print_board(game);
+		game->last_score_p1 = game->score_p1;
+		game->last_score_p2 = game->score_p2;
+		game->score_p1 = 0;
+		game->score_p2 = 0;
 		game->action = E_GET_BOARD_SIZE;
 	}
 	else

@@ -37,12 +37,14 @@ static enum e_state		board_char_is_ok(t_game *game, char c, int x , int y)
 		return (E_EMPTY);
 	else if (c == P1_CHAR || c == P1_LAST_CHAR)
 	{
+		game->score_p1++;
 		if (game->core_p1.x == 0 && game->core_p1.y == 0)
 			game->core_p1 = pos;
 		return (c == P1_LAST_CHAR ? E_LAST_P1 : E_P1);
 	}
 	else if (c == P2_CHAR || c == P2_LAST_CHAR)
 	{
+		game->score_p2++;
 		if (game->core_p2.x == 0 && game->core_p2.y == 0)
 			game->core_p2 = pos;
 		return (c == P2_LAST_CHAR ? E_LAST_P2 : E_P2);

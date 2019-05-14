@@ -2,6 +2,7 @@
 # define FILLER_H
 
 # include "libft.h"
+# include "sys/ioctl.h"
 
 # define PLAYER_ONE 	"$$$ exec p1 : ["
 # define PLAYER_TWO 	"$$$ exec p2 : ["
@@ -23,8 +24,9 @@
 # define BLUE			"\033[44m  "
 # define CYAN			"\033[46m  "
 # define RED			"\033[41m  "
-# define PINK			"\033[43m  "
+# define YELLOW			"\033[43m  "
 # define WHITE			"\033[47m  "
+# define GREEN			"\033[42m  "
 # define NC				"\033[0m"
 # define DELAY			45000000
 
@@ -77,6 +79,10 @@ typedef	struct		s_game
 	t_point			core_p1;
 	t_point			core_p2;
 	t_point			last_pos;
+	int				score_p1;
+	int				score_p2;
+	int				last_score_p1;
+	int				last_score_p2;
 }					t_game;
 
 

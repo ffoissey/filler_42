@@ -17,42 +17,6 @@ void	free_matrix(t_mx *mx)
 	mx->size.y = 0;
 }
 
-void	print_board(t_game *game)
-{
-	int		x;
-	int		y;
-	int		i;
-
-	i = DELAY;
-	while (i)
-		i--;
-	//system("clear");
-	ft_putstr("\033[2J\033[1;40H");
-	x = 0;
-	while (x < game->board.size.x)
-	{
-		y = 0;
-		while (y < game->board.size.y)
-		{
-			if (game->board.mx[x][y] == E_P1)
-				ft_putstr(BLUE);
-			else if (game->board.mx[x][y] == E_LAST_P1)
-				ft_putstr(CYAN);
-			else if (game->board.mx[x][y] == E_P2)
-				ft_putstr(RED);
-			else if (game->board.mx[x][y] == E_LAST_P2)
-				ft_putstr(PINK);
-			else
-				ft_putstr(WHITE);
-			y++;
-		}
-		ft_printf("%s\n", NC);
-		x++;
-	}
-	ft_printf("\nP1(0) -> [%s%s][%s%s]\n", BLUE, NC, CYAN, NC);
-	ft_printf("P2(X) -> [%s%s][%s%s]\n", RED, NC, PINK, NC);
-}
-
 int		main(void)
 {
 	t_game	game;
@@ -67,7 +31,7 @@ int		main(void)
 	while (get_next_line(STDIN_FILENO, &line) && game.action != E_ERROR)
 	{
 		process[game.action](&game, &line);
-		ft_strdel(&line);	
+		ft_strdel(&line);
 	}
 	ft_strdel(&line);
 	free_matrix(&game.board);
