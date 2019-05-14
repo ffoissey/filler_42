@@ -21,6 +21,7 @@
 # define ERROR			"ERROR"
 # define WINNER			"WINNER\n"
 # define INFO			"FILLER STAT"
+# define LEN_P			44
 
 # define BLUE			"\033[44m  "
 # define BLUE_ONE		"\033[44m "

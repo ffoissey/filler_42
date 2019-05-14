@@ -34,7 +34,7 @@
 
 # Name
 NAME = visu
-DEBUG_NAME = debug.visu
+DEBUG_NAME = debug_visu
 
 # Compiler
 CC = clang

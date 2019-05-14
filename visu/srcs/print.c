@@ -50,16 +50,10 @@ static void	border(t_game *game)
 	ft_putstr(NC);
 }
 
-static int	player(t_game *game, t_point *middle, struct winsize *w)
+static void	player(t_game *game, t_point *middle, struct winsize *w)
 {
-	int len;
-
-	len = ft_strlen(game->p1_name);
-	if (len < (int)ft_strlen(game->p2_name))
-		len = ft_strlen(game->p2_name);
-	len = (len + 14) * 2;
 	ft_printf("\033[%d;%dH", middle->x - 1,
-				w->ws_col / 2 + game->board.size.y / 2 + len / 2
+				w->ws_col / 2 + game->board.size.y / 2 + 22
 				- ft_strlen(INFO) / 2);
 	ft_printf("\033[32;1m%s\033[0m", INFO);
 	ft_printf("\033[%d;%dH", middle->x + 1, w->ws_col / 2
@@ -70,7 +64,6 @@ static int	player(t_game *game, t_point *middle, struct winsize *w)
 			+ game->board.size.y / 2);
 	ft_printf("PLAYER 2 |  \033[31;1m%8.8s\033[0m  | OK -> %s%s  Last -> %s%s",
 			game->p2_name, RED, NC, YELLOW, NC);
-	return (len);
 }
 
 static void	set_middle_and_position(t_game *game,
@@ -83,7 +76,7 @@ static void	set_middle_and_position(t_game *game,
 	ft_printf("\033[%d;%dH",middle->x - 1, middle->y - 1);
 }
 
-static void	score(t_game *game, t_point *scale, int len)
+static void	score(t_game *game, t_point *scale)
 {
 	int		p1;
 	int		i;
@@ -91,17 +84,17 @@ static void	score(t_game *game, t_point *scale, int len)
 	i = 0;
 	ft_printf("\033[%d;%dH", scale->x, scale->y);
 	ft_printf("\033[34;1m%-4d\033[0m\n", game->last_score_p1);
-	ft_printf("\033[%d;%dH", scale->x, scale->y + len - 4);
+	ft_printf("\033[%d;%dH", scale->x, scale->y + 40);
 	ft_printf("\033[31;1m%4d\033[0m\n", game->last_score_p2);
 	ft_printf("\033[%d;%dH", scale->x + 2, scale->y);
 	if (game->last_score_p1 == 0 && game->last_score_p2 == 0)
-		p1 = len / 2;
+		p1 = 22;
 	else if (game->last_score_p1 == 0 || game->last_score_p2 == 0)
-		p1 = game->last_score_p1 == 0 ? 0 : len;
+		p1 = game->last_score_p1 == 0 ? 0 : LEN_P;
 	else
-		p1 = game->last_score_p1 * len
+		p1 = game->last_score_p1 * LEN_P
 			/ (game->last_score_p1 + game->last_score_p2);
-	while (i < len)
+	while (i < LEN_P)
 	{
 		if (i == p1)
 			ft_putstr(PURPLE);
@@ -112,31 +105,31 @@ static void	score(t_game *game, t_point *scale, int len)
 	ft_putstr(NC);
 }
 
-static void	end_game(t_game *game, t_point *scale, int len, int end)
+static void	end_game(t_game *game, t_point *scale, int end)
 {
 	if (end == 0)
 		return ;
 	if (end == 2)
 	{
-		ft_printf("\033[%d;%dH", scale->x, scale->y + len / 2 - 3);
+		ft_printf("\033[%d;%dH", scale->x, scale->y + 19);
 		ft_printf("\033[0;1mERROR !\033[0m");
 		return ;
 	}
 	if (game->last_score_p1 > game->last_score_p2)
 	{
-		ft_printf("\033[%d;%dH", scale->x, scale->y + len / 2
+		ft_printf("\033[%d;%dH", scale->x, scale->y + 22
 				- (ft_strlen(game->p1_name) + 5) / 2);
-		ft_printf("\033[34;1;5m%8.8s WIN!\033[0m", ft_strupcase(game->p1_name));
+		ft_printf("\033[34;1;5m%s WIN!\033[0m", ft_strupcase(game->p1_name));
 	}
 	else if (game->last_score_p1 > game->last_score_p2)
 	{
-		ft_printf("\033[%d;%dH", scale->x, scale->y + len / 2
+		ft_printf("\033[%d;%dH", scale->x, scale->y + 22
 				- (ft_strlen(game->p2_name) + 5) / 2);
-		ft_printf("\033[31;1;5m%8.8s WIN!\033[0m", ft_strupcase(game->p2_name));
+		ft_printf("\033[31;1;5m%s WIN!\033[0m", ft_strupcase(game->p2_name));
 	}
 	else
 	{
-		ft_printf("\033[%d;%dH", scale->x, scale->y + len / 2 - 5);
+		ft_printf("\033[%d;%dH", scale->x, scale->y + 17);
 		ft_printf("\033[32;1mEQUALITY !\033[0m");
 	}
 }
@@ -145,7 +138,6 @@ void		print_board(t_game *game, int end)
 {
 	t_point			middle;
 	t_point			scale;
-	int				len_player;
 	struct winsize	w;
 
 	if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &w) == FAILURE)
@@ -155,12 +147,12 @@ void		print_board(t_game *game, int end)
 	border(game);
 	board(game, &middle);
 	border(game);
-	len_player = player(game, &middle, &w);
+	player(game, &middle, &w);
 	scale.x = middle.x + 6;
 	scale.y = w.ws_col / 2 + game->board.size.y / 2;
-	score(game, &scale, len_player);
-	scale.x += 4;
-	end_game(game, &scale, len_player, end);
+	score(game, &scale);
+	scale.x += 5;
+	end_game(game, &scale, end);
 	//ft_printf("\033[u");
 	ft_printf("\033[%d;1H", w.ws_row);
 }
