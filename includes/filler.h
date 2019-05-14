@@ -68,22 +68,20 @@ typedef	struct		s_game
 
 	t_mx			board;
 	t_mx			piece;
+	enum e_action	action;
+	enum e_mode		mode;
+	int				row;
 	char			adv_char;
 	char			adv_last_char;
 	char			my_char;
 	char			my_last_char;
-	int				row;
-	enum e_action	action;
-	enum e_mode		mode;
-
 	t_point			last_adv;
 	t_point			last_mine;
 	t_point			core_adv;
 	t_point			core_mine;
 	t_point			angle;
-
+	t_point			contact;
 	t_point			to_play;
-	t_point			contact; // USE ?
 }					t_game;
 
 typedef void 			(*t_process)(t_game *, char **);
