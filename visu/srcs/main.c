@@ -36,9 +36,9 @@ int		main(void)
 		ft_strdel(&line);
 	}
 	if (line && ft_strstr(line, "fin") != NULL)
-		ft_printf(WINNER);
+		print_board(&game, 1);
 	else
-		ft_printf(ERROR);
+		print_board(&game, 2);
 	ft_strdel(&line);
 	free_matrix(&game.board);
 	free_matrix(&game.piece);

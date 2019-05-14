@@ -57,14 +57,18 @@ static int	player(t_game *game, t_point *middle, struct winsize *w)
 	len = ft_strlen(game->p1_name);
 	if (len < (int)ft_strlen(game->p2_name))
 		len = ft_strlen(game->p2_name);
-	len += 14;
-	len *= 2;
-	ft_printf("\033[%d;%dH", middle->x, w->ws_col / 2 + game->board.size.y / 2);
-	ft_printf("PLAYER 1 |  \033[34;1m%s\033[0m  | OK -> %s%s  Last -> %s%s",
-			game->p1_name, BLUE, NC, CYAN, NC);
-	ft_printf("\033[%d;%dH", middle->x + 2, w->ws_col / 2
+	len = (len + 14) * 2;
+	ft_printf("\033[%d;%dH", middle->x - 1,
+				w->ws_col / 2 + game->board.size.y / 2 + len / 2
+				- ft_strlen(INFO) / 2);
+	ft_printf("\033[32;1m%s\033[0m", INFO);
+	ft_printf("\033[%d;%dH", middle->x + 1, w->ws_col / 2
 			+ game->board.size.y / 2);
-	ft_printf("PLAYER 2 |  \033[31;1m%s\033[0m  | OK -> %s%s  Last -> %s%s",
+	ft_printf("PLAYER 1 |  \033[34;1m%8.8s\033[0m  | OK -> %s%s  Last -> %s%s",
+			game->p1_name, BLUE, NC, CYAN, NC);
+	ft_printf("\033[%d;%dH", middle->x + 3, w->ws_col / 2
+			+ game->board.size.y / 2);
+	ft_printf("PLAYER 2 |  \033[31;1m%8.8s\033[0m  | OK -> %s%s  Last -> %s%s",
 			game->p2_name, RED, NC, YELLOW, NC);
 	return (len);
 }
@@ -79,20 +83,17 @@ static void	set_middle_and_position(t_game *game,
 	ft_printf("\033[%d;%dH",middle->x - 1, middle->y - 1);
 }
 
-static void	score(t_game *game, t_point *middle, struct winsize *w, int len)
+static void	score(t_game *game, t_point *scale, int len)
 {
-	t_point	scale;
 	int		p1;
 	int		i;
 
 	i = 0;
-	scale.x = middle->x + 4;
-	scale.y = w->ws_col / 2 + game->board.size.y / 2;
-	ft_printf("\033[%d;%dH", scale.x + 1, scale.y);
+	ft_printf("\033[%d;%dH", scale->x, scale->y);
 	ft_printf("\033[34;1m%-4d\033[0m\n", game->last_score_p1);
-	ft_printf("\033[%d;%dH", scale.x + 1, scale.y + len - 4);
+	ft_printf("\033[%d;%dH", scale->x, scale->y + len - 4);
 	ft_printf("\033[31;1m%4d\033[0m\n", game->last_score_p2);
-	ft_printf("\033[%d;%dH", scale.x + 3, scale.y);
+	ft_printf("\033[%d;%dH", scale->x + 2, scale->y);
 	if (game->last_score_p1 == 0 && game->last_score_p2 == 0)
 		p1 = len / 2;
 	else if (game->last_score_p1 == 0 || game->last_score_p2 == 0)
@@ -111,9 +112,39 @@ static void	score(t_game *game, t_point *middle, struct winsize *w, int len)
 	ft_putstr(NC);
 }
 
-void		print_board(t_game *game)
+static void	end_game(t_game *game, t_point *scale, int len, int end)
+{
+	if (end == 0)
+		return ;
+	if (end == 2)
+	{
+		ft_printf("\033[%d;%dH", scale->x, scale->y + len / 2 - 3);
+		ft_printf("\033[0;1mERROR !\033[0m");
+		return ;
+	}
+	if (game->last_score_p1 > game->last_score_p2)
+	{
+		ft_printf("\033[%d;%dH", scale->x, scale->y + len / 2
+				- (ft_strlen(game->p1_name) + 5) / 2);
+		ft_printf("\033[34;1;5m%8.8s WIN!\033[0m", ft_strupcase(game->p1_name));
+	}
+	else if (game->last_score_p1 > game->last_score_p2)
+	{
+		ft_printf("\033[%d;%dH", scale->x, scale->y + len / 2
+				- (ft_strlen(game->p2_name) + 5) / 2);
+		ft_printf("\033[31;1;5m%8.8s WIN!\033[0m", ft_strupcase(game->p2_name));
+	}
+	else
+	{
+		ft_printf("\033[%d;%dH", scale->x, scale->y + len / 2 - 5);
+		ft_printf("\033[32;1mEQUALITY !\033[0m");
+	}
+}
+
+void		print_board(t_game *game, int end)
 {
 	t_point			middle;
+	t_point			scale;
 	int				len_player;
 	struct winsize	w;
 
@@ -125,6 +156,11 @@ void		print_board(t_game *game)
 	board(game, &middle);
 	border(game);
 	len_player = player(game, &middle, &w);
-	score(game, &middle, &w, len_player);
+	scale.x = middle.x + 6;
+	scale.y = w.ws_col / 2 + game->board.size.y / 2;
+	score(game, &scale, len_player);
+	scale.x += 4;
+	end_game(game, &scale, len_player, end);
+	//ft_printf("\033[u");
 	ft_printf("\033[%d;1H", w.ws_row);
 }

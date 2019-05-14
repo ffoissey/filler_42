@@ -103,7 +103,7 @@ void	get_pos(t_game *game, char **line)
 		game->last_score_p2 = game->score_p2;
 		game->score_p1 = 0;
 		game->score_p2 = 0;
-		print_board(game);
+		print_board(game, 0);
 		game->action = E_GET_BOARD_SIZE;
 	}
 	else

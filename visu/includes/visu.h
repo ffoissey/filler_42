@@ -18,8 +18,9 @@
 # define P2_LAST_CHAR	'x'
 # define PLATEAU		"Plateau"
 # define PIECE			"Piece"
-# define ERROR			"ERROR\n"
+# define ERROR			"ERROR"
 # define WINNER			"WINNER\n"
+# define INFO			"FILLER STAT"
 
 # define BLUE			"\033[44m  "
 # define BLUE_ONE		"\033[44m "
@@ -29,7 +30,7 @@
 # define PURPLE			"\033[45m "
 # define YELLOW			"\033[43m  "
 # define WHITE			"\033[47m  "
-# define GREEN			"\033[42m  "
+# define GREEN			"\033[40m  "
 # define NC				"\033[0m"
 # define DELAY			45000000
 
@@ -123,6 +124,6 @@ int					get_line_piece(t_game *game, char *line);
 */
 
 void				free_matrix(t_mx *mx);
-void				print_board(t_game *game);
+void				print_board(t_game *game, int end);
 
 #endif
