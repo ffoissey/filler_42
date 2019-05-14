@@ -39,7 +39,7 @@ static int			alloc_game(enum e_state ***mx, t_point *size)
 	return (SUCCESS);
 }
 
-int					get_size(t_point *game_size, enum e_state ***mx,
+int					process_size(t_point *game_size, enum e_state ***mx,
 								char *line, char *type)
 {
 	t_point		size;
@@ -61,9 +61,5 @@ int					get_size(t_point *game_size, enum e_state ***mx,
 		if (alloc_game(mx, &size) == FAILURE)
 			return (FAILURE);
 	}
-/*	else if (size.x != game_size->x || size.y != game_size->y)
-	{
-		return (FAILURE);
-	}*/
 	return (SUCCESS);
 }

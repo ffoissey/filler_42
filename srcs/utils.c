@@ -1,5 +1,24 @@
 #include "filler.h"
 
+void	speak(t_game *game, char **line)
+{
+	ft_strdel(line);
+	free_matrix(&game->piece);
+	ft_printf("%d %d\n", game->to_play.x, game->to_play.y);
+	game->to_play.x = 0;
+	game->to_play.y = 0;
+	game->action = E_GET_BOARD_SIZE;
+}
+
+void	error(t_game *game, char **line)
+{
+	ft_strdel(line);
+	free_matrix(&game->piece);
+	free_matrix(&game->board);
+	game->action = E_ERROR;
+	ft_putendl_fd("Error", 2);
+}
+
 int		get_delta(t_point *a, t_point *b)
 {
 	return ((b->x - a->x) * (b->x - a->x) + (b->y - a->y) * (b->y - a->y));

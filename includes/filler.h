@@ -6,8 +6,6 @@
 # define PLAYER_ONE 	"$$$ exec p1 : ["
 # define PLAYER_TWO 	"$$$ exec p2 : ["
 # define PLAYER_SIZE 	15
-# define NAME 			"/ffoissey.filler]\0"
-# define DEBUG_NAME 	"/debug_ffoissey.filler]\0"
 # define EMPTY			'.'
 # define FULL			'*'
 # define P1_CHAR		'O'
@@ -66,6 +64,8 @@ typedef struct		s_mx
 
 typedef	struct		s_game
 {
+	char			*process_name;
+
 	t_mx			board;
 	t_mx			piece;
 	char			adv_char;
@@ -93,20 +93,17 @@ typedef unsigned char	(*t_strategy)(t_game *, t_point *);
 *** Action
 */
 
-void				error(t_game *game, char **line);
 void				get_player(t_game *game, char **line);
-void				get_board_size(t_game *game, char **line);
 void				get_board_first_line(t_game *game, char **line);
 void				get_board(t_game *game, char **line);
-void				get_piece_size(t_game *game, char **line);
+void				get_size(t_game *game, char **line);
 void				get_piece(t_game *game, char **line);
-void				speak(t_game *game, char **line);
 
 /*
 *** Get Size
 */
 
-int					get_size(t_point *game_size, enum e_state ***mx,
+int					process_size(t_point *game_size, enum e_state ***mx,
 								char *line, char *type);
 
 /*
@@ -141,6 +138,8 @@ unsigned char	expansion_mode(t_game *game, t_point *start);
 *** Utils
 */
 
+void				speak(t_game *game, char **line);
+void				error(t_game *game, char **line);
 void				free_matrix(t_mx *mx);
 int					get_delta(t_point *a, t_point *b);
 int					scanner(t_game *game, t_point *target,

@@ -1,38 +1,9 @@
 #include "filler.h"
 
-void	speak(t_game *game, char **line)
-{
-	ft_strdel(line);
-	free_matrix(&game->piece);
-	if (game->to_play.x != game->piece.size.x + game->board.size.x
-		&& game->to_play.y != game->piece.size.y + game->board.size.y)
-	{
-		ft_printf("%d %d\n", game->to_play.x, game->to_play.y);
-		game->to_play.x = 0;
-		game->to_play.y = 0;
-	}
-	else
-	{
-		ft_printf("0 0\n");
-		ft_printf("\n");
-	}
-	game->action = E_GET_BOARD_SIZE;
-}
-
-void	error(t_game *game, char **line)
-{
-	ft_strdel(line);
-	free_matrix(&game->piece);
-	free_matrix(&game->board);
-	game->action = E_ERROR;
-	ft_putendl_fd("Error", 2);
-}
-
 void	get_player(t_game *game, char **line)
 {
 	if (ft_strnequ(*line, PLAYER_ONE, PLAYER_SIZE) == TRUE
-			&& (ft_strstr(*line, NAME) != NULL
-			|| ft_strstr(*line, DEBUG_NAME) != NULL))
+			&& (ft_strstr(*line, game->process_name) != NULL))
 	{
 		game->my_char = P1_CHAR;
 		game->my_last_char = P1_LAST_CHAR;
@@ -41,8 +12,7 @@ void	get_player(t_game *game, char **line)
 		game->action = E_GET_BOARD_SIZE;
 	}
 	else if (ft_strnequ(*line, PLAYER_TWO, PLAYER_SIZE) == TRUE
-			&& (ft_strstr(*line, NAME) != NULL
-			|| ft_strstr(*line, DEBUG_NAME) != NULL))
+			&& (ft_strstr(*line, game->process_name) != NULL))
 	{
 		game->my_char = P2_CHAR;
 		game->my_last_char = P2_LAST_CHAR;
@@ -54,29 +24,30 @@ void	get_player(t_game *game, char **line)
 		error(game, line);
 }
 
-void	get_board_size(t_game *game, char **line)
+void	get_size(t_game *game, char **line)
 {
-	game->last_adv.x = 0;
-	game->last_adv.y = 0;
 	game->row = 0;
-	if (game->board.mx == NULL) // Good ?
+	if (game->action == E_GET_PIECE_SIZE)
 	{
-		if (get_size(&game->board.size, &game->board.mx, *line, PLATEAU) == FAILURE)
+		if (process_size(&game->piece.size, &game->piece.mx, *line, PIECE)
+				== FAILURE)
 			error(game, line);
+		else
+			game->action = E_GET_PIECE;
+	}
+	else
+	{
+		if (game->board.mx == NULL)
+		{
+			if (process_size(&game->board.size, &game->board.mx, *line, PLATEAU)
+					== FAILURE)
+				error(game, line);
+			else
+				game->action = E_GET_BOARD_FIRST_LINE;
+		}
 		else
 			game->action = E_GET_BOARD_FIRST_LINE;
 	}
-	else
-		game->action = E_GET_BOARD_FIRST_LINE;
-}
-
-void	get_piece_size(t_game *game, char **line)
-{
-	game->row = 0;
-	if (get_size(&game->piece.size, &game->piece.mx, *line, PIECE) == FAILURE)
-		error(game, line);
-	else
-		game->action = E_GET_PIECE;
 }
 
 void	get_board_first_line(t_game *game, char **line)
