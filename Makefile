@@ -127,6 +127,8 @@ SRCS += action.c
 SRCS += get_size.c
 SRCS += get_board.c
 SRCS += process.c
+SRCS += utils.c
+SRCS += strategy.c
 
 ################# ATTRIBUTION
 

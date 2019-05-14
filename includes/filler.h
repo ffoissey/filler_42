@@ -3,8 +3,11 @@
 
 # include "libft.h"
 
-# define PLAYER_ONE 	"$$$ exec p1 : [./ffoissey.filler]"
-# define PLAYER_TWO 	"$$$ exec p2 : [./ffoissey.filler]"
+# define PLAYER_ONE 	"$$$ exec p1 : ["
+# define PLAYER_TWO 	"$$$ exec p2 : ["
+# define PLAYER_SIZE 	15
+# define NAME 			"/ffoissey.filler]\0"
+# define DEBUG_NAME 	"/debug_ffoissey.filler]\0"
 # define EMPTY			'.'
 # define FULL			'*'
 # define P1_CHAR		'O'
@@ -54,20 +57,17 @@ typedef struct		s_point
 	int				y;
 }					t_point;
 
-typedef struct		s_delta
+
+typedef struct		s_mx
 {
-	int		advcore_to_mycore;
-	int		advcore_to_mylast;
-	int		advlast_to_mycore;
-	int		advlast_to_mylast;
-}					t_delta;
+	t_point			size;
+	enum e_state	**mx;
+}					t_mx;
 
 typedef	struct		s_game
 {
-	enum e_state	**board;
-	enum e_state	**piece;
-	t_point			board_size;
-	t_point			piece_size;
+	t_mx			board;
+	t_mx			piece;
 	char			adv_char;
 	char			adv_last_char;
 	char			my_char;
@@ -76,22 +76,18 @@ typedef	struct		s_game
 	enum e_action	action;
 	enum e_mode		mode;
 
-	t_delta			delta;
-
 	t_point			last_adv;
 	t_point			last_mine;
 	t_point			core_adv;
 	t_point			core_mine;
 	t_point			angle;
 
-	t_point			core_side;
-	t_point			core_up;
-
 	t_point			to_play;
 	t_point			contact; // USE ?
 }					t_game;
 
-typedef void (*t_process)(t_game *, char **);
+typedef void 			(*t_process)(t_game *, char **);
+typedef unsigned char	(*t_strategy)(t_game *, t_point *);
 
 /*
 *** Action
@@ -125,10 +121,29 @@ int					get_line_piece(t_game *game, char *line);
 *** Process
 */
 
-void	ft_process(t_game *game);
+void				ft_process(t_game *game);
 
+/*
+*** Strategy
+*/
 
+void			print_strategy(t_game *game);
+void			select_strategy(t_game *game);
 
-int	get_delta(t_point *a, t_point *b);
+unsigned char	spider_y_mode(t_game *game, t_point *start);
+unsigned char	spider_x_mode(t_game *game, t_point *start);
+unsigned char	core_mode(t_game *game, t_point *start);
+unsigned char	angle_mode(t_game *game, t_point *start);
+unsigned char	attack_mode(t_game *game, t_point *start);
+unsigned char	expansion_mode(t_game *game, t_point *start);
+
+/*
+*** Utils
+*/
+
+void				free_matrix(t_mx *mx);
+int					get_delta(t_point *a, t_point *b);
+int					scanner(t_game *game, t_point *target,
+						enum e_state state, int zone);
 
 #endif
