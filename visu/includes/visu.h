@@ -22,8 +22,11 @@
 # define WINNER			"WINNER\n"
 
 # define BLUE			"\033[44m  "
+# define BLUE_ONE		"\033[44m "
 # define CYAN			"\033[46m  "
 # define RED			"\033[41m  "
+# define RED_ONE		"\033[41m "
+# define PURPLE			"\033[45m "
 # define YELLOW			"\033[43m  "
 # define WHITE			"\033[47m  "
 # define GREEN			"\033[42m  "

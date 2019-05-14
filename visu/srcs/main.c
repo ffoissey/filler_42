@@ -28,20 +28,21 @@ int		main(void)
 	ft_bzero(&game, sizeof(game));
 	game.action = E_GET_PLAYER;
 	line = NULL;
-	while (get_next_line(STDIN_FILENO, &line) && game.action != E_ERROR)
+	while (get_next_line(STDIN_FILENO, &line))
 	{
 		process[game.action](&game, &line);
+		if (game.action == E_ERROR)
+			break ;
 		ft_strdel(&line);
 	}
+	if (line && ft_strstr(line, "fin") != NULL)
+		ft_printf(WINNER);
+	else
+		ft_printf(ERROR);
 	ft_strdel(&line);
 	free_matrix(&game.board);
 	free_matrix(&game.piece);
 	ft_strdel(&game.p1_name);
 	ft_strdel(&game.p2_name);
-	if (game.action == E_ERROR)
-		ft_printf(ERROR);
-	else
-		ft_printf(WINNER);
-//	free_mlx;
 	return (SUCCESS);
 }
