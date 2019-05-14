@@ -84,6 +84,9 @@ typedef	struct		s_game
 	t_point			core_mine;
 	t_point			angle;
 
+	t_point			core_side;
+	t_point			core_up;
+
 	t_point			to_play;
 	t_point			contact; // USE ?
 }					t_game;

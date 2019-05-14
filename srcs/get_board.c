@@ -37,6 +37,10 @@ static void				get_angle(t_game *game)
 		game->angle.y = 0;
 	else
 		game->angle.y = game->board_size.y;
+	game->core_up.x = game->core_adv.x;
+	game->core_up.y = game->angle.y;
+	game->core_side.x = game->angle.x;
+	game->core_side.y = game->core_adv.y;
 }
 
 static enum e_state		board_char_is_ok(t_game *game, char c, int x , int y)

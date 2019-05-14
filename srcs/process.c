@@ -96,7 +96,7 @@ void			find_potential(t_game *game)
 				}
 				
 				else if (game->mode == E_SPIDER_Y
-					&& (game->board_size.x - start.x < game->board_size.x - game->to_play.x
+					&& (game->board_size.x - start.x <= game->board_size.x - game->to_play.x
 					|| start.x < game->to_play.x)
 					&& get_delta(&start, &game->last_adv) <= get_delta(&game->to_play, &game->last_adv))
 				{
@@ -104,7 +104,7 @@ void			find_potential(t_game *game)
 					game->to_play.y = start.y;
 				}
 				else if (game->mode == E_SPIDER_X
-					&& (game->board_size.y - start.y < game->board_size.y - game->to_play.y
+					&& (game->board_size.y - start.y <= game->board_size.y - game->to_play.y
 					|| start.y < game->to_play.y)
 					&& get_delta(&start, &game->last_adv) <= get_delta(&game->to_play, &game->last_adv))
 				{
@@ -175,6 +175,13 @@ void			ft_process(t_game *game)
 		game->mode = E_EXPANSION; 
 		ft_dprintf(2, "\033[32mExpansion\033[0m\n");
 	}
+	else if (get_delta(&game->last_mine, &game->angle) > get_delta(&game->last_mine, &game->last_adv)
+			&& scanner(game, &game->angle, E_MINE, 3) == FALSE
+			&& scanner(game, &game->last_adv, E_MINE, 5) == FALSE)
+	{
+		game->mode = E_ANGLE; 
+		ft_dprintf(2, "\033[34mAngle\033[0m\n");
+	}
 	else if (get_delta(&game->last_mine, &game->core_adv) > get_delta(&game->last_mine, &game->last_adv)
 			&& scanner(game, &game->last_adv, E_MINE, 5) == FALSE)
 	{
@@ -186,17 +193,17 @@ void			ft_process(t_game *game)
 		game->mode = E_ATTACK; 
 		ft_dprintf(2, "\033[31mAttack\033[0m\n");
 	}
-	else if ((game->board_size.y - game->last_adv.y <= 10 && game->board_size.y - game->last_adv.y > 1)
-		|| (game->last_adv.y > 1 && game->last_adv.y <= 10))
-	{
-		game->mode = E_SPIDER_X; 
-		ft_dprintf(2, "\033[33mSpider X\033[0m\n");
-	}
-	else if ((game->board_size.x - game->last_adv.x <= 10 && game->board_size.x - game->last_adv.x > 1)
-		|| (game->last_adv.x > 1 && game->last_adv.x <= 10))
+	else if ((game->board_size.x - game->last_adv.x <= 10 && game->board_size.x - game->last_adv.x > 0)
+		|| (game->last_adv.x > 0 && game->last_adv.x <= 10))
 	{
 		game->mode = E_SPIDER_Y; 
 		ft_dprintf(2, "\033[36mSpider Y\033[0m\n");
+	}
+	else if ((game->board_size.y - game->last_adv.y <= 10 && game->board_size.y - game->last_adv.y > 0)
+		|| (game->last_adv.y > 0 && game->last_adv.y <= 10))
+	{
+		game->mode = E_SPIDER_X; 
+		ft_dprintf(2, "\033[33mSpider X\033[0m\n");
 	}
 	else
 		ft_dprintf(2, "\033[34mAngle\033[0m\n");
