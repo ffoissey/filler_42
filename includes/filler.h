@@ -43,8 +43,10 @@ enum				e_mode
 {
 	E_ANGLE,
 	E_ATTACK,
-	E_SPIDER_X,
-	E_SPIDER_Y,
+	E_SPIDER_X_UP,
+	E_SPIDER_X_DOWN,
+	E_SPIDER_Y_LEFT,
+	E_SPIDER_Y_RIGHT,
 	E_CORE,
 	E_EXPANSION
 };
@@ -124,8 +126,10 @@ void				ft_process(t_game *game);
 void			print_strategy(t_game *game);
 void			select_strategy(t_game *game);
 
-unsigned char	spider_y_mode(t_game *game, t_point *start);
-unsigned char	spider_x_mode(t_game *game, t_point *start);
+unsigned char	spider_y_left_mode(t_game *game, t_point *start);
+unsigned char	spider_y_right_mode(t_game *game, t_point *start);
+unsigned char	spider_x_up_mode(t_game *game, t_point *start);
+unsigned char	spider_x_down_mode(t_game *game, t_point *start);
 unsigned char	core_mode(t_game *game, t_point *start);
 unsigned char	angle_mode(t_game *game, t_point *start);
 unsigned char	attack_mode(t_game *game, t_point *start);

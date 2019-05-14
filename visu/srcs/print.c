@@ -123,7 +123,7 @@ static void	end_game(t_game *game, t_point *scale, int end)
 				- (ft_strlen(game->p1_name) + 5) / 2);
 		ft_printf("\033[34;1;5m%s WIN!\033[0m", ft_strupcase(game->p1_name));
 	}
-	else if (game->last_score_p1 > game->last_score_p2)
+	else if (game->last_score_p1 < game->last_score_p2)
 	{
 		ft_printf("\033[%d;%dH", scale->x, scale->y + 22
 				- (ft_strlen(game->p2_name) + 5) / 2);

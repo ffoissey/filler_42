@@ -79,9 +79,12 @@ static void				find_coord(t_game *game, t_strategy strategy)
 void					ft_process(t_game *game)
 {
 	static	t_strategy	strategy[] = {angle_mode, attack_mode,
-										spider_x_mode, spider_y_mode,
+										spider_x_up_mode, spider_x_down_mode,
+										spider_y_left_mode, spider_y_right_mode,
 										core_mode, expansion_mode};
 
+	game->to_play.x = 0;
+	game->to_play.y = 0;
 	select_strategy(game);
 	print_strategy(game);
 	find_coord(game, strategy[game->mode]);
