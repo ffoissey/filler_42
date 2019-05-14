@@ -58,7 +58,7 @@ int					process_size(t_point *game_size, enum e_state ***mx,
 	{
 		game_size->x = size.x;
 		game_size->y = size.y;
-		if (alloc_game(mx, &size) == FAILURE)
+		if (*mx == NULL && alloc_game(mx, &size) == FAILURE)
 			return (FAILURE);
 	}
 	return (SUCCESS);

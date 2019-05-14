@@ -37,14 +37,9 @@ void	get_size(t_game *game, char **line)
 	}
 	else
 	{
-		if (game->board.mx == NULL)
-		{
-			if (process_size(&game->board.size, &game->board.mx, *line, PLATEAU)
-					== FAILURE)
-				error(game, line);
-			else
-				game->action = E_GET_BOARD_FIRST_LINE;
-		}
+		if (process_size(&game->board.size, &game->board.mx, *line, PLATEAU)
+				== FAILURE)
+			error(game, line);
 		else
 			game->action = E_GET_BOARD_FIRST_LINE;
 	}

@@ -80,6 +80,9 @@ void	select_strategy(t_game *game)
 				&& game->board.size.y - game->last_adv.y > 0)
 		|| (game->last_adv.y > 0 && game->last_adv.y <= 10))
 		game->mode = E_SPIDER_X; 
+	else if (get_delta(&game->last_mine, &game->core_adv)
+			< get_delta(&game->last_mine, &game->last_adv))
+		game->mode = E_EXPANSION; 
 }
 
 void	print_strategy(t_game *game)
