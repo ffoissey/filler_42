@@ -66,3 +66,77 @@ void	free_matrix(t_mx *mx)
 	mx->size.x = 0;
 	mx->size.y = 0;
 }
+
+static int	get_better(t_game *game, t_point *ref)
+{
+	int		x;
+	int		y;
+	t_point tmp;
+	t_point ok;
+	int		delta;
+
+	x = 0;
+	ok.x = -1;
+	ok.y = -1;
+	while (x < game->board.size.x)
+	{
+		y = 0;
+		while (y < game->board.size.y)
+		{
+			if (game->board.mx[x][y] == E_MINE
+					|| game->board.mx[x][y] == E_LAST_MINE)
+			{
+				tmp.x = x;
+				tmp.y = y;
+				if (ok.x == -1 || get_delta(&tmp, ref) <= get_delta(&ok, ref))
+				{
+					ok = tmp;
+					delta = get_delta(&tmp, ref);
+				}
+			}
+			y++;
+		}
+		x++;
+	}
+	return (delta);
+}
+
+t_point	nearest(t_game *game)
+{
+	int		x;
+	int		y;
+	t_point tmp;
+	int	 	delta;
+	int		tmp_delta;
+	t_point ok;
+
+	ok.x = -1;
+	ok.y = -1;
+	delta = -1;
+	tmp_delta = 0;
+	x = 0;
+	while (x < game->board.size.x)
+	{
+		y = 0;
+		while (y < game->board.size.y)
+		{
+			if (game->board.mx[x][y] == E_ADV
+					|| game->board.mx[x][y] == E_LAST_ADV)
+			{
+				tmp.x = x;
+				tmp.y = y;
+				tmp_delta = get_better(game, &tmp);
+				if (ok.x == -1 || tmp_delta <= delta)
+				{
+					ok = tmp;
+					delta = tmp_delta;
+				}
+				tmp_delta = delta + 1;
+			}
+			y++;
+		}
+		x++;
+	}
+	return (ok);
+}
+

@@ -77,11 +77,15 @@ typedef	struct		s_game
 	char			adv_last_char;
 	char			my_char;
 	char			my_last_char;
+	int				get_angle;
 	t_point			last_adv;
+	t_point			nearest_adv;
 	t_point			last_mine;
 	t_point			core_adv;
 	t_point			core_mine;
-	t_point			angle;
+	t_point			angle_target;
+	t_point			angle_adv;
+	t_point			angle_mine;
 	t_point			contact;
 	t_point			to_play;
 }					t_game;
@@ -147,5 +151,6 @@ void				free_matrix(t_mx *mx);
 int					get_delta(t_point *a, t_point *b);
 int					scanner(t_game *game, t_point *target,
 						enum e_state state, int zone);
+t_point				nearest(t_game *game);
 
 #endif

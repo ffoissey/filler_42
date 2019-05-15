@@ -85,6 +85,10 @@ void					ft_process(t_game *game)
 
 	game->to_play.x = 0;
 	game->to_play.y = 0;
+	game->nearest_adv.x = 0;
+	game->nearest_adv.y = 0;
+	game->nearest_adv = nearest(game);
+	////////// WARNING return -1;
 	select_strategy(game);
 	print_strategy(game);
 	find_coord(game, strategy[game->mode]);
@@ -92,5 +96,9 @@ void					ft_process(t_game *game)
 	game->last_mine.y = game->contact.y;
 	game->last_adv.x = 0;
 	game->last_adv.y = 0;
+	if (scanner(game, &game->angle_target, E_MINE, 3) == TRUE
+		|| scanner(game, &game->core_adv, E_EMPTY, 2) == TRUE)
+		game->get_angle = 1;
+	ft_dprintf(2, "ANGLE FREE: %s\n", game->get_angle ? "YES" : "NO");
 	game->mode = E_ANGLE;
 }

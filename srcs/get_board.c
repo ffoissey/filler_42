@@ -29,14 +29,33 @@ unsigned char			check_first_line_board(unsigned int row, char *line)
 
 static void				get_angle(t_game *game)
 {
-	if (game->board.size.x - game->core_adv.x > game->board.size.x / 2)
-		game->angle.x = 0;
+	if (game->core_adv.x * 2 < game->board.size.x)
+		game->angle_adv.x = 0;
 	else
-		game->angle.x = game->board.size.x;
-	if (game->board.size.y - game->core_adv.y > game->board.size.y / 2)
-		game->angle.y = 0;
+		game->angle_adv.x = game->board.size.x;
+	if (game->core_adv.y * 2 < game->board.size.y)
+		game->angle_adv.y = 0;
 	else
-		game->angle.y = game->board.size.y;
+		game->angle_adv.y = game->board.size.y;
+
+	if (game->core_mine.x * 2 > game->board.size.x)
+		game->angle_mine.x = 0;
+	else
+		game->angle_mine.x = game->board.size.x;
+	if (game->core_mine.y * 2 > game->board.size.y)
+		game->angle_mine.y = 0;
+	else
+		game->angle_mine.y = game->board.size.y;
+
+	if (game->angle_adv.x == game->angle_mine.x)
+		game->angle_target.x = game->angle_adv.x == 0 ? game->board.size.x : 0;
+	else
+		game->angle_target.x = game->angle_adv.x;
+	if (game->angle_adv.y == game->angle_mine.y)
+		game->angle_target.y = game->angle_adv.y == 0 ? game->board.size.y : 0;
+	else
+		game->angle_target.y = game->angle_adv.y;
+
 }
 
 static enum e_state		board_char_is_ok(t_game *game, char c, int x , int y)
