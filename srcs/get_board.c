@@ -51,26 +51,28 @@ static enum e_state		board_char_is_ok(t_game *game, char c, int x , int y)
 	{
 		if (c == game->my_char || c == game->my_last_char)
 		{
-			if (game->core_mine.x == 0 && game->core_mine.x == 0)
+			if (game->core_mine.x == 0 && game->core_mine.y == 0)
 			{
 				game->last_mine = pos;
 				game->core_mine = pos;
 			}
 			return (c == game->my_last_char ? E_LAST_MINE : E_MINE);
 		}
+
+		
 		if (game->core_adv.x == 0 && game->core_adv.y == 0)
 		{
 			game->last_adv = pos;
 			game->core_adv = pos;
 			get_angle(game);
 		}
-		else if (game->board.mx[x][y] == E_EMPTY)
+		else if (game->board.mx[x][y] == E_EMPTY || c == game->adv_last_char)
 		{
 			if ((game->last_adv.x == 0 && game->last_adv.y == 0)
 					|| get_delta(&pos, &game->core_mine)
 					< get_delta(&game->last_adv, &game->core_mine))
 				game->last_adv = pos;
-			return (E_LAST_ADV);
+			return (E_ADV);
 		}
 		return (E_ADV);
 	}

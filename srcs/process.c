@@ -81,7 +81,7 @@ void					ft_process(t_game *game)
 	static	t_strategy	strategy[] = {angle_mode, attack_mode,
 										spider_x_up_mode, spider_x_down_mode,
 										spider_y_left_mode, spider_y_right_mode,
-										core_mode, expansion_mode};
+										core_mode, expansion_mode, conquest_mode};
 
 	game->to_play.x = 0;
 	game->to_play.y = 0;
@@ -90,5 +90,7 @@ void					ft_process(t_game *game)
 	find_coord(game, strategy[game->mode]);
 	game->last_mine.x = game->contact.x;
 	game->last_mine.y = game->contact.y;
+	game->last_adv.x = 0;
+	game->last_adv.y = 0;
 	game->mode = E_ANGLE;
 }

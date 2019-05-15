@@ -1,5 +1,13 @@
 #include "filler.h"
 
+unsigned char	conquest_mode(t_game *game, t_point *start)
+{
+	if (get_delta(start, &game->last_mine)
+		> get_delta(&game->to_play, &game->last_mine))
+		return (TRUE);
+	return (FALSE);
+}
+
 unsigned char	angle_mode(t_game *game, t_point *start)
 {
 	if (get_delta(start, &game->angle)
@@ -64,8 +72,9 @@ void	select_strategy(t_game *game)
 {
 	if (game->last_adv.x == 0 && game->last_adv.y == 0)
 		game->mode = E_EXPANSION; 
-	else if (get_delta(&game->last_mine, &game->last_adv) > 20
-			|| scanner(game, &game->last_adv, E_MINE, 3) == FALSE)
+	else if (//get_delta(&game->last_mine, &game->last_adv) < 10 ||
+			scanner(game, &game->last_adv, E_MINE, 5) == TRUE
+			|| scanner(game, &game->last_adv, E_LAST_MINE, 5) == TRUE)
 		game->mode = E_ATTACK; 
 	else if (get_delta(&game->last_mine, &game->angle)
 			> get_delta(&game->last_adv, &game->angle)
@@ -73,18 +82,21 @@ void	select_strategy(t_game *game)
 		game->mode = E_ANGLE; 
 	else if (get_delta(&game->last_mine, &game->core_adv)
 			> get_delta(&game->last_mine, &game->last_adv)
-			&& get_delta(&game->last_mine, &game->last_adv) > 20)
+			&& get_delta(&game->last_mine, &game->last_adv) > 20
+			&& scanner(game, &game->core_adv, E_MINE, 3) == FALSE)
 		game->mode = E_CORE; 
-	else if (game->last_adv.y > 2 && game->last_adv.y < 6)
+	else if (game->last_adv.y > 0 && game->last_adv.y < 5)
 		game->mode = E_SPIDER_Y_LEFT; 
-	else if (game->board.size.y - game->last_adv.y < 6
-			&& game->board.size.y - game->last_adv.y > 2)
+	else if (game->board.size.y - game->last_adv.y < 5
+			&& game->board.size.y - game->last_adv.y > 0)
 		game->mode = E_SPIDER_Y_RIGHT;
-	else if (game->last_adv.x > 2 && game->last_adv.x < 6)
+	else if (game->last_adv.x > 0 && game->last_adv.x < 5)
 		game->mode = E_SPIDER_X_UP; 
-	else if (game->board.size.x - game->last_adv.x < 6
-			&& game->board.size.x - game->last_adv.x > 2)
+	else if (game->board.size.x - game->last_adv.x < 5
+			&& game->board.size.x - game->last_adv.x > 0)
 		game->mode = E_SPIDER_X_DOWN;
+	else
+		game->mode = E_CONQUEST; 
 }
 
 void	print_strategy(t_game *game)
@@ -105,4 +117,6 @@ void	print_strategy(t_game *game)
 		ft_dprintf(2, "\033[35mCore\033[0m\n");
 	else if (game->mode == E_EXPANSION)
 		ft_dprintf(2, "\033[32mExpansion\033[0m\n");
+	else if (game->mode == E_CONQUEST)
+		ft_dprintf(2, "\033[37mConquest\033[0m\n");
 }

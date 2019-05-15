@@ -48,7 +48,8 @@ enum				e_mode
 	E_SPIDER_Y_LEFT,
 	E_SPIDER_Y_RIGHT,
 	E_CORE,
-	E_EXPANSION
+	E_EXPANSION,
+	E_CONQUEST
 };
 
 typedef struct		s_point
@@ -131,6 +132,7 @@ unsigned char	spider_y_right_mode(t_game *game, t_point *start);
 unsigned char	spider_x_up_mode(t_game *game, t_point *start);
 unsigned char	spider_x_down_mode(t_game *game, t_point *start);
 unsigned char	core_mode(t_game *game, t_point *start);
+unsigned char	conquest_mode(t_game *game, t_point *start);
 unsigned char	angle_mode(t_game *game, t_point *start);
 unsigned char	attack_mode(t_game *game, t_point *start);
 unsigned char	expansion_mode(t_game *game, t_point *start);
