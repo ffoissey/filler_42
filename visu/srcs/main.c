@@ -27,6 +27,7 @@ int		main(void)
 
 	ft_bzero(&game, sizeof(game));
 	game.action = E_GET_PLAYER;
+	ft_printf("\033[2J");
 	line = NULL;
 	while (get_next_line(STDIN_FILENO, &line))
 	{

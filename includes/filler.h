@@ -49,7 +49,8 @@ enum				e_mode
 	E_SPIDER_Y_RIGHT,
 	E_CORE,
 	E_EXPANSION,
-	E_CONQUEST
+	E_CONQUEST,
+	E_GLUE
 };
 
 typedef struct		s_point
@@ -78,6 +79,11 @@ typedef	struct		s_game
 	char			my_char;
 	char			my_last_char;
 	int				get_angle;
+	int				delta_adv;
+	int				left_close;
+	int				right_close;
+	int				up_close;
+	int				down_close;
 	t_point			last_adv;
 	t_point			nearest_adv;
 	t_point			last_mine;
@@ -86,8 +92,11 @@ typedef	struct		s_game
 	t_point			angle_target;
 	t_point			angle_adv;
 	t_point			angle_mine;
+	t_point			angle_up;
+	t_point			angle_down;
 	t_point			contact;
 	t_point			to_play;
+	int				turn;
 }					t_game;
 
 typedef void 			(*t_process)(t_game *, char **);
@@ -140,6 +149,7 @@ unsigned char	conquest_mode(t_game *game, t_point *start);
 unsigned char	angle_mode(t_game *game, t_point *start);
 unsigned char	attack_mode(t_game *game, t_point *start);
 unsigned char	expansion_mode(t_game *game, t_point *start);
+unsigned char	glue_mode(t_game *game, t_point *start);
 
 /*
 *** Utils
@@ -152,5 +162,6 @@ int					get_delta(t_point *a, t_point *b);
 int					scanner(t_game *game, t_point *target,
 						enum e_state state, int zone);
 t_point				nearest(t_game *game);
+int	check_line(t_game *game, int x_or_y, int pos, enum e_state state);
 
 #endif

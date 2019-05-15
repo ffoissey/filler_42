@@ -74,7 +74,7 @@ static void	set_middle_and_position(t_game *game,
 	middle->x = w->ws_row / 2 - game->board.size.x / 2;
 	middle->y = w->ws_col / 2 - game->board.size.y;
 	middle->y -= middle->y / 2;
-	ft_printf("\033[2J\033[1;1H");
+	ft_printf("\033[1;1H");
 	ft_printf("\033[%d;%dH",middle->x - 1, middle->y - 1);
 }
 

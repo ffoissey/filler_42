@@ -114,6 +114,7 @@ t_point	nearest(t_game *game)
 	ok.y = -1;
 	delta = -1;
 	tmp_delta = 0;
+	delta = 0;
 	x = 0;
 	while (x < game->board.size.x)
 	{
@@ -137,6 +138,31 @@ t_point	nearest(t_game *game)
 		}
 		x++;
 	}
+	game->delta_adv = delta;
 	return (ok);
+}
+
+int	check_line(t_game *game, int x_or_y, int pos, enum e_state state)
+{
+	int		i;
+
+	i = 0;
+	if (x_or_y == 0)
+	{
+		while (i < game->board.size.y)
+		{
+			if (game->board.mx[pos][i] == state)
+				return (TRUE);
+			i++;
+		}
+		return (FALSE);
+	}
+	while (i < game->board.size.x)
+	{
+		if (game->board.mx[i][pos] == state)
+			return (TRUE);
+		i++;
+	}
+	return (FALSE);
 }
 

@@ -81,24 +81,32 @@ void					ft_process(t_game *game)
 	static	t_strategy	strategy[] = {angle_mode, attack_mode,
 										spider_x_up_mode, spider_x_down_mode,
 										spider_y_left_mode, spider_y_right_mode,
-										core_mode, expansion_mode, conquest_mode};
+										core_mode, expansion_mode, conquest_mode, glue_mode};
 
 	game->to_play.x = 0;
 	game->to_play.y = 0;
 	game->nearest_adv.x = 0;
 	game->nearest_adv.y = 0;
 	game->nearest_adv = nearest(game);
-	////////// WARNING return -1;
+	if (game->nearest_adv.x < 0 || game->nearest_adv.y < 0)
+	{
+		game->nearest_adv.x = 0;
+		game->nearest_adv.y = 0;
+	}
 	select_strategy(game);
 	print_strategy(game);
 	find_coord(game, strategy[game->mode]);
-	game->last_mine.x = game->contact.x;
-	game->last_mine.y = game->contact.y;
+	game->last_mine.x = game->to_play.x;
+	game->last_mine.y = game->to_play.y;
 	game->last_adv.x = 0;
 	game->last_adv.y = 0;
-	if (scanner(game, &game->angle_target, E_MINE, 3) == TRUE
-		|| scanner(game, &game->core_adv, E_EMPTY, 2) == TRUE)
+	game->turn++;
+	if (scanner(game, &game->angle_target, E_MINE, 2) == TRUE
+		|| scanner(game, &game->angle_target, E_ADV, 2) == TRUE
+		|| scanner(game, &game->angle_target, E_EMPTY, 2) == FALSE)
 		game->get_angle = 1;
-	ft_dprintf(2, "ANGLE FREE: %s\n", game->get_angle ? "YES" : "NO");
-	game->mode = E_ANGLE;
+	else if (game->turn * 2 > game->board.size.x
+			|| game->turn * 2 > game->board.size.y)
+		game->get_angle = 1;
+	ft_dprintf(2, "ANGLE FREE: %s\n", game->get_angle == 0 ? "YES" : "NO");
 }

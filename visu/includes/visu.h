@@ -33,7 +33,7 @@
 # define WHITE			"\033[47m  "
 # define GREEN			"\033[42m  "
 # define NC				"\033[0m"
-# define DELAY			50000000
+# define DELAY			40
 
 
 enum				e_state

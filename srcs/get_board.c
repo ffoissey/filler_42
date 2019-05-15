@@ -27,22 +27,28 @@ unsigned char			check_first_line_board(unsigned int row, char *line)
 	return (TRUE);
 }
 
+
+t_point					choose_angle(t_game *game)
+{
+	if (delta(
+}
+
 static void				get_angle(t_game *game)
 {
-	if (game->core_adv.x * 2 < game->board.size.x)
+	if (game->board.size.x - game->core_adv.x > game->board.size.x / 2)
 		game->angle_adv.x = 0;
 	else
 		game->angle_adv.x = game->board.size.x;
-	if (game->core_adv.y * 2 < game->board.size.y)
+	if (game->board.size.y - game->core_adv.y > game->board.size.y / 2)
 		game->angle_adv.y = 0;
 	else
 		game->angle_adv.y = game->board.size.y;
 
-	if (game->core_mine.x * 2 > game->board.size.x)
+	if (game->board.size.x - game->core_mine.x > game->board.size.x / 2)
 		game->angle_mine.x = 0;
 	else
 		game->angle_mine.x = game->board.size.x;
-	if (game->core_mine.y * 2 > game->board.size.y)
+	if (game->board.size.y - game->core_mine.y > game->board.size.y / 2)
 		game->angle_mine.y = 0;
 	else
 		game->angle_mine.y = game->board.size.y;
@@ -55,6 +61,10 @@ static void				get_angle(t_game *game)
 		game->angle_target.y = game->angle_adv.y == 0 ? game->board.size.y : 0;
 	else
 		game->angle_target.y = game->angle_adv.y;
+	game->angle_up.x = game->angle_mine.x;
+	game->angle_up.y = game->angle_adv.y;
+	game->angle_down.x = game->angle_adv.x;
+	game->angle_down.y = game->angle_mine.y;
 
 }
 
