@@ -33,11 +33,11 @@ static void	board(t_game *game, t_point *middle)
 	ft_printf("\033[%d;%dH", middle->x + p.x++, middle->y - 1);
 }
 
-static void	delay(void)
+static void	delay(t_game *game)
 {
 	int		time;
 
-	time = DELAY;
+	time = game->delay;
 	while (time)
 		time--;
 }
@@ -84,11 +84,21 @@ static void	score(t_game *game, t_point *scale)
 	int		i;
 
 	i = 0;
+	ft_printf("\033[%d;%dH", scale->x - 1, scale->y);
+	ft_printf("\033[32mGame Delay: %d\033[0m", game->delay);
 	ft_printf("\033[%d;%dH", scale->x, scale->y);
-	ft_printf("\033[34;1m%-4d\033[0m\n", game->last_score_p1);
-	ft_printf("\033[%d;%dH", scale->x, scale->y + 40);
-	ft_printf("\033[31;1m%4d\033[0m\n", game->last_score_p2);
-	ft_printf("\033[%d;%dH", scale->x + 2, scale->y);
+	ft_printf("P: piece | O: occupation");
+	scale->x += 2;
+	ft_printf("\033[%d;%dH", scale->x++, scale->y);
+	ft_printf("P:\033[34;1m%4d\033[0m",game->nb_piece_p1);
+	ft_printf("\033[%d;%dH", scale->x++, scale->y);
+	ft_printf("O:\033[34;1m%4d\033[0m", game->last_score_p1);
+
+	ft_printf("\033[%d;%dH", scale->x - 2, scale->y + 38);
+	ft_printf("P:\033[31;1m%4d\033[0m",game->nb_piece_p2);
+	ft_printf("\033[%d;%dH", scale->x - 1, scale->y + 38);
+	ft_printf("O:\033[31;1m%4d\033[0m", game->last_score_p2);
+	ft_printf("\033[%d;%dH", scale->x + 1, scale->y);
 	if (game->last_score_p1 == 0 && game->last_score_p2 == 0)
 		p1 = 22;
 	else if (game->last_score_p1 == 0 || game->last_score_p2 == 0)
@@ -144,7 +154,7 @@ void		print_board(t_game *game, int end)
 
 	if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &w) == FAILURE)
 		return ;
-	delay();
+	delay(game);
 	set_middle_and_position(game, &middle, &w);
 	border(game);
 	board(game, &middle);
@@ -153,8 +163,7 @@ void		print_board(t_game *game, int end)
 	scale.x = middle.x + 6;
 	scale.y = w.ws_col / 2 + game->board.size.y / 2;
 	score(game, &scale);
-	scale.x += 5;
+	scale.x += 4;
 	end_game(game, &scale, end);
-	//ft_printf("\033[u");
 	ft_printf("\033[%d;1H", w.ws_row);
 }

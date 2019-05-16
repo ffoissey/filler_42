@@ -88,6 +88,10 @@ typedef	struct		s_game
 	int				score_p2;
 	int				last_score_p1;
 	int				last_score_p2;
+	int				nb_piece_p1;
+	int				nb_piece_p2;
+	int				delay;
+	int				turn;
 }					t_game;
 
 

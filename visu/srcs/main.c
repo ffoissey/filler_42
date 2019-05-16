@@ -17,7 +17,7 @@ void	free_matrix(t_mx *mx)
 	mx->size.y = 0;
 }
 
-int		main(void)
+int		main(int ac, char **av)
 {
 	t_game	game;
 	char	*line;
@@ -26,6 +26,11 @@ int		main(void)
 									get_piece, get_pos};
 
 	ft_bzero(&game, sizeof(game));
+	if (ac == 1)
+		game.delay = DELAY;
+	else
+		game.delay = ft_atoi(av[1]) < 0
+			|| ft_strequ("-2147483648", av[1]) ? 0 : ft_atoi(av[1]);
 	game.action = E_GET_PLAYER;
 	ft_printf("\033[2J");
 	line = NULL;
