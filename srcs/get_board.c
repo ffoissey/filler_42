@@ -27,45 +27,38 @@ unsigned char			check_first_line_board(unsigned int row, char *line)
 	return (TRUE);
 }
 
-
-t_point					choose_angle(t_game *game)
+t_point					choose_angle(t_game *game, t_point *ref)
 {
-	if (delta(
+	t_point	win1;
+	t_point	win2;
+	t_point	p1;
+	t_point	p2;
+	t_point ret;
+
+	p1.x = 0;
+	p1.y = 0;
+	p2.x = game->board.size.x - 1;
+	p2.y = game->board.size.y - 1;
+	win1 = (get_delta(ref, &p1) < get_delta(ref, &p2)) ? p1 : p2;
+	p1.x = 0;
+	p1.y = game->board.size.y - 1;
+	p2.x = game->board.size.x - 1;
+	p2.y = 0;
+	win2 = (get_delta(ref, &p1) < get_delta(ref, &p2)) ? p1 : p2;
+	ret = (get_delta(ref, &win1) < get_delta(ref, &win2)) ? win1 : win2;
+	return (ret);
 }
 
 static void				get_angle(t_game *game)
 {
-	if (game->board.size.x - game->core_adv.x > game->board.size.x / 2)
-		game->angle_adv.x = 0;
-	else
-		game->angle_adv.x = game->board.size.x;
-	if (game->board.size.y - game->core_adv.y > game->board.size.y / 2)
-		game->angle_adv.y = 0;
-	else
-		game->angle_adv.y = game->board.size.y;
-
-	if (game->board.size.x - game->core_mine.x > game->board.size.x / 2)
-		game->angle_mine.x = 0;
-	else
-		game->angle_mine.x = game->board.size.x;
-	if (game->board.size.y - game->core_mine.y > game->board.size.y / 2)
-		game->angle_mine.y = 0;
-	else
-		game->angle_mine.y = game->board.size.y;
-
-	if (game->angle_adv.x == game->angle_mine.x)
-		game->angle_target.x = game->angle_adv.x == 0 ? game->board.size.x : 0;
-	else
-		game->angle_target.x = game->angle_adv.x;
-	if (game->angle_adv.y == game->angle_mine.y)
-		game->angle_target.y = game->angle_adv.y == 0 ? game->board.size.y : 0;
-	else
-		game->angle_target.y = game->angle_adv.y;
-	game->angle_up.x = game->angle_mine.x;
-	game->angle_up.y = game->angle_adv.y;
-	game->angle_down.x = game->angle_adv.x;
-	game->angle_down.y = game->angle_mine.y;
-
+	game->angle_adv = choose_angle(game, &game->core_adv);
+	game->angle_mine = choose_angle(game, &game->core_mine);
+	game->angle_target.x = game->angle_mine.x == 0 ? game->board.size.x - 1 : 0;
+	game->angle_target.y = game->angle_mine.y == 0 ? game->board.size.y - 1 : 0;
+	game->angle_opmine.x = game->angle_target.x;
+	game->angle_opmine.y = game->angle_target.y == 0 ? game->board.size.y - 1 : 0;
+	game->angle_opadv.x = game->angle_target.x == 0 ? game->board.size.x - 1 : 0;
+	game->angle_opadv.y = game->angle_target.y;
 }
 
 static enum e_state		board_char_is_ok(t_game *game, char c, int x , int y)
@@ -93,7 +86,6 @@ static enum e_state		board_char_is_ok(t_game *game, char c, int x , int y)
 		{
 			game->last_adv = pos;
 			game->core_adv = pos;
-			get_angle(game);
 		}
 		else if (game->board.mx[x][y] == E_EMPTY || c == game->adv_last_char)
 		{
@@ -143,6 +135,8 @@ int						get_line_board(t_game *game, char *line)
 			return (FAILURE);
 		y++;
 	}
+	if (game->turn == 0)
+		get_angle(game);
 	return (SUCCESS);
 }
 

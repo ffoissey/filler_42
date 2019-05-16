@@ -41,7 +41,9 @@ enum				e_state
 
 enum				e_mode
 {
-	E_ANGLE,
+	E_ANGLE_TARGET,
+	E_ANGLE_OPMINE,
+	E_ANGLE_OPADV,
 	E_ATTACK,
 	E_SPIDER_X_UP,
 	E_SPIDER_X_DOWN,
@@ -89,12 +91,19 @@ typedef	struct		s_game
 	t_point			last_mine;
 	t_point			core_adv;
 	t_point			core_mine;
+
+	int				nb_angle;
+	int				close_angle_target;
+	int				close_angle_opmine;
+	int				close_angle_opadv;
 	t_point			angle_target;
 	t_point			angle_adv;
 	t_point			angle_mine;
-	t_point			angle_up;
-	t_point			angle_down;
+	t_point			angle_opmine;
+	t_point			angle_opadv;
+
 	t_point			contact;
+	t_point			good_contact;
 	t_point			to_play;
 	int				turn;
 }					t_game;
@@ -146,7 +155,9 @@ unsigned char	spider_x_up_mode(t_game *game, t_point *start);
 unsigned char	spider_x_down_mode(t_game *game, t_point *start);
 unsigned char	core_mode(t_game *game, t_point *start);
 unsigned char	conquest_mode(t_game *game, t_point *start);
-unsigned char	angle_mode(t_game *game, t_point *start);
+unsigned char	angle_target_mode(t_game *game, t_point *start);
+unsigned char	angle_opmine_mode(t_game *game, t_point *start);
+unsigned char	angle_opadv_mode(t_game *game, t_point *start);
 unsigned char	attack_mode(t_game *game, t_point *start);
 unsigned char	expansion_mode(t_game *game, t_point *start);
 unsigned char	glue_mode(t_game *game, t_point *start);
@@ -161,6 +172,8 @@ void				free_matrix(t_mx *mx);
 int					get_delta(t_point *a, t_point *b);
 int					scanner(t_game *game, t_point *target,
 						enum e_state state, int zone);
+int					over(t_game *game, t_point *target,
+						enum e_state state, int zone, float percent);
 t_point				nearest(t_game *game);
 int	check_line(t_game *game, int x_or_y, int pos, enum e_state state);
 

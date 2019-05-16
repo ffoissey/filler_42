@@ -12,6 +12,7 @@ int		main(int ac, char **av)
 	ft_bzero(&game, sizeof(game));
 	game.action = E_GET_PLAYER;
 	game.process_name = av[0];
+	game.nb_angle = 3;
 	line = NULL;
 	while (get_next_line(STDIN_FILENO, &line) > 0)
 	{
