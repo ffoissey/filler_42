@@ -114,7 +114,8 @@ void					ft_process(t_game *game)
 	game->contact.x = 0;
 	game->contact.y = 0;
 	game->turn++;
-/*	if (game->close_angle_target == 0
+	/*
+	if (game->close_angle_target == 0
 		&& check_line(game, 0, game->angle_target.x, E_ADV) == TRUE
 		&& check_line(game, 1, game->angle_target.y, E_ADV == TRUE))
 	{

@@ -181,17 +181,13 @@ void	select_strategy(t_game *game)
 		game->down_close++;
 		game->mode = E_SPIDER_X_DOWN;
 	}
-	else if ((scanner(game, &game->last_adv, E_MINE, 3) == TRUE
-			|| scanner(game, &game->core_mine, E_ADV, 3) == TRUE
-			|| get_delta(&game->angle_mine, &game->last_adv)
-			< get_delta(&game->angle_mine, &game->last_mine))) 
-		game->mode = E_GLUE; 
-	else if ((scanner(game, &game->nearest_adv, E_MINE, 5) == FALSE
-			|| over(game, &game->nearest_adv, E_EMPTY, 5, 0.7) == TRUE)
-				&& get_delta(&game->nearest_adv, &game->last_mine) < 100)
-				game->mode = E_ATTACK; 
+//	else if (//(scanner(game, &game->last_adv, E_MINE, 2) == TRUE
+			 //scanner(game, &game->core_mine, E_ADV, 3) == TRUE
+			 //get_delta(&game->angle_mine, &game->last_adv)
+			//< get_delta(&game->angle_mine, &game->last_mine)) 
+//		game->mode = E_GLUE;
 	else if (game->close_angle_target == FALSE
-			&& game->turn % game->nb_angle == 0
+			&& (game->turn % game->nb_angle == 0)
 			&& scanner(game, &game->angle_target, E_MINE, 1) == FALSE
 			&& scanner(game, &game->angle_target, E_ADV, 1) == FALSE
 				&& over(game, &game->angle_target, E_EMPTY, 5, 0.7) == TRUE)
@@ -248,12 +244,12 @@ void	print_strategy(t_game *game)
 		ft_dprintf(2, "\033[37mConquest\033[0m\n");
 	else if (game->mode == E_GLUE)
 		ft_dprintf(2, "\033[38mGlue\033[0m\n");
-	ft_dprintf(2, "NEAREST: x %d, y %d\n", game->nearest_adv.x, game->nearest_adv.y);
-	ft_dprintf(2, "ANGLE TARGET: x %d, y %d\n", game->angle_target.x, game->angle_target.y);
-	ft_dprintf(2, "ANGLE ADV: x %d, y %d\n", game->angle_adv.x, game->angle_adv.y);
-	ft_dprintf(2, "ANGLE MINE: x %d, y %d\n", game->angle_mine.x, game->angle_mine.y);
-	ft_dprintf(2, "ANGLE OPMINE: x %d, y %d\n", game->angle_opmine.x, game->angle_opmine.y);
-	ft_dprintf(2, "ANGLE OPADV: x %d, y %d\n", game->angle_opadv.x, game->angle_opadv.y);
-	ft_dprintf(2, "CORE ADV: x %d, y %d\n", game->core_adv.x, game->core_adv.y);
-	ft_dprintf(2, "CORE MINE: x %d, y %d\n", game->core_mine.x, game->core_mine.y);
+//	ft_dprintf(2, "NEAREST: x %d, y %d\n", game->nearest_adv.x, game->nearest_adv.y);
+//	ft_dprintf(2, "ANGLE TARGET: x %d, y %d\n", game->angle_target.x, game->angle_target.y);
+//	ft_dprintf(2, "ANGLE ADV: x %d, y %d\n", game->angle_adv.x, game->angle_adv.y);
+//	ft_dprintf(2, "ANGLE MINE: x %d, y %d\n", game->angle_mine.x, game->angle_mine.y);
+//	ft_dprintf(2, "ANGLE OPMINE: x %d, y %d\n", game->angle_opmine.x, game->angle_opmine.y);
+//	ft_dprintf(2, "ANGLE OPADV: x %d, y %d\n", game->angle_opadv.x, game->angle_opadv.y);
+//	ft_dprintf(2, "CORE ADV: x %d, y %d\n", game->core_adv.x, game->core_adv.y);
+//	ft_dprintf(2, "CORE MINE: x %d, y %d\n", game->core_mine.x, game->core_mine.y);
 }

@@ -100,7 +100,7 @@ void	get_pos(t_game *game, char **line)
 			tmp++;
 			game->last_pos.y = ft_atoi(tmp);
 		}
-		if (game->turn != 0)
+		if (game->turn != 0 && game->turn != 1)
 		{
 			if (game->last_score_p1 != game->score_p1)
 				game->nb_piece_p1++;
