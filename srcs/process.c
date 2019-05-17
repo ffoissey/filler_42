@@ -114,26 +114,23 @@ void					ft_process(t_game *game)
 	game->contact.x = 0;
 	game->contact.y = 0;
 	game->turn++;
-	/*
+	
 	if (game->close_angle_target == 0
-		&& check_line(game, 0, game->angle_target.x, E_ADV) == TRUE
-		&& check_line(game, 1, game->angle_target.y, E_ADV == TRUE))
+		&& over(game, &game->angle_target, E_EMPTY, 4, 0.7) == FALSE)
 	{
 		game->nb_angle--;
 		game->close_angle_target = 1;
 	}
 	if (game->close_angle_opmine == 0
-		&& check_line(game, 0, game->angle_opmine.x, E_ADV) == TRUE
-		&& check_line(game, 1, game->angle_opmine.y, E_ADV == TRUE))
+		&& over(game, &game->angle_target, E_EMPTY, 4, 0.7) == FALSE)
 	{
 		game->nb_angle--;
 		game->close_angle_opmine = 1;
 	}
 	if (game->close_angle_opadv == 0
-		&& check_line(game, 0, game->angle_opadv.x, E_ADV) == TRUE
-		&& check_line(game, 1, game->angle_opadv.y, E_ADV == TRUE))
+		&& over(game, &game->angle_target, E_EMPTY, 4, 0.7) == FALSE)
 	{
 		game->nb_angle--;
 		game->close_angle_opadv = 1;
-	}*/
+	}
 }

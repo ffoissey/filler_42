@@ -120,7 +120,7 @@ static int	get_better(t_game *game, t_point *ref)
 				tmp.x = x;
 				tmp.y = y;
 				if (ok.x == -1 || (get_delta(&tmp, ref) <= get_delta(&ok, ref)
-						&& over(game, &tmp, E_EMPTY, 5, 0.7) == TRUE))
+								&& over(game, &tmp, E_EMPTY, 2, 0.7) == TRUE))
 				{
 					ok = tmp;
 					delta = get_delta(&tmp, ref);
