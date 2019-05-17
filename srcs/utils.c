@@ -98,6 +98,21 @@ void	free_matrix(t_mx *mx)
 	mx->size.y = 0;
 }
 
+void	free_way(t_game *game)
+{
+	int		x;
+
+	x = 0;
+	while (x < game->board.size.x)
+	{
+		free(game->way[x]);
+		game->way[x] = NULL;
+		x++;
+	}
+	free(game->way);
+	game->way = NULL;
+}
+
 static int	get_better(t_game *game, t_point *ref)
 {
 	int		x;
@@ -120,7 +135,7 @@ static int	get_better(t_game *game, t_point *ref)
 				tmp.x = x;
 				tmp.y = y;
 				if (ok.x == -1 || (get_delta(&tmp, ref) <= get_delta(&ok, ref)
-								&& over(game, &tmp, E_EMPTY, 2, 0.7) == TRUE))
+										&& over(game, &tmp, E_EMPTY, 2, 0.7) == TRUE))
 				{
 					ok = tmp;
 					delta = get_delta(&tmp, ref);

@@ -39,9 +39,17 @@ void	get_size(t_game *game, char **line)
 	{
 		if (process_size(&game->board.size, &game->board.mx, *line, PLATEAU)
 				== FAILURE)
+		{
 			error(game, line);
+			return ;
+		}
 		else
 			game->action = E_GET_BOARD_FIRST_LINE;
+		if (game->way == NULL)
+		{
+			if (alloc_table_ways(game) == FAILURE)
+				error(game, line);
+		}
 	}
 }
 
@@ -78,6 +86,7 @@ void	get_piece(t_game *game, char **line)
 		{
 			game->to_play.x = 0;
 			game->to_play.y = 0;
+			init_way(game);
 			ft_process(game);
 			speak(game, line);
 			game->action = E_GET_BOARD_SIZE;

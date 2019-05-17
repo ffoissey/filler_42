@@ -21,5 +21,6 @@ int		main(int ac, char **av)
 	}
 	ft_strdel(&line);
 	free_matrix(&game.board);
+	free_way(&game);
 	return (SUCCESS);
 }

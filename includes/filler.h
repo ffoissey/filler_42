@@ -15,6 +15,9 @@
 # define PLATEAU		"Plateau"
 # define PIECE			"Piece"
 
+# define CLOSE			0x00
+# define OPEN			0x01
+
 enum				e_action
 {
 	E_GET_PLAYER,
@@ -55,6 +58,10 @@ enum				e_mode
 	E_GLUE
 };
 
+
+
+typedef unsigned char	t_way;
+
 typedef struct		s_point
 {
 	int				x;
@@ -70,7 +77,7 @@ typedef struct		s_mx
 typedef	struct		s_game
 {
 	char			*process_name;
-
+	t_way			**way;
 	t_mx			board;
 	t_mx			piece;
 	enum e_action	action;
@@ -86,6 +93,7 @@ typedef	struct		s_game
 	int				right_close;
 	int				up_close;
 	int				down_close;
+
 	t_point			last_adv;
 	t_point			nearest_adv;
 	t_point			last_mine;
@@ -127,6 +135,7 @@ void				get_piece(t_game *game, char **line);
 
 int					process_size(t_point *game_size, enum e_state ***mx,
 								char *line, char *type);
+int					alloc_table_ways(t_game *game);
 
 /*
 *** Get Board
@@ -169,6 +178,7 @@ unsigned char	glue_mode(t_game *game, t_point *start);
 void				speak(t_game *game, char **line);
 void				error(t_game *game, char **line);
 void				free_matrix(t_mx *mx);
+void				free_way(t_game *game);
 int					get_delta(t_point *a, t_point *b);
 int					scanner(t_game *game, t_point *target,
 						enum e_state state, int zone);
@@ -176,5 +186,11 @@ int					over(t_game *game, t_point *target,
 						enum e_state state, int zone, float percent);
 t_point				nearest(t_game *game);
 int	check_line(t_game *game, int x_or_y, int pos, enum e_state state);
+
+
+
+
+
+void	init_way(t_game *game);
 
 #endif

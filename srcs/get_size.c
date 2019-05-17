@@ -39,6 +39,24 @@ static int			alloc_game(enum e_state ***mx, t_point *size)
 	return (SUCCESS);
 }
 
+int					alloc_table_ways(t_game *game)
+{
+	int		i;
+
+	i = 0;
+	game->way = (t_way  **)malloc(sizeof(t_way *) * game->board.size.x);
+	if (game->way == NULL)
+		return (FAILURE);
+	while (i < game->board.size.x)
+	{
+		game->way[i] = (t_way *)malloc(sizeof(t_way) * game->board.size.y);
+		if (game->way[i] == NULL)
+			return (FAILURE);
+		i++;
+	}
+	return (SUCCESS);
+}
+
 int					process_size(t_point *game_size, enum e_state ***mx,
 								char *line, char *type)
 {

@@ -6,7 +6,7 @@
 #    By: ffoissey <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/05 18:25:23 by ffoissey          #+#    #+#              #
-#    Updated: 2019/03/14 16:02:50 by ffoissey         ###   ########.fr        #
+#    Updated: 2019/05/17 12:32:55 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -129,6 +129,7 @@ SRCS += get_board.c
 SRCS += process.c
 SRCS += utils.c
 SRCS += strategy.c
+SRCS += backtrack.c
 
 ################# ATTRIBUTION
 
