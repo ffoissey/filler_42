@@ -82,6 +82,23 @@ static void				find_coord(t_game *game, t_strategy strategy)
 	}
 }
 
+void					chose_better_angle(t_game *game)
+{
+	int	delta_mine;
+	int	delta_adv;
+	int	delta_target;
+
+	delta_mine = farest_delta(game, &game->angle_opmine);
+	delta_adv = farest_delta(game, &game->angle_opadv);
+	delta_target = farest_delta(game, &game->angle_target);
+	if (delta_mine > delta_adv && delta_mine > delta_target)
+		game->better_angle = E_ANGLE_OPMINE;
+	else if (delta_adv > delta_mine && delta_mine > delta_target)
+		game->better_angle = E_ANGLE_OPADV;
+	else
+		game->better_angle = E_ANGLE_TARGET;
+}
+
 void					ft_process(t_game *game)
 {
 	static	t_strategy	strategy[] = {angle_target_mode, angle_opmine_mode,
@@ -102,6 +119,7 @@ void					ft_process(t_game *game)
 		game->nearest_adv.x = 0;
 		game->nearest_adv.y = 0;
 	}
+	chose_better_angle(game);
 	select_strategy(game);
 	print_strategy(game);
 	find_coord(game, strategy[game->mode]);

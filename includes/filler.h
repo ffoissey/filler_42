@@ -109,6 +109,7 @@ typedef	struct		s_game
 	t_point			angle_mine;
 	t_point			angle_opmine;
 	t_point			angle_opadv;
+	enum e_mode		better_angle;
 
 	t_point			contact;
 	t_point			good_contact;
@@ -185,6 +186,7 @@ int					scanner(t_game *game, t_point *target,
 int					over(t_game *game, t_point *target,
 						enum e_state state, int zone, float percent);
 t_point				nearest(t_game *game);
+int					farest_delta(t_game *game, t_point *point);
 int	check_line(t_game *game, int x_or_y, int pos, enum e_state state);
 
 

@@ -14,12 +14,11 @@ unsigned char	angle_target_mode(t_game *game, t_point *start)
 {
 	(void)start;
 	if (over(game, start, E_ADV, 5, 0.5) == FALSE
-		&& over(game, start, E_MINE, 5, 0.5) == FALSE
-	   )  // 	&& over(game, &game->contact, E_EMPTY, 3, 0.5) == TRUE)
+		&& over(game, start, E_MINE, 5, 0.5) == FALSE)
 	{
-		//if (over(game, &game->good_contact, E_ADV, 5, 0.5) == TRUE
-		//	|| over(game, &game->good_contact, E_MINE, 5, 0.5) == TRUE)
-		//	return (TRUE);
+		if (over(game, &game->good_contact, E_ADV, 5, 0.5) == TRUE
+			|| over(game, &game->good_contact, E_MINE, 5, 0.5) == TRUE)
+			return (TRUE);
 		if (get_delta(start, &game->angle_target)
 			< get_delta(&game->to_play, &game->angle_target))
 			return (TRUE);
@@ -36,7 +35,7 @@ unsigned char	angle_opmine_mode(t_game *game, t_point *start)
 			|| over(game, &game->good_contact, E_MINE, 5, 0.7) == TRUE)
 			return (TRUE);
 		if (get_delta(&game->contact, &game->angle_opmine)
-			< get_delta(&game->good_contact, &game->angle_opmine))
+			<= get_delta(&game->good_contact, &game->angle_opmine))
 			return (TRUE);
 	}
 	return (FALSE);
@@ -51,7 +50,7 @@ unsigned char	angle_opadv_mode(t_game *game, t_point *start)
 			|| over(game, &game->good_contact, E_MINE, 5, 0.7) == TRUE)
 			return (TRUE);
 		if (get_delta(&game->contact, &game->angle_opadv)
-			< get_delta(&game->good_contact, &game->angle_opadv))
+			<= get_delta(&game->good_contact, &game->angle_opadv))
 			return (TRUE);
 	}
 	return (FALSE);
@@ -61,7 +60,7 @@ unsigned char	spider_x_down_mode(t_game *game, t_point *start)
 {
 	(void)start;
 	if (get_delta(&game->contact, &game->nearest_adv)
-		< get_delta(&game->good_contact, &game->nearest_adv))
+		<= get_delta(&game->good_contact, &game->nearest_adv))
 		return (TRUE);
 	return (FALSE);
 }
@@ -131,7 +130,7 @@ unsigned char	expansion_mode(t_game *game, t_point *start)
 
 void	select_strategy(t_game *game)
 {
-	if (game->last_mine.y > 0 && game->last_mine.y < 3
+	if (game->last_mine.y >= 0 && game->last_mine.y < 3
 			&& game->left_close % 2 == 0)
 	{
 		game->left_close++;
@@ -139,14 +138,14 @@ void	select_strategy(t_game *game)
 	}
 	
 	else if (game->board.size.y - game->last_mine.y < 3
-			&& game->board.size.y - game->last_mine.y > 0
+			&& game->board.size.y - game->last_mine.y >= 0
 			&& game->right_close % 2 == 0)
 	{
 		game->right_close++;
 		game->mode = E_SPIDER_Y_RIGHT;
 	}
 
-	else if (game->last_mine.x > 0 && game->last_mine.x < 3
+	else if (game->last_mine.x >= 0 && game->last_mine.x < 3
 			&& game->up_close % 2 == 0)
 	{
 		game->up_close++;
@@ -154,26 +153,26 @@ void	select_strategy(t_game *game)
 	}
 
 	else if (game->board.size.x - game->last_mine.x < 3
-			&& game->board.size.x - game->last_mine.x > 0
+			&& game->board.size.x - game->last_mine.x >= 0
 			&& game->down_close % 2 == 0)
 	{
 		game->down_close++;
 		game->mode = E_SPIDER_X_DOWN;
 	}
-	else if ((scanner(game, &game->last_adv, E_MINE, 2) == TRUE)
+	else if (((scanner(game, &game->last_adv, E_MINE, 2) == TRUE)
 		|| (get_delta(&game->angle_mine, &game->last_adv)
-			< get_delta(&game->angle_mine, &game->last_mine)
-		&& over(game, &game->last_adv, E_MINE, 2, 0.7) == FALSE))
+			< get_delta(&game->angle_mine, &game->last_mine)))
+		&& over(game, &game->last_adv, E_MINE, 2, 0.7) == FALSE
+		&& over(game, &game->last_adv, E_EMPTY, 3, 0.7) == TRUE)
 		game->mode = E_GLUE;
 	else if (game->close_angle_target == FALSE
-			&& (game->turn % game->nb_angle == 0)
+			&& game->better_angle == E_ANGLE_TARGET
 			&& over(game, &game->angle_target, E_MINE, 2, 0.7) == FALSE
 			&& scanner(game, &game->angle_target, E_ADV, 1) == FALSE
 				&& over(game, &game->angle_target, E_EMPTY, 5, 0.7) == TRUE)
 		game->mode = E_ANGLE_TARGET; 
 	else if (game->close_angle_opmine == FALSE
-			&& ((game->nb_angle == 3 && game->turn % game->nb_angle == 1)
-			|| game->turn % game->nb_angle == 0)
+			&& game->better_angle == E_ANGLE_OPMINE
 			&& over(game, &game->angle_target, E_MINE, 2, 0.7) == FALSE
 			&& scanner(game, &game->angle_opmine, E_MINE, 1) == FALSE
 			&& scanner(game, &game->angle_opmine, E_ADV, 1) == FALSE
@@ -181,9 +180,7 @@ void	select_strategy(t_game *game)
 		game->mode = E_ANGLE_OPMINE; 
 
 	else if (game->close_angle_opadv == FALSE
-			&& ((game->nb_angle == 3 && game->turn % game->nb_angle == 2)
-			|| (game->nb_angle == 2 && game->turn % game->nb_angle == 1)
-			|| game->turn % game->nb_angle == 0)
+			&& game->better_angle == E_ANGLE_OPADV
 			&& over(game, &game->angle_target, E_MINE, 2, 0.7) == FALSE
 			&& scanner(game, &game->angle_opadv, E_MINE, 1) == FALSE
 			&& scanner(game, &game->angle_opadv, E_ADV, 1) == FALSE

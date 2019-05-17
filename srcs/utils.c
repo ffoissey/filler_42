@@ -189,6 +189,39 @@ t_point	nearest(t_game *game)
 	return (ok);
 }
 
+int		farest_delta(t_game *game, t_point *point)
+{
+	t_point	pos;
+	t_point	better;
+	int		delta;
+	int		x;
+	int		y;
+
+	delta = -1;
+	x = 0;
+	while (x < game->board.size.x)
+	{
+		y = 0;
+		while (y < game->board.size.y)
+		{
+			if (game->board.mx[x][y] == E_MINE
+					|| game->board.mx[x][y] == E_LAST_ADV)
+			{
+				pos.x = x;
+				pos.y = y;
+				if (delta == -1 || get_delta(point, &pos) > get_delta(point, &better))
+				{
+					better = pos;
+					delta = get_delta(point, &pos);
+				}
+			}
+			y++;
+		}
+		x++;
+	}
+	return (delta);
+}
+
 int	check_line(t_game *game, int x_or_y, int pos, enum e_state state)
 {
 	int		i;
