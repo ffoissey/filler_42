@@ -113,6 +113,7 @@ typedef	struct		s_game
 
 	t_point			contact;
 	t_point			good_contact;
+	int				delta_good_contact;
 	t_point			to_play;
 	int				turn;
 }					t_game;

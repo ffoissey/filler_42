@@ -88,15 +88,27 @@ void					chose_better_angle(t_game *game)
 	int	delta_adv;
 	int	delta_target;
 
-	delta_mine = farest_delta(game, &game->angle_opmine);
-	delta_adv = farest_delta(game, &game->angle_opadv);
-	delta_target = farest_delta(game, &game->angle_target);
-	if (delta_mine > delta_adv && delta_mine > delta_target)
-		game->better_angle = E_ANGLE_OPMINE;
-	else if (delta_adv > delta_mine && delta_mine > delta_target)
-		game->better_angle = E_ANGLE_OPADV;
+	if (game->board.size.x * game->board.size.y < 500)
+	{
+		delta_mine = farest_delta(game, &game->angle_opmine);
+		delta_adv = farest_delta(game, &game->angle_opadv);
+		delta_target = farest_delta(game, &game->angle_target);
+		if (delta_mine > delta_adv && delta_mine > delta_target)
+			game->better_angle = E_ANGLE_OPMINE;
+		else if (delta_adv > delta_mine && delta_mine > delta_target)
+			game->better_angle = E_ANGLE_OPADV;
+		else
+			game->better_angle = E_ANGLE_TARGET;
+	}
 	else
-		game->better_angle = E_ANGLE_TARGET;
+	{
+		if (game->turn % 3 == 0)
+			game->better_angle = E_ANGLE_TARGET;
+		else if (game->turn % 3 == 1)
+			game->better_angle = E_ANGLE_OPMINE;
+		else
+			game->better_angle = E_ANGLE_OPADV;
+	}
 }
 
 void					ft_process(t_game *game)

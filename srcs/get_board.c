@@ -55,6 +55,11 @@ static void				get_angle(t_game *game)
 	game->angle_mine = choose_angle(game, &game->core_mine);
 	game->angle_target.x = game->angle_mine.x == 0 ? game->board.size.x - 1 : 0;
 	game->angle_target.y = game->angle_mine.y == 0 ? game->board.size.y - 1 : 0;
+//	if (game->angle_target.x != game->angle_adv.x)
+//	{
+//		if (game->core_adv.x > game->core_mine.x)
+//			game->angle_target.x = game->angle_adv.x;
+//	}
 	game->angle_opmine.x = game->angle_target.x;
 	game->angle_opmine.y = game->angle_target.y == 0 ? game->board.size.y - 1 : 0;
 	game->angle_opadv.x = game->angle_target.x == 0 ? game->board.size.x - 1 : 0;

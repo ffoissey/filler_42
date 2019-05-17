@@ -85,7 +85,7 @@ unsigned char	spider_y_right_mode(t_game *game, t_point *start)
 unsigned char	spider_y_left_mode(t_game *game, t_point *start)
 {
 	(void)start;
-	if (game->contact.y < game->good_contact.y)
+	if (game->contact.y <= game->good_contact.y)
 		return (TRUE);
 	return (FALSE);
 }
@@ -94,7 +94,7 @@ unsigned char	glue_mode(t_game *game, t_point *start)
 {
 	(void)start;
 	if (get_delta(&game->contact, &game->last_adv)
-		< get_delta(&game->good_contact, &game->last_adv))
+		<= get_delta(&game->good_contact, &game->last_adv))
 		return (TRUE);
 	return (FALSE);
 }
@@ -103,9 +103,9 @@ unsigned char	attack_mode(t_game *game, t_point *start)
 {
 	(void)start;
 	if (get_delta(&game->contact, &game->nearest_adv)
-		< get_delta(&game->good_contact, &game->nearest_adv)
-	   && over(game, start, E_MINE, 3, 0.7) == FALSE
-	   && over(game, start, E_EMPTY, 3, 0.7) == TRUE)
+		<= get_delta(&game->good_contact, &game->nearest_adv)
+	   //&& over(game, start, E_MINE, 1, 0.7) == FALSE)
+	   && over(game, start, E_EMPTY, 1, 0.7) == TRUE)
 		return (TRUE);
 	return (FALSE);
 }
@@ -130,7 +130,7 @@ unsigned char	expansion_mode(t_game *game, t_point *start)
 
 void	select_strategy(t_game *game)
 {
-	if (game->last_mine.y >= 0 && game->last_mine.y < 3
+/*	if (game->last_mine.y >= 0 && game->last_mine.y < 3
 			&& game->left_close % 2 == 0)
 	{
 		game->left_close++;
@@ -159,7 +159,7 @@ void	select_strategy(t_game *game)
 		game->down_close++;
 		game->mode = E_SPIDER_X_DOWN;
 	}
-	else if (((scanner(game, &game->last_adv, E_MINE, 2) == TRUE)
+	else*/ if (((scanner(game, &game->last_adv, E_MINE, 2) == TRUE)
 		|| (get_delta(&game->angle_mine, &game->last_adv)
 			< get_delta(&game->angle_mine, &game->last_mine)))
 		&& over(game, &game->last_adv, E_MINE, 2, 0.7) == FALSE
@@ -189,7 +189,8 @@ void	select_strategy(t_game *game)
 	else if (get_delta(&game->last_mine, &game->nearest_adv) > 100 &&
 			scanner(game, &game->nearest_adv, E_MINE, 5) == FALSE)
 			 		game->mode = E_ATTACK;
-	else if ((scanner(game, &game->last_adv, E_MINE, 2) == TRUE))
+	//else if ((scanner(game, &game->last_adv, E_, 2) == TRUE))
+	else if ((over(game, &game->last_adv, E_EMPTY, 2, 0.5) == TRUE))
 		game->mode = E_GLUE;
 	else
 		game->mode = E_ATTACK;

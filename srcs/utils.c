@@ -209,7 +209,7 @@ int		farest_delta(t_game *game, t_point *point)
 			{
 				pos.x = x;
 				pos.y = y;
-				if (delta == -1 || get_delta(point, &pos) > get_delta(point, &better))
+				if (delta == -1 || get_delta(point, &pos) < get_delta(point, &better))
 				{
 					better = pos;
 					delta = get_delta(point, &pos);
