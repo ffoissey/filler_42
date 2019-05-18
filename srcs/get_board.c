@@ -6,7 +6,7 @@
 /*   By: ffoissey <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/18 18:28:11 by ffoissey          #+#    #+#             */
-/*   Updated: 2019/05/18 18:31:12 by ffoissey         ###   ########.fr       */
+/*   Updated: 2019/05/18 18:49:16 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ static enum e_state		which_char(t_game *game, char c, t_point pos)
 				|| delta(&pos, &game->core_mine)
 				< delta(&game->last_adv, &game->core_mine))
 			game->last_adv = pos;
-		//// LAST_ADV ?
 		return (E_LAST_ADV);
 	}
 	return (E_ADV);
