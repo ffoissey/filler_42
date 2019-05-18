@@ -30,7 +30,7 @@
 # define RED_ONE		"\033[41m "
 # define PURPLE			"\033[45m "
 # define YELLOW			"\033[43m  "
-# define WHITE			"\033[40m  "
+# define WHITE			"\033[47m  "
 # define GREEN			"\033[42m  "
 # define NC				"\033[0m"
 # define DELAY			40

@@ -16,26 +16,23 @@ void			print_strategy(t_game *game)
 
 unsigned char	check_angles(t_game *game)
 {
-	if (game->close_angle_target == FALSE
-			&& game->better_angle == E_ANGLE_TARGET
-			&& over(game, &game->angle_target, E_MINE, 2) == FALSE
-			&& scanner(game, &game->angle_target, E_ADV, 1) == FALSE
-				&& over(game, &game->angle_target, E_EMPTY, 5) == TRUE)
+	if (game->better_angle == E_NO_ANGLE)
+		return (FALSE);
+	if (game->better_angle == E_ANGLE_TARGET
+			&& over(game, &game->angle_target, E_MINE, 1) == FALSE
+	   )//&& scanner(game, &game->angle_target, E_ADV, 1) == FALSE
+	   		//&& over(game, &game->angle_target, E_EMPTY, 6) == TRUE)
 		game->mode = E_ANGLE_TARGET; 
-	else if (game->close_angle_opmine == FALSE
-			&& game->better_angle == E_ANGLE_OPMINE
-			&& over(game, &game->angle_target, E_MINE, 2) == FALSE
-			&& scanner(game, &game->angle_opmine, E_MINE, 1) == FALSE
-			&& scanner(game, &game->angle_opmine, E_ADV, 1) == FALSE
-					&& over(game, &game->angle_opmine, E_EMPTY, 5) == TRUE)
+	else if (game->better_angle == E_ANGLE_OPMINE
+			&& over(game, &game->angle_opmine, E_MINE, 1) == FALSE
+			)//&& scanner(game, &game->angle_opmine, E_ADV, 1) == FALSE
+			//&& over(game, &game->angle_opmine, E_EMPTY, 3) == TRUE)
 		game->mode = E_ANGLE_OPMINE; 
 
-	else if (game->close_angle_opadv == FALSE
-			&& game->better_angle == E_ANGLE_OPADV
-			&& over(game, &game->angle_target, E_MINE, 2) == FALSE
-			&& scanner(game, &game->angle_opadv, E_MINE, 1) == FALSE
-			&& scanner(game, &game->angle_opadv, E_ADV, 1) == FALSE
-						&& over(game, &game->angle_opadv, E_EMPTY, 5) == TRUE)
+	else if (game->better_angle == E_ANGLE_OPADV
+			&& over(game, &game->angle_opadv, E_MINE, 1) == FALSE
+			)//	&& scanner(game, &game->angle_opadv, E_ADV, 1) == FALSE
+		//	&& over(game, &game->angle_opadv, E_EMPTY, 6) == TRUE)
 		game->mode = E_ANGLE_OPADV; 
 	else
 		return (FALSE);
@@ -44,22 +41,32 @@ unsigned char	check_angles(t_game *game)
 
 void			select_strategy(t_game *game)
 {
-	if (((scanner(game, &game->last_adv, E_MINE, 2) == TRUE)
-		|| (delta(&game->angle_mine, &game->last_adv)
-			< delta(&game->angle_mine, &game->last_mine)))
-		&& over(game, &game->last_adv, E_MINE, 2) == FALSE
-		&& over(game, &game->last_adv, E_EMPTY, 3) == TRUE)
+	
+	if ((scanner(game, &game->last_adv, E_MINE, 3) == TRUE
+		 || delta(&game->angle_mine, &game->last_adv)
+		 < delta(&game->angle_mine, &game->last_mine))
+			&& game->board.size.x * game->board.size.y > 500
+		&& over(game, &game->last_adv, E_EMPTY, 2) == TRUE)
+	{
 		game->mode = E_GLUE;
+	}
 	else if (check_angles(game) == FALSE)
 	{
-		if (delta(&game->last_mine, &game->nearest_adv) > 100
-			&& scanner(game, &game->nearest_adv, E_MINE, 5) == FALSE)
+	//	if (delta(&game->last_mine, &game->nearest_adv) > 50
+	//		&& scanner(game, &game->nearest_adv, E_MINE, 5) == FALSE)
+	//		game->mode = E_ATTACK;
+	//	else if ((over(game, &game->last_adv, E_EMPTY, 2) == TRUE))
+	//		game->mode = E_GLUE;
+	//	if (over(game, &game->nearest_adv, E_ADV, 3) == FALSE
+	//		&& scanner(game, &game->nearest_adv, E_MINE, 1) == FALSE)
+	//		game->mode = E_ATTACK;
 			game->mode = E_ATTACK;
-		else if ((over(game, &game->last_adv, E_EMPTY, 2) == TRUE))
-			game->mode = E_GLUE;
-		else
-			game->mode = E_ATTACK;
+	//	else if ((over(game, &game->last_adv, E_EMPTY, 2) == TRUE))
+	//		game->mode = E_GLUE;
+	//	else
+	//		game->mode = game->better_angle;
 	}
 	//// PRINT
+	
 	print_strategy(game);
 }

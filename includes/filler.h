@@ -45,7 +45,8 @@ enum				e_mode
 	E_ANGLE_OPMINE,
 	E_ANGLE_OPADV,
 	E_ATTACK,
-	E_GLUE
+	E_GLUE,
+	E_NO_ANGLE
 };
 
 

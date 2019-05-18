@@ -92,14 +92,4 @@ void					ft_process(t_game *game)
 	ft_bzero(&game->good_contact, sizeof(t_point));
 	ft_bzero(&game->contact, sizeof(t_point));
 	game->turn++;
-	//////// CLOSE ANGLE ?
-	if (game->close_angle_target == 0
-		&& over(game, &game->angle_target, E_EMPTY, 4) == FALSE)
-		game->close_angle_target = 1;
-	if (game->close_angle_opmine == 0
-		&& over(game, &game->angle_target, E_EMPTY, 4) == FALSE)
-		game->close_angle_opmine = 1;
-	if (game->close_angle_opadv == 0
-		&& over(game, &game->angle_target, E_EMPTY, 4) == FALSE)
-		game->close_angle_opadv = 1;
 }

@@ -1,6 +1,16 @@
 #include "visu.h"
 
-static void	print_info(t_game *game, t_point *scale)
+void	set_middle_and_position(t_game *game,
+				t_point *middle, struct winsize *w)
+{
+	middle->x = w->ws_row / 2 - game->board.size.x / 2;
+	middle->y = w->ws_col / 2 - game->board.size.y;
+	middle->y -= middle->y / 2;
+	ft_printf("\033[1;1H");
+	ft_printf("\033[%d;%dH",middle->x - 1, middle->y - 1);
+}
+
+static void	set_info(t_game *game, t_point *scale)
 {
 	ft_printf("\033[%d;%dH", scale->x - 1, scale->y);
 	ft_printf("\033[32mGame Delay: %d\033[0m", game->delay);
@@ -24,7 +34,7 @@ static void	score(t_game *game, t_point *scale)
 	int		i;
 
 	i = 0;
-	print_info(game, scale);
+	set_info(game, scale);
 	if (game->last_score_p1 == 0 && game->last_score_p2 == 0)
 		p1 = 22;
 	else if (game->last_score_p1 == 0 || game->last_score_p2 == 0)
