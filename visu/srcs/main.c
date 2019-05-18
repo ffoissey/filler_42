@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ffoissey <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/05/18 17:46:09 by ffoissey          #+#    #+#             */
+/*   Updated: 2019/05/18 18:12:05 by ffoissey         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "visu.h"
 
-void	free_matrix(t_mx *mx)
+void		free_matrix(t_mx *mx)
 {
 	int		x;
 
@@ -17,10 +29,19 @@ void	free_matrix(t_mx *mx)
 	mx->size.y = 0;
 }
 
-int		main(int ac, char **av)
+static void	exit_routine(t_game *game, char **line)
 {
-	t_game	game;
-	char	*line;
+	ft_strdel(line);
+	free_matrix(&game->board);
+	free_matrix(&game->piece);
+	ft_strdel(&game->p1_name);
+	ft_strdel(&game->p2_name);
+}
+
+int			main(int ac, char **av)
+{
+	t_game				game;
+	char				*line;
 	static	t_process	process[] = {get_player, get_size,
 									get_board_first_line, get_board, get_size,
 									get_piece, get_pos};
@@ -41,14 +62,7 @@ int		main(int ac, char **av)
 			break ;
 		ft_strdel(&line);
 	}
-	if (line && ft_strstr(line, "fin") != NULL)
-		print_board(&game, 1);
-	else
-		print_board(&game, 2);
-	ft_strdel(&line);
-	free_matrix(&game.board);
-	free_matrix(&game.piece);
-	ft_strdel(&game.p1_name);
-	ft_strdel(&game.p2_name);
+	print_board(&game, (line && ft_strstr(line, "fin")) ? 1 : 2);
+	exit_routine(&game, &line);
 	return (SUCCESS);
 }

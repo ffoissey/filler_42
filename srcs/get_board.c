@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_board.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ffoissey <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/05/18 18:28:11 by ffoissey          #+#    #+#             */
+/*   Updated: 2019/05/18 18:31:12 by ffoissey         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "filler.h"
 
 static enum e_state		which_char(t_game *game, char c, t_point pos)
@@ -29,7 +41,7 @@ static enum e_state		which_char(t_game *game, char c, t_point pos)
 	return (E_ADV);
 }
 
-static enum e_state		board_char_is_ok(t_game *game, char c, int x , int y)
+static enum e_state		board_char_is_ok(t_game *game, char c, int x, int y)
 {
 	t_point	pos;
 
@@ -73,13 +85,12 @@ int						get_line_board(t_game *game, char *line)
 		return (FAILURE);
 	while (line[y] != '\0')
 	{
-		game->board.mx[game->row][y] = board_char_is_ok(game, line[y], game->row, y);
+		game->board.mx[game->row][y] = board_char_is_ok(game,
+											line[y], game->row, y);
 		if (game->board.mx[game->row][y] == E_UNKNOW)
 			return (FAILURE);
 		y++;
 	}
-	if (game->turn == 0)
-		get_angle(game);
 	return (SUCCESS);
 }
 

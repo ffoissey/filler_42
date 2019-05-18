@@ -51,7 +51,7 @@ t_point		nearest(t_game *game)
 {
 	t_point	pos;
 	t_point ok;
-	int	 	delta;
+	int		delta;
 
 	ft_bzero(&ok, sizeof(t_point));
 	delta = 0;

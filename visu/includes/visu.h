@@ -1,5 +1,17 @@
-#ifndef FILLER_H
-# define FILLER_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   visu.h                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ffoissey <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/05/18 17:45:39 by ffoissey          #+#    #+#             */
+/*   Updated: 2019/05/18 18:11:33 by ffoissey         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef VISU_H
+# define VISU_H
 
 # include "libft.h"
 # include "sys/ioctl.h"
@@ -34,7 +46,6 @@
 # define GREEN			"\033[42m  "
 # define NC				"\033[0m"
 # define DELAY			40
-
 
 enum				e_state
 {
@@ -94,8 +105,7 @@ typedef	struct		s_game
 	int				turn;
 }					t_game;
 
-
-typedef void 			(*t_process)(t_game *, char **);
+typedef void		(*t_process)(t_game *, char **);
 
 /*
 *** Action
@@ -122,7 +132,6 @@ int					process_size(t_point *game_size, enum e_state ***mx,
 unsigned char		check_first_line_board(unsigned int row, char *line);
 int					get_line_board(t_game *game, char *line);
 int					get_line_piece(t_game *game, char *line);
-
 
 /*
 *** Utils

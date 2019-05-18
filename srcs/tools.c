@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tools.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ffoissey <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/05/18 18:36:55 by ffoissey          #+#    #+#             */
+/*   Updated: 2019/05/18 18:36:56 by ffoissey         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "filler.h"
 
 int			over(t_game *game, t_point *target, enum e_state state, int zone)
@@ -26,7 +38,6 @@ int			over(t_game *game, t_point *target, enum e_state state, int zone)
 		x++;
 	}
 	return (over > (zone * zone) / 2 + (zone * zone) / 3 ? TRUE : FALSE);
-//	return (over > (zone * zone) / 2 + (zone * zone) / 4 ? TRUE : FALSE);
 }
 
 int			scanner(t_game *game, t_point *target, enum e_state state, int zone)
@@ -110,15 +121,6 @@ void		chose_better_angle(t_game *game)
 	}
 	else
 	{
-	//	if (scanner(game, &game->angle_opmine, E_ADV, 3 == TRUE)
-	//		|| scanner(game, &game->angle_opmine, E_MINE, 3 == TRUE))
-	//		game->angle_opmine.x = game->board.size.x / 2;
-	//	if (scanner(game, &game->angle_opadv, E_ADV, 3) == TRUE
-	//		|| scanner(game, &game->angle_opadv, E_MINE, 3) == TRUE)
-	//		game->angle_opadv.x = game->board.size.x / 2;
-	//	if (scanner(game, &game->angle_target, E_ADV, 3) == TRUE
-	//		|| scanner(game, &game->angle_target, E_MINE, 3) == TRUE)
-	//		game->angle_target.y = game->board.size.y / 2;
 		if (game->turn % 3 == 0)
 			game->better_angle = E_ANGLE_TARGET;
 		else if (game->turn % 3 == 1)

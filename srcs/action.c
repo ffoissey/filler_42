@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   action.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ffoissey <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/05/18 18:28:00 by ffoissey          #+#    #+#             */
+/*   Updated: 2019/05/18 18:30:29 by ffoissey         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "filler.h"
 
 void	get_player(t_game *game, char **line)
@@ -76,6 +88,8 @@ void	get_piece(t_game *game, char **line)
 			error(game, line);
 		else
 		{
+			if (game->turn == 0)
+				get_angle(game);
 			ft_process(game);
 			speak(game, line);
 			game->action = E_GET_BOARD_SIZE;

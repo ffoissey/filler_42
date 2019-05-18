@@ -1,13 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   print.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ffoissey <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/05/18 17:46:14 by ffoissey          #+#    #+#             */
+/*   Updated: 2019/05/18 18:10:07 by ffoissey         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "visu.h"
 
-void	set_middle_and_position(t_game *game,
+void		set_middle_and_position(t_game *game,
 				t_point *middle, struct winsize *w)
 {
 	middle->x = w->ws_row / 2 - game->board.size.x / 2;
 	middle->y = w->ws_col / 2 - game->board.size.y;
 	middle->y -= middle->y / 2;
 	ft_printf("\033[1;1H");
-	ft_printf("\033[%d;%dH",middle->x - 1, middle->y - 1);
+	ft_printf("\033[%d;%dH", middle->x - 1, middle->y - 1);
 }
 
 static void	set_info(t_game *game, t_point *scale)
@@ -18,11 +30,11 @@ static void	set_info(t_game *game, t_point *scale)
 	ft_printf("P: piece | O: occupation");
 	scale->x += 2;
 	ft_printf("\033[%d;%dH", scale->x++, scale->y);
-	ft_printf("P:\033[34;1m%4d\033[0m",game->nb_piece_p1);
+	ft_printf("P:\033[34;1m%4d\033[0m", game->nb_piece_p1);
 	ft_printf("\033[%d;%dH", scale->x++, scale->y);
 	ft_printf("O:\033[34;1m%4d\033[0m", game->last_score_p1);
 	ft_printf("\033[%d;%dH", scale->x - 2, scale->y + 38);
-	ft_printf("P:\033[31;1m%4d\033[0m",game->nb_piece_p2);
+	ft_printf("P:\033[31;1m%4d\033[0m", game->nb_piece_p2);
 	ft_printf("\033[%d;%dH", scale->x - 1, scale->y + 38);
 	ft_printf("O:\033[31;1m%4d\033[0m", game->last_score_p2);
 	ft_printf("\033[%d;%dH", scale->x + 1, scale->y);

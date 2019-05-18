@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_board.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ffoissey <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/05/18 17:45:58 by ffoissey          #+#    #+#             */
+/*   Updated: 2019/05/18 17:48:39 by ffoissey         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "visu.h"
 
 unsigned char			check_first_line_board(unsigned int row, char *line)
@@ -27,7 +39,7 @@ unsigned char			check_first_line_board(unsigned int row, char *line)
 	return (TRUE);
 }
 
-static enum e_state		board_char_is_ok(t_game *game, char c, int x , int y)
+static enum e_state		board_char_is_ok(t_game *game, char c, int x, int y)
 {
 	t_point	pos;
 
@@ -82,7 +94,8 @@ int						get_line_board(t_game *game, char *line)
 		return (FAILURE);
 	while (line[y] != '\0')
 	{
-		game->board.mx[game->row][y] = board_char_is_ok(game, line[y], game->row, y);
+		game->board.mx[game->row][y] = board_char_is_ok(game, line[y],
+										game->row, y);
 		if (game->board.mx[game->row][y] == E_UNKNOW)
 			return (FAILURE);
 		y++;

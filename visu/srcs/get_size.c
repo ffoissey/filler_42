@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_size.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ffoissey <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/05/18 17:46:04 by ffoissey          #+#    #+#             */
+/*   Updated: 2019/05/18 17:47:56 by ffoissey         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "visu.h"
 
 static unsigned char	check_size_format(char *line, t_point *size)
@@ -21,7 +33,7 @@ static unsigned char	check_size_format(char *line, t_point *size)
 	return (*line == ':' && *(line + 1) == '\0');
 }
 
-static int			alloc_game(enum e_state ***mx, t_point *size)
+static int				alloc_game(enum e_state ***mx, t_point *size)
 {
 	int		i;
 
@@ -39,7 +51,7 @@ static int			alloc_game(enum e_state ***mx, t_point *size)
 	return (SUCCESS);
 }
 
-int					process_size(t_point *game_size, enum e_state ***mx,
+int						process_size(t_point *game_size, enum e_state ***mx,
 								char *line, char *type)
 {
 	t_point		size;
