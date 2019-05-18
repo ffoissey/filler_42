@@ -102,23 +102,23 @@ void		chose_better_angle(t_game *game)
 		delta_adv = get_better(game, &game->angle_opadv, farest_delta);
 		delta_target = get_better(game, &game->angle_target, farest_delta);
 		if (delta_mine > delta_adv && delta_mine > delta_target)
-				game->better_angle = E_ANGLE_OPMINE;
+			game->better_angle = E_ANGLE_OPMINE;
 		else if (delta_adv > delta_mine && delta_mine > delta_target)
-				game->better_angle = E_ANGLE_OPADV;
+			game->better_angle = E_ANGLE_OPADV;
 		else
 			game->better_angle = E_ANGLE_TARGET;
 	}
 	else
 	{
-		if (scanner(game, &game->angle_opmine, E_ADV, 3 == TRUE)
-			|| scanner(game, &game->angle_opmine, E_MINE, 3 == TRUE))
-			game->angle_opmine.x = game->board.size.x / 2;
-		if (scanner(game, &game->angle_opadv, E_ADV, 3) == TRUE
-			|| scanner(game, &game->angle_opadv, E_MINE, 3) == TRUE)
-			game->angle_opadv.x = game->board.size.x / 2;
-		if (scanner(game, &game->angle_target, E_ADV, 3) == TRUE
-			|| scanner(game, &game->angle_target, E_MINE, 3) == TRUE)
-			game->angle_target.y = game->board.size.y / 2;
+	//	if (scanner(game, &game->angle_opmine, E_ADV, 3 == TRUE)
+	//		|| scanner(game, &game->angle_opmine, E_MINE, 3 == TRUE))
+	//		game->angle_opmine.x = game->board.size.x / 2;
+	//	if (scanner(game, &game->angle_opadv, E_ADV, 3) == TRUE
+	//		|| scanner(game, &game->angle_opadv, E_MINE, 3) == TRUE)
+	//		game->angle_opadv.x = game->board.size.x / 2;
+	//	if (scanner(game, &game->angle_target, E_ADV, 3) == TRUE
+	//		|| scanner(game, &game->angle_target, E_MINE, 3) == TRUE)
+	//		game->angle_target.y = game->board.size.y / 2;
 		if (game->turn % 3 == 0)
 			game->better_angle = E_ANGLE_TARGET;
 		else if (game->turn % 3 == 1)
