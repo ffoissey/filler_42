@@ -129,7 +129,6 @@ SRCS += get_board.c
 SRCS += process.c
 SRCS += utils.c
 SRCS += strategy.c
-SRCS += backtrack.c
 
 ################# ATTRIBUTION
 

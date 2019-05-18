@@ -70,7 +70,7 @@ static void				find_coord(t_game *game, t_strategy strategy)
 					game->good_contact = game->contact;
 					game->to_play = start;
 				}
-				else if (strategy(game, &start) == TRUE)
+				else if (strategy(game) == TRUE)
 				{
 					game->good_contact = game->contact;
 					game->to_play = start;
@@ -115,52 +115,30 @@ void					ft_process(t_game *game)
 {
 	static	t_strategy	strategy[] = {angle_target_mode, angle_opmine_mode,
 										angle_opadv_mode, attack_mode,
-										spider_x_up_mode, spider_x_down_mode,
-										spider_y_left_mode, spider_y_right_mode,
-										core_mode, expansion_mode, conquest_mode, glue_mode};
+										glue_mode};
 
-	game->to_play.x = 0;
-	game->to_play.y = 0;
-	game->nearest_adv.x = 0;
-	game->nearest_adv.y = 0;
-	game->nearest_adv.x = 0;
-	game->nearest_adv.y = 0;
+	ft_bzero(&game->to_play, sizeof(t_point));
+	ft_bzero(&game->nearest_adv, sizeof(t_point));
 	game->nearest_adv = nearest(game);
 	if (game->nearest_adv.x < 0 || game->nearest_adv.y < 0)
-	{
-		game->nearest_adv.x = 0;
-		game->nearest_adv.y = 0;
-	}
+		ft_bzero(&game->nearest_adv, sizeof(t_point));
 	chose_better_angle(game);
 	select_strategy(game);
 	print_strategy(game);
 	find_coord(game, strategy[game->mode]);
-	game->last_mine.x = game->contact.x;
-	game->last_mine.y = game->contact.y;
-	game->last_adv.x = 0;
-	game->last_adv.y = 0;
-	game->good_contact.x = 0;
-	game->good_contact.y = 0;
-	game->contact.x = 0;
-	game->contact.y = 0;
+	game->last_mine = game->contact;
+	ft_bzero(&game->last_adv, sizeof(t_point));
+	ft_bzero(&game->good_contact, sizeof(t_point));
+	ft_bzero(&game->contact, sizeof(t_point));
 	game->turn++;
-	
+	//////// CLOSE ANGLE ?
 	if (game->close_angle_target == 0
-		&& over(game, &game->angle_target, E_EMPTY, 4, 0.7) == FALSE)
-	{
-		game->nb_angle--;
+		&& over(game, &game->angle_target, E_EMPTY, 4) == FALSE)
 		game->close_angle_target = 1;
-	}
 	if (game->close_angle_opmine == 0
-		&& over(game, &game->angle_target, E_EMPTY, 4, 0.7) == FALSE)
-	{
-		game->nb_angle--;
+		&& over(game, &game->angle_target, E_EMPTY, 4) == FALSE)
 		game->close_angle_opmine = 1;
-	}
 	if (game->close_angle_opadv == 0
-		&& over(game, &game->angle_target, E_EMPTY, 4, 0.7) == FALSE)
-	{
-		game->nb_angle--;
+		&& over(game, &game->angle_target, E_EMPTY, 4) == FALSE)
 		game->close_angle_opadv = 1;
-	}
 }

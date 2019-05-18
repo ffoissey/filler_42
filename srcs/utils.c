@@ -24,11 +24,11 @@ int		get_delta(t_point *a, t_point *b)
 	return ((b->x - a->x)) * (b->x - a->x) + (b->y - a->y) * (b->y - a->y);
 }
 
-int		over(t_game *game, t_point *target, enum e_state state, int zone, float percent)
+int		over(t_game *game, t_point *target, enum e_state state, int zone)
 {
 	int		x;
-	int		max_x;
 	int		y;
+	int		max_x;
 	int		max_y;
 	int		over;
 
@@ -49,7 +49,6 @@ int		over(t_game *game, t_point *target, enum e_state state, int zone, float per
 		}
 		x++;
 	}
-	(void)percent;
 //	return (over > (int)((zone * zone) * percent) ? TRUE : FALSE);
 	return (over > (zone * zone) / 2 + (zone * zone) / 3 ? TRUE : FALSE);
 //	return (over > (zone * zone) / 2 ? TRUE : FALSE);
@@ -98,52 +97,34 @@ void	free_matrix(t_mx *mx)
 	mx->size.y = 0;
 }
 
-void	free_way(t_game *game)
-{
-	int		x;
-
-	x = 0;
-	while (x < game->board.size.x)
-	{
-		free(game->way[x]);
-		game->way[x] = NULL;
-		x++;
-	}
-	free(game->way);
-	game->way = NULL;
-}
-
 static int	get_better(t_game *game, t_point *ref)
 {
-	int		x;
-	int		y;
-	t_point tmp;
+	t_point pos;
 	t_point ok;
 	int		delta;
 
-	x = 0;
-	ok.x = -1;
-	ok.y = -1;
-	while (x < game->board.size.x)
+	pos.x = 0;
+	ft_bzero(&ok, sizeof(t_point));
+	while (pos.x < game->board.size.x)
 	{
-		y = 0;
-		while (y < game->board.size.y)
+		pos.y = 0;
+		while (pos.y < game->board.size.y)
 		{
-			if (game->board.mx[x][y] == E_MINE
-					|| game->board.mx[x][y] == E_LAST_MINE)
+			if (game->board.mx[pos.x][pos.y] == E_MINE
+					|| game->board.mx[pos.x][pos.y] == E_LAST_MINE)
 			{
-				tmp.x = x;
-				tmp.y = y;
-				if (ok.x == -1 || (get_delta(&tmp, ref) <= get_delta(&ok, ref)
-										&& over(game, &tmp, E_EMPTY, 2, 0.7) == TRUE))
+				//// OVER IS GOOD ?
+				if ((ok.x == 0 && ok.y == 0)
+					|| (get_delta(&pos, ref) <= get_delta(&ok, ref)
+					&& over(game, &pos, E_EMPTY, 2) == TRUE))
 				{
-					ok = tmp;
-					delta = get_delta(&tmp, ref);
+					ok = pos;
+					delta = get_delta(&pos, ref);
 				}
 			}
-			y++;
+			pos.y++;
 		}
-		x++;
+		pos.x++;
 	}
 	return (delta);
 }
@@ -185,7 +166,6 @@ t_point	nearest(t_game *game)
 		}
 		x++;
 	}
-	game->delta_adv = delta;
 	return (ok);
 }
 

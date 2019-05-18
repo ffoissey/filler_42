@@ -48,13 +48,6 @@ enum				e_mode
 	E_ANGLE_OPMINE,
 	E_ANGLE_OPADV,
 	E_ATTACK,
-	E_SPIDER_X_UP,
-	E_SPIDER_X_DOWN,
-	E_SPIDER_Y_LEFT,
-	E_SPIDER_Y_RIGHT,
-	E_CORE,
-	E_EXPANSION,
-	E_CONQUEST,
 	E_GLUE
 };
 
@@ -77,7 +70,6 @@ typedef struct		s_mx
 typedef	struct		s_game
 {
 	char			*process_name;
-	t_way			**way;
 	t_mx			board;
 	t_mx			piece;
 	enum e_action	action;
@@ -87,12 +79,6 @@ typedef	struct		s_game
 	char			adv_last_char;
 	char			my_char;
 	char			my_last_char;
-	int				get_angle;
-	int				delta_adv;
-	int				left_close;
-	int				right_close;
-	int				up_close;
-	int				down_close;
 
 	t_point			last_adv;
 	t_point			nearest_adv;
@@ -100,7 +86,6 @@ typedef	struct		s_game
 	t_point			core_adv;
 	t_point			core_mine;
 
-	int				nb_angle;
 	int				close_angle_target;
 	int				close_angle_opmine;
 	int				close_angle_opadv;
@@ -113,13 +98,13 @@ typedef	struct		s_game
 
 	t_point			contact;
 	t_point			good_contact;
-	int				delta_good_contact;
 	t_point			to_play;
+
 	int				turn;
 }					t_game;
 
 typedef void 			(*t_process)(t_game *, char **);
-typedef unsigned char	(*t_strategy)(t_game *, t_point *);
+typedef unsigned char	(*t_strategy)(t_game *);
 
 /*
 *** Action
@@ -137,7 +122,6 @@ void				get_piece(t_game *game, char **line);
 
 int					process_size(t_point *game_size, enum e_state ***mx,
 								char *line, char *type);
-int					alloc_table_ways(t_game *game);
 
 /*
 *** Get Board
@@ -158,20 +142,14 @@ void				ft_process(t_game *game);
 */
 
 void			print_strategy(t_game *game);
+
 void			select_strategy(t_game *game);
 
-unsigned char	spider_y_left_mode(t_game *game, t_point *start);
-unsigned char	spider_y_right_mode(t_game *game, t_point *start);
-unsigned char	spider_x_up_mode(t_game *game, t_point *start);
-unsigned char	spider_x_down_mode(t_game *game, t_point *start);
-unsigned char	core_mode(t_game *game, t_point *start);
-unsigned char	conquest_mode(t_game *game, t_point *start);
-unsigned char	angle_target_mode(t_game *game, t_point *start);
-unsigned char	angle_opmine_mode(t_game *game, t_point *start);
-unsigned char	angle_opadv_mode(t_game *game, t_point *start);
-unsigned char	attack_mode(t_game *game, t_point *start);
-unsigned char	expansion_mode(t_game *game, t_point *start);
-unsigned char	glue_mode(t_game *game, t_point *start);
+unsigned char	angle_target_mode(t_game *game);
+unsigned char	angle_opmine_mode(t_game *game);
+unsigned char	angle_opadv_mode(t_game *game);
+unsigned char	attack_mode(t_game *game);
+unsigned char	glue_mode(t_game *game);
 
 /*
 *** Utils
@@ -180,20 +158,13 @@ unsigned char	glue_mode(t_game *game, t_point *start);
 void				speak(t_game *game, char **line);
 void				error(t_game *game, char **line);
 void				free_matrix(t_mx *mx);
-void				free_way(t_game *game);
 int					get_delta(t_point *a, t_point *b);
 int					scanner(t_game *game, t_point *target,
 						enum e_state state, int zone);
 int					over(t_game *game, t_point *target,
-						enum e_state state, int zone, float percent);
+						enum e_state state, int zone);
 t_point				nearest(t_game *game);
 int					farest_delta(t_game *game, t_point *point);
 int	check_line(t_game *game, int x_or_y, int pos, enum e_state state);
-
-
-
-
-
-void	init_way(t_game *game);
 
 #endif
