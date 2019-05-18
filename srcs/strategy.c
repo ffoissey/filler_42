@@ -6,11 +6,11 @@ unsigned char	angle_target_mode(t_game *game)
 		&& over(game, &game->contact, E_MINE, 5) == FALSE)
 	{
 		///UTIL ?
-		if (over(game, &game->good_contact, E_ADV, 5) == TRUE
-			|| over(game, &game->good_contact, E_MINE, 5) == TRUE)
-			return (TRUE);
+//		if (over(game, &game->good_contact, E_ADV, 5) == TRUE
+//			|| over(game, &game->good_contact, E_MINE, 5) == TRUE)
+//			return (TRUE);
 		if (delta(&game->contact, &game->angle_target)
-			< delta(&game->to_play, &game->angle_target))
+			< delta(&game->good_contact, &game->angle_target))
 			return (TRUE);
 	}
 	return (FALSE);
@@ -21,9 +21,9 @@ unsigned char	angle_opmine_mode(t_game *game)
 	if (over(game, &game->contact, E_ADV, 5) == FALSE
 	   && over(game, &game->contact, E_MINE, 5) == FALSE)
 	{
-		if (over(game, &game->good_contact, E_ADV, 5) == TRUE
-			|| over(game, &game->good_contact, E_MINE, 5) == TRUE)
-			return (TRUE);
+//		if (over(game, &game->good_contact, E_ADV, 5) == TRUE
+//			|| over(game, &game->good_contact, E_MINE, 5) == TRUE)
+//			return (TRUE);
 		if (delta(&game->contact, &game->angle_opmine)
 			<= delta(&game->good_contact, &game->angle_opmine))
 			return (TRUE);
@@ -36,9 +36,9 @@ unsigned char	angle_opadv_mode(t_game *game)
 	if (over(game, &game->contact, E_ADV, 5) == FALSE
 		&& over(game, &game->contact, E_MINE, 5) == FALSE)
 	{
-		if (over(game, &game->good_contact, E_ADV, 5) == TRUE
-			|| over(game, &game->good_contact, E_MINE, 5) == TRUE)
-			return (TRUE);
+//		if (over(game, &game->good_contact, E_ADV, 5) == TRUE
+//			|| over(game, &game->good_contact, E_MINE, 5) == TRUE)
+//			return (TRUE);
 		if (delta(&game->contact, &game->angle_opadv)
 			<= delta(&game->good_contact, &game->angle_opadv))
 			return (TRUE);
