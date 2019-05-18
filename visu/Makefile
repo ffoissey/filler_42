@@ -124,9 +124,11 @@ PATH_SRCS = srcs
 
 SRCS += main.c
 SRCS += action.c
+SRCS += action2.c
 SRCS += get_size.c
 SRCS += get_board.c
 SRCS += print.c
+SRCS += print2.c
 
 ################# ATTRIBUTION
 

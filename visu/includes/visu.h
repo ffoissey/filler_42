@@ -129,6 +129,17 @@ int					get_line_piece(t_game *game, char *line);
 */
 
 void				free_matrix(t_mx *mx);
+
+/*
+*** Print
+*/
+
 void				print_board(t_game *game, int end);
+void				board(t_game *game, t_point *middle);
+void				delay(t_game *game);
+void				border(t_game *game);
+void				player(t_game *game, t_point *middle, struct winsize *w);
+void				set_middle_and_position(t_game *game,
+						t_point *middle, struct winsize *w);
 
 #endif

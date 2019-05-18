@@ -1,89 +1,7 @@
 #include "visu.h"
 
-
-
-static void	board(t_game *game, t_point *middle)
+static void	print_info(t_game *game, t_point *scale)
 {
-	t_point	p;
-
-	p.x = 0;
-	while (p.x < game->board.size.x)
-	{
-		ft_printf("\033[%d;%dH%s",middle->x + p.x, middle->y - 1, GREEN);
-		p.y = 0;
-		while (p.y < game->board.size.y)
-		{
-			if (game->board.mx[p.x][p.y] == E_LAST_P1
-				|| (p.x == game->core_p1.x && p.y == game->core_p1.y))
-				ft_putstr(CYAN);
-			else if (game->board.mx[p.x][p.y] == E_LAST_P2
-				|| (p.x == game->core_p2.x && p.y == game->core_p2.y))
-				ft_putstr(YELLOW);
-			else if (game->board.mx[p.x][p.y] == E_P1)
-				ft_putstr(BLUE);
-			else if (game->board.mx[p.x][p.y] == E_P2)
-				ft_putstr(RED);
-			else
-				ft_putstr(WHITE);
-			p.y++;
-		}
-		ft_printf("%s%s\n", GREEN,NC);
-		p.x++;
-	}
-	ft_printf("\033[%d;%dH", middle->x + p.x++, middle->y - 1);
-}
-
-static void	delay(t_game *game)
-{
-	int		time;
-
-	time = game->delay;
-	while (time)
-		time--;
-}
-
-static void	border(t_game *game)
-{
-	int		i;
-
-	i = 0;
-	while (i++ - 1 < game->board.size.y + 1)
-		ft_putstr(GREEN);
-	ft_putstr(NC);
-}
-
-static void	player(t_game *game, t_point *middle, struct winsize *w)
-{
-	ft_printf("\033[%d;%dH", middle->x - 1,
-				w->ws_col / 2 + game->board.size.y / 2 + 22
-				- ft_strlen(INFO) / 2);
-	ft_printf("\033[32;1m%s\033[0m", INFO);
-	ft_printf("\033[%d;%dH", middle->x + 1, w->ws_col / 2
-			+ game->board.size.y / 2);
-	ft_printf("PLAYER 1 |  \033[34;1m%-8s\033[0m  | OK -> %s%s  Last -> %s%s",
-			game->p1_name, BLUE, NC, CYAN, NC);
-	ft_printf("\033[%d;%dH", middle->x + 3, w->ws_col / 2
-			+ game->board.size.y / 2);
-	ft_printf("PLAYER 2 |  \033[31;1m%-8s\033[0m  | OK -> %s%s  Last -> %s%s",
-			game->p2_name, RED, NC, YELLOW, NC);
-}
-
-static void	set_middle_and_position(t_game *game,
-				t_point *middle, struct winsize *w)
-{
-	middle->x = w->ws_row / 2 - game->board.size.x / 2;
-	middle->y = w->ws_col / 2 - game->board.size.y;
-	middle->y -= middle->y / 2;
-	ft_printf("\033[1;1H");
-	ft_printf("\033[%d;%dH",middle->x - 1, middle->y - 1);
-}
-
-static void	score(t_game *game, t_point *scale)
-{
-	int		p1;
-	int		i;
-
-	i = 0;
 	ft_printf("\033[%d;%dH", scale->x - 1, scale->y);
 	ft_printf("\033[32mGame Delay: %d\033[0m", game->delay);
 	ft_printf("\033[%d;%dH", scale->x, scale->y);
@@ -93,12 +11,20 @@ static void	score(t_game *game, t_point *scale)
 	ft_printf("P:\033[34;1m%4d\033[0m",game->nb_piece_p1);
 	ft_printf("\033[%d;%dH", scale->x++, scale->y);
 	ft_printf("O:\033[34;1m%4d\033[0m", game->last_score_p1);
-
 	ft_printf("\033[%d;%dH", scale->x - 2, scale->y + 38);
 	ft_printf("P:\033[31;1m%4d\033[0m",game->nb_piece_p2);
 	ft_printf("\033[%d;%dH", scale->x - 1, scale->y + 38);
 	ft_printf("O:\033[31;1m%4d\033[0m", game->last_score_p2);
 	ft_printf("\033[%d;%dH", scale->x + 1, scale->y);
+}
+
+static void	score(t_game *game, t_point *scale)
+{
+	int		p1;
+	int		i;
+
+	i = 0;
+	print_info(game, scale);
 	if (game->last_score_p1 == 0 && game->last_score_p2 == 0)
 		p1 = 22;
 	else if (game->last_score_p1 == 0 || game->last_score_p2 == 0)
