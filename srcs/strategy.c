@@ -30,6 +30,7 @@ unsigned char	angle_opmine_mode(t_game *game)
 	}
 	return (FALSE);
 }
+
 unsigned char	angle_opadv_mode(t_game *game)
 {
 	if (over(game, &game->contact, E_ADV, 5) == FALSE

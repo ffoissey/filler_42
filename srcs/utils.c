@@ -1,6 +1,6 @@
 #include "filler.h"
 
-void	speak(t_game *game, char **line)
+void			speak(t_game *game, char **line)
 {
 	ft_strdel(line);
 	free_matrix(&game->piece);
@@ -8,7 +8,7 @@ void	speak(t_game *game, char **line)
 	game->action = E_GET_BOARD_SIZE;
 }
 
-void	error(t_game *game, char **line)
+void			error(t_game *game, char **line)
 {
 	ft_strdel(line);
 	free_matrix(&game->piece);
@@ -17,7 +17,7 @@ void	error(t_game *game, char **line)
 	ft_putendl_fd("Error", 2);
 }
 
-void	free_matrix(t_mx *mx)
+void			free_matrix(t_mx *mx)
 {
 	int		x;
 
@@ -34,96 +34,34 @@ void	free_matrix(t_mx *mx)
 	mx->size.y = 0;
 }
 
-static int	get_better(t_game *game, t_point *ref)
+int				delta(t_point *a, t_point *b)
 {
-	t_point pos;
-	t_point ok;
-	int		d;
-
-	pos.x = 0;
-	ft_bzero(&ok, sizeof(t_point));
-	while (pos.x < game->board.size.x)
-	{
-		pos.y = 0;
-		while (pos.y < game->board.size.y)
-		{
-			if (game->board.mx[pos.x][pos.y] == E_MINE
-					|| game->board.mx[pos.x][pos.y] == E_LAST_MINE)
-			{
-				//// OVER IS GOOD ?
-				if ((ok.x == 0 && ok.y == 0)
-					|| (delta(&pos, ref) <= delta(&ok, ref)
-					&& over(game, &pos, E_EMPTY, 2) == TRUE))
-				{
-					ok = pos;
-					d = delta(&pos, ref);
-				}
-			}
-			pos.y++;
-		}
-		pos.x++;
-	}
-	return (d);
+	return ((b->x - a->x)) * (b->x - a->x) + (b->y - a->y) * (b->y - a->y);
 }
 
-t_point	nearest(t_game *game)
+unsigned char	check_first_line_board(unsigned int row, char *line)
 {
-	t_point	pos;
-	t_point ok;
-	int	 	delta;
-	int		tmp_delta;
+	size_t	i;
+	size_t	max;
+	size_t	count;
 
-	ft_bzero(&ok, sizeof(t_point));
-	delta = 0;
-	pos.x = 0;
-	while (pos.x < game->board.size.x)
+	i = 0;
+	max = row + 4;
+	if (ft_strlen(line) != max)
+		return (FALSE);
+	while (i < 4)
 	{
-		pos.y = 0;
-		while (pos.y < game->board.size.y)
-		{
-			if (game->board.mx[pos.x][pos.y] == E_ADV
-					|| game->board.mx[pos.x][pos.y] == E_LAST_ADV)
-			{
-				tmp_delta = get_better(game, &pos);
-				if ((ok.x == 0 && ok.y == 0) || tmp_delta <= delta)
-				{
-					ok = pos;
-					delta = tmp_delta;
-				}
-				tmp_delta = delta + 1;
-			}
-			pos.y++;
-		}
-		pos.x++;
+		if (line[i] != ' ')
+			return (FALSE);
+		i++;
 	}
-	return (ok);
-}
-
-int		farest_delta(t_game *game, t_point *point)
-{
-	t_point	pos;
-	t_point	better;
-	int		d;
-
-	d = -1;
-	pos.x = 0;
-	while (pos.x < game->board.size.x)
+	count = 0;
+	while (i < max)
 	{
-		pos.y = 0;
-		while (pos.y < game->board.size.y)
-		{
-			if (game->board.mx[pos.x][pos.y] == E_MINE
-					|| game->board.mx[pos.x][pos.y] == E_LAST_ADV)
-			{
-				if (d == -1 || delta(point, &pos) < delta(point, &better))
-				{
-					better = pos;
-					d = delta(point, &pos);
-				}
-			}
-			pos.y++;
-		}
-		pos.x++;
+		if (count % 10 + '0' != line[i])
+			return (FALSE);
+		count++;
+		i++;
 	}
-	return (d);
+	return (TRUE);
 }

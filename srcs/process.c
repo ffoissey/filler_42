@@ -54,60 +54,25 @@ static void				find_coord(t_game *game, t_strategy strategy)
 	t_point	start;
 	int		tmp_y;
 
-	start.x = 0 - game->piece.size.x;
-	tmp_y = 0 - game->piece.size.y;
+	start.x = 0 - game->piece.size.x - 1;
+	tmp_y = 0 - game->piece.size.y - 1;
 	end.x = game->board.size.x + game->piece.size.x;
 	end.y = game->board.size.y + game->piece.size.y;
-	while (start.x < end.x)
+	while (++start.x < end.x)
 	{
 		start.y = tmp_y;
-		while (start.y < end.y)
+		while (++start.y < end.y)
 		{
 			if (check_piece(game, &start) == TRUE)
 			{
-				if (game->to_play.x == 0 && game->to_play.y == 0)
-				{
-					game->good_contact = game->contact;
-					game->to_play = start;
-				}
-				else if (strategy(game) == TRUE)
+				if ((game->to_play.x == 0 && game->to_play.y == 0)
+					|| strategy(game) == TRUE)
 				{
 					game->good_contact = game->contact;
 					game->to_play = start;
 				}
 			}
-			start.y++;
 		}
-		start.x++;
-	}
-}
-
-void					chose_better_angle(t_game *game)
-{
-	int	delta_mine;
-	int	delta_adv;
-	int	delta_target;
-
-	if (game->board.size.x * game->board.size.y < 500)
-	{
-		delta_mine = farest_delta(game, &game->angle_opmine);
-		delta_adv = farest_delta(game, &game->angle_opadv);
-		delta_target = farest_delta(game, &game->angle_target);
-		if (delta_mine > delta_adv && delta_mine > delta_target)
-			game->better_angle = E_ANGLE_OPMINE;
-		else if (delta_adv > delta_mine && delta_mine > delta_target)
-			game->better_angle = E_ANGLE_OPADV;
-		else
-			game->better_angle = E_ANGLE_TARGET;
-	}
-	else
-	{
-		if (game->turn % 3 == 0)
-			game->better_angle = E_ANGLE_TARGET;
-		else if (game->turn % 3 == 1)
-			game->better_angle = E_ANGLE_OPMINE;
-		else
-			game->better_angle = E_ANGLE_OPADV;
 	}
 }
 

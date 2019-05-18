@@ -15,9 +15,6 @@
 # define PLATEAU		"Plateau"
 # define PIECE			"Piece"
 
-# define CLOSE			0x00
-# define OPEN			0x01
-
 enum				e_action
 {
 	E_GET_PLAYER,
@@ -138,12 +135,15 @@ int					get_line_piece(t_game *game, char *line);
 void				ft_process(t_game *game);
 
 /*
-*** Strategy
+*** Select Strategy
 */
 
 void			print_strategy(t_game *game);
-
 void			select_strategy(t_game *game);
+
+/*
+*** Strategy
+*/
 
 unsigned char	angle_target_mode(t_game *game);
 unsigned char	angle_opmine_mode(t_game *game);
@@ -159,11 +159,28 @@ void				speak(t_game *game, char **line);
 void				error(t_game *game, char **line);
 void				free_matrix(t_mx *mx);
 int					delta(t_point *a, t_point *b);
+unsigned char		check_first_line_board(unsigned int row, char *line);
+
+/*
+*** Tools
+*/
+
 int					scanner(t_game *game, t_point *target,
 						enum e_state state, int zone);
 int					over(t_game *game, t_point *target,
 						enum e_state state, int zone);
+t_point				choose_angle(t_game *game, t_point *ref);
+void				chose_better_angle(t_game *game);
+void				get_angle(t_game *game);
+
+/*
+*** Tools2
+*/
+
 t_point				nearest(t_game *game);
-int					farest_delta(t_game *game, t_point *point);
+int					get_better(t_game *game, t_point *ref,
+					int (*f)(t_game *, t_point *, t_point *ok, t_point *ref));
+int			farest_delta(t_game *game, t_point *pos, t_point *ok, t_point *ref);
+int			get_nearest(t_game *game, t_point *pos, t_point *ok, t_point *ref);
 
 #endif

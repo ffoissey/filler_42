@@ -131,6 +131,7 @@ SRCS += utils.c
 SRCS += strategy.c
 SRCS += select_strategy.c
 SRCS += tools.c
+SRCS += tools2.c
 
 ################# ATTRIBUTION
 

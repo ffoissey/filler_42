@@ -1,6 +1,6 @@
 #include "filler.h"
 
-void	print_strategy(t_game *game)
+void			print_strategy(t_game *game)
 {
 	if (game->mode == E_ANGLE_TARGET)
 		ft_dprintf(2, "\033[34mAngle TARGET\033[0m\n");
@@ -42,7 +42,7 @@ unsigned char	check_angles(t_game *game)
 	return (TRUE);
 }
 
-void	select_strategy(t_game *game)
+void			select_strategy(t_game *game)
 {
 	if (((scanner(game, &game->last_adv, E_MINE, 2) == TRUE)
 		|| (delta(&game->angle_mine, &game->last_adv)
