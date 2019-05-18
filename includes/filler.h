@@ -158,13 +158,12 @@ unsigned char	glue_mode(t_game *game);
 void				speak(t_game *game, char **line);
 void				error(t_game *game, char **line);
 void				free_matrix(t_mx *mx);
-int					get_delta(t_point *a, t_point *b);
+int					delta(t_point *a, t_point *b);
 int					scanner(t_game *game, t_point *target,
 						enum e_state state, int zone);
 int					over(t_game *game, t_point *target,
 						enum e_state state, int zone);
 t_point				nearest(t_game *game);
 int					farest_delta(t_game *game, t_point *point);
-int	check_line(t_game *game, int x_or_y, int pos, enum e_state state);
 
 #endif

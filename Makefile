@@ -129,6 +129,8 @@ SRCS += get_board.c
 SRCS += process.c
 SRCS += utils.c
 SRCS += strategy.c
+SRCS += select_strategy.c
+SRCS += tools.c
 
 ################# ATTRIBUTION
 

@@ -38,13 +38,13 @@ t_point					choose_angle(t_game *game, t_point *ref)
 	ft_bzero(&p1, sizeof(t_point));
 	p2.x = game->board.size.x - 1;
 	p2.y = game->board.size.y - 1;
-	win1 = (get_delta(ref, &p1) < get_delta(ref, &p2)) ? p1 : p2;
+	win1 = (delta(ref, &p1) < delta(ref, &p2)) ? p1 : p2;
 	p1.x = 0;
 	p1.y = game->board.size.y - 1;
 	p2.x = game->board.size.x - 1;
 	p2.y = 0;
-	win2 = (get_delta(ref, &p1) < get_delta(ref, &p2)) ? p1 : p2;
-	ret = (get_delta(ref, &win1) < get_delta(ref, &win2)) ? win1 : win2;
+	win2 = (delta(ref, &p1) < delta(ref, &p2)) ? p1 : p2;
+	ret = (delta(ref, &win1) < delta(ref, &win2)) ? win1 : win2;
 	return (ret);
 }
 
@@ -89,8 +89,8 @@ static enum e_state		board_char_is_ok(t_game *game, char c, int x , int y)
 		else if (game->board.mx[x][y] == E_EMPTY || c == game->adv_last_char)
 		{
 			if ((game->last_adv.x == 0 && game->last_adv.y == 0)
-					|| get_delta(&pos, &game->core_mine)
-					< get_delta(&game->last_adv, &game->core_mine))
+					|| delta(&pos, &game->core_mine)
+					< delta(&game->last_adv, &game->core_mine))
 				game->last_adv = pos;
 			return (E_ADV);
 		}

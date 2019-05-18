@@ -118,13 +118,9 @@ void					ft_process(t_game *game)
 										glue_mode};
 
 	ft_bzero(&game->to_play, sizeof(t_point));
-	ft_bzero(&game->nearest_adv, sizeof(t_point));
 	game->nearest_adv = nearest(game);
-	if (game->nearest_adv.x < 0 || game->nearest_adv.y < 0)
-		ft_bzero(&game->nearest_adv, sizeof(t_point));
 	chose_better_angle(game);
 	select_strategy(game);
-	print_strategy(game);
 	find_coord(game, strategy[game->mode]);
 	game->last_mine = game->contact;
 	ft_bzero(&game->last_adv, sizeof(t_point));
