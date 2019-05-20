@@ -57,7 +57,7 @@ int						process_size(t_point *game_size, enum e_state ***mx,
 	t_point		size;
 	int			len;
 
-	bzero(&size, sizeof(t_point));
+	ft_bzero(&size, sizeof(t_point));
 	len = ft_strlen(type);
 	if (ft_strnequ(line, type, len) == FALSE)
 		return (FAILURE);
