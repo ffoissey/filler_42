@@ -6,7 +6,7 @@
 /*   By: ffoissey <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/18 18:31:47 by ffoissey          #+#    #+#             */
-/*   Updated: 2019/05/18 18:31:48 by ffoissey         ###   ########.fr       */
+/*   Updated: 2019/05/21 12:58:39 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		main(int ac, char **av)
 	game.action = E_GET_PLAYER;
 	game.process_name = av[0];
 	line = NULL;
-	while (get_next_line(STDIN_FILENO, &line) > 0)
+	while (get_next_line(0, &line) > 0)
 	{
 		process[game.action](&game, &line);
 		ft_strdel(&line);

@@ -6,7 +6,7 @@
 /*   By: ffoissey <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/18 18:34:46 by ffoissey          #+#    #+#             */
-/*   Updated: 2019/05/21 11:26:37 by ffoissey         ###   ########.fr       */
+/*   Updated: 2019/05/21 12:55:41 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,4 @@ void			select_strategy(t_game *game)
 		game->mode = E_GLUE;
 	else if (check_angles(game) == FALSE)
 		game->mode = E_ATTACK;
-	print_strategy(game);
 }

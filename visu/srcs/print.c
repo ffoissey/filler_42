@@ -6,7 +6,7 @@
 /*   By: ffoissey <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/18 17:46:14 by ffoissey          #+#    #+#             */
-/*   Updated: 2019/05/18 18:10:07 by ffoissey         ###   ########.fr       */
+/*   Updated: 2019/05/21 12:20:39 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ static void	end_game(t_game *game, t_point *scale, int end)
 		return ;
 	if (end == 2)
 	{
-		ft_printf("\033[%d;%dH", scale->x, scale->y + 19);
-		ft_printf("\033[0;1mERROR !\033[0m");
+		ft_printf("\033[%d;%dH", scale->x, scale->y + 16);
+		ft_printf("\033[0;1mERROR ON INPUT!\033[0m");
 		return ;
 	}
 	if (game->nb_piece_p1 > game->nb_piece_p2)

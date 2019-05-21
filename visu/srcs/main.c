@@ -6,7 +6,7 @@
 /*   By: ffoissey <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/18 17:46:09 by ffoissey          #+#    #+#             */
-/*   Updated: 2019/05/18 18:12:05 by ffoissey         ###   ########.fr       */
+/*   Updated: 2019/05/21 13:01:13 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,9 @@ int			main(int ac, char **av)
 	line = NULL;
 	while (get_next_line(STDIN_FILENO, &line))
 	{
-		process[game.action](&game, &line);
 		if (game.action == E_ERROR)
 			break ;
+		process[game.action](&game, &line);
 		ft_strdel(&line);
 	}
 	print_board(&game, (line && ft_strstr(line, "fin")) ? 1 : 2);

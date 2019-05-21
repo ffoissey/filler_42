@@ -6,7 +6,7 @@
 /*   By: ffoissey <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/18 17:46:19 by ffoissey          #+#    #+#             */
-/*   Updated: 2019/05/18 18:09:21 by ffoissey         ###   ########.fr       */
+/*   Updated: 2019/05/21 13:03:15 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,10 +68,10 @@ void	player(t_game *game, t_point *middle, struct winsize *w)
 	ft_printf("\033[32;1m%s\033[0m", INFO);
 	ft_printf("\033[%d;%dH", middle->x + 1, w->ws_col / 2
 			+ game->board.size.y / 2);
-	ft_printf("PLAYER 1 |  \033[34;1m%-8s\033[0m  | OK -> %s%s  Last -> %s%s",
+	ft_printf("PLAYER 1 |  \033[34;1m%-8.8s\033[0m  | OK -> %s%s  Last -> %s%s",
 			game->p1_name, BLUE, NC, CYAN, NC);
 	ft_printf("\033[%d;%dH", middle->x + 3, w->ws_col / 2
 			+ game->board.size.y / 2);
-	ft_printf("PLAYER 2 |  \033[31;1m%-8s\033[0m  | OK -> %s%s  Last -> %s%s",
+	ft_printf("PLAYER 2 |  \033[31;1m%-8.8s\033[0m  | OK -> %s%s  Last -> %s%s",
 			game->p2_name, RED, NC, YELLOW, NC);
 }

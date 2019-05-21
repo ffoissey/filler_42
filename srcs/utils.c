@@ -6,7 +6,7 @@
 /*   By: ffoissey <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/18 18:35:57 by ffoissey          #+#    #+#             */
-/*   Updated: 2019/05/18 18:35:58 by ffoissey         ###   ########.fr       */
+/*   Updated: 2019/05/21 12:48:25 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,11 @@ void			error(t_game *game, char **line)
 	free_matrix(&game->piece);
 	free_matrix(&game->board);
 	game->action = E_ERROR;
-	ft_putendl_fd("Error", 2);
+	if (game->error == 0)
+	{
+		game->error = 1;
+		ft_putendl_fd("Error", 2);
+	}
 }
 
 void			free_matrix(t_mx *mx)

@@ -6,7 +6,7 @@
 /*   By: ffoissey <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/18 17:45:55 by ffoissey          #+#    #+#             */
-/*   Updated: 2019/05/18 17:47:43 by ffoissey         ###   ########.fr       */
+/*   Updated: 2019/05/21 12:18:51 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ void		get_pos(t_game *game, char **line)
 		print_board(game, 0);
 		game->action = E_GET_BOARD_SIZE;
 	}
+	else if (*line && ft_strstr(*line, "error") != NULL)
+		game->action = E_GET_PIECE_SIZE;
 	else
 		game->action = E_ERROR;
 	free_matrix(&game->piece);

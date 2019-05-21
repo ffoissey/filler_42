@@ -6,7 +6,7 @@
 /*   By: ffoissey <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/18 17:45:51 by ffoissey          #+#    #+#             */
-/*   Updated: 2019/05/18 17:45:52 by ffoissey         ###   ########.fr       */
+/*   Updated: 2019/05/21 12:18:31 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ void	get_size(t_game *game, char **line)
 	}
 	else
 	{
-		if (process_size(&game->board.size, &game->board.mx, *line, PLATEAU)
-				== FAILURE)
+		if (process_size(&game->board.size, &game->board.mx,
+					*line, PLATEAU) == FAILURE)
 		{
 			game->action = E_GET_PIECE_SIZE;
 			get_size(game, line);

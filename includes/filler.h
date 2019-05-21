@@ -6,7 +6,7 @@
 /*   By: ffoissey <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/18 18:23:20 by ffoissey          #+#    #+#             */
-/*   Updated: 2019/05/18 18:27:07 by ffoissey         ###   ########.fr       */
+/*   Updated: 2019/05/21 12:48:25 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ typedef	struct			s_game
 	t_point				good_contact;
 	t_point				to_play;
 	int					turn;
+	int					error;
 }						t_game;
 
 typedef void			(*t_process)(t_game *, char **);

@@ -63,8 +63,8 @@ t_point		nearest(t_game *game)
 			if (game->board.mx[pos.x][pos.y] == E_ADV
 					|| game->board.mx[pos.x][pos.y] == E_LAST_ADV)
 			{
-				if ((ok.x == 0 && ok.y == 0) ||
-					get_better(game, &pos, get_nearest) <= delta)
+				if ((ok.x == 0 && ok.y == 0)
+					|| get_better(game, &pos, get_nearest) <= delta)
 				{
 					ok = pos;
 					delta = get_better(game, &pos, get_nearest);
