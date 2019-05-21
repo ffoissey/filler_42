@@ -6,7 +6,7 @@
 /*   By: ffoissey <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/18 18:36:55 by ffoissey          #+#    #+#             */
-/*   Updated: 2019/05/21 10:56:58 by ffoissey         ###   ########.fr       */
+/*   Updated: 2019/05/21 11:46:48 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,18 +119,13 @@ void		chose_better_angle(t_game *game)
 			game->better_angle = E_ANGLE_OPADV;
 		else
 			game->better_angle = E_ANGLE_TARGET;
+		return ;
 	}
+	modulo = game->turn < 30 ? 2 : 3;
+	if (game->turn > 30 && game->turn % modulo == 0)
+		game->better_angle = E_ANGLE_TARGET;
+	else if (game->turn % modulo == 1)
+		game->better_angle = E_ANGLE_OPMINE;
 	else
-	{
-		if (game->turn < 30)
-			modulo = 2;
-		else
-			modulo = 3;
-		if (game->turn > 30 && game->turn % modulo == 0)
-			game->better_angle = E_ANGLE_TARGET;
-		else if (game->turn % modulo == 1)
-			game->better_angle = E_ANGLE_OPMINE;
-		else
-			game->better_angle = E_ANGLE_OPADV;
-	}
+		game->better_angle = E_ANGLE_OPADV;
 }

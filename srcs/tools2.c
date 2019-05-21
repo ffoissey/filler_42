@@ -2,8 +2,6 @@
 
 int			get_nearest(t_game *game, t_point *pos, t_point *ok, t_point *ref)
 {
-	////////// OVER ? 
-	(void)game;
 	if (((ok->x == 0 && ok->y == 0) || delta(pos, ref) <= delta(ok, ref))
 	    && over(game, pos, E_EMPTY, 2) == TRUE)
 		return (TRUE);
