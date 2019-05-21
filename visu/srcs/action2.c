@@ -6,7 +6,7 @@
 /*   By: ffoissey <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/18 17:45:55 by ffoissey          #+#    #+#             */
-/*   Updated: 2019/05/21 12:18:51 by ffoissey         ###   ########.fr       */
+/*   Updated: 2019/05/21 13:09:12 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,16 +66,10 @@ void		get_pos(t_game *game, char **line)
 	{
 		tmp = ft_strchr(*line, '[');
 		if (tmp != NULL)
-		{
-			tmp++;
-			game->last_pos.x = ft_atoi(tmp);
-		}
+			game->last_pos.x = ft_atoi(++tmp);
 		tmp = ft_strchr(*line, ',');
 		if (tmp != NULL)
-		{
-			tmp++;
-			game->last_pos.y = ft_atoi(tmp);
-		}
+			game->last_pos.y = ft_atoi(++tmp);
 		set_score(game);
 		print_board(game, 0);
 		game->action = E_GET_BOARD_SIZE;
