@@ -19,6 +19,8 @@ et de celle de l'adversaire à celui-ci
 Mon joueur tente en permanence de maximiser l'espace occupé en évitant de jouer dans des zones suffisamment saturée par lui-même
 (à hauteur de 70%).
 
+![filler](https://user-images.githubusercontent.com/40762210/68595923-a94b9900-049a-11ea-908e-b88761b2bcb8.jpg)
+
 ## Usage:
 
 make && ./ressources/filler_vm -p1 [player1] -p2 [player2] -f [map]
