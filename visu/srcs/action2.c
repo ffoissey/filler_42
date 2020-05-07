@@ -6,7 +6,7 @@
 /*   By: ffoissey <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/18 17:45:55 by ffoissey          #+#    #+#             */
-/*   Updated: 2019/05/21 13:09:12 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/02 23:15:49 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	set_score(t_game *game)
 
 void		get_pos(t_game *game, char **line)
 {
-	char	*tmp;
+	const char	*tmp;
 
 	if (ft_strnequ(GOT_P1, *line, GOT_SIZE) == TRUE
 			|| ft_strnequ(GOT_P2, *line, GOT_SIZE) == TRUE)

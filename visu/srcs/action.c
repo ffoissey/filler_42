@@ -6,7 +6,7 @@
 /*   By: ffoissey <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/05/18 17:45:51 by ffoissey          #+#    #+#             */
-/*   Updated: 2019/05/21 12:18:31 by ffoissey         ###   ########.fr       */
+/*   Updated: 2020/05/02 23:15:27 by ffoissey         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ void	get_player(t_game *game, char **line)
 		&& ft_strstr(*line, "filler") == NULL))
 		game->action = E_ERROR;
 	else if (ft_strnequ(PLAYER_ONE, *line, PLAYER_SIZE) == TRUE)
-		game->p1_name = ft_strcdup(ft_strrchr(*line, '/') + 1, '.');
+		game->p1_name = ft_strcdup((char *)ft_strrchr(*line, '/') + 1, '.');
 	else if (ft_strnequ(PLAYER_TWO, *line, PLAYER_SIZE) == TRUE)
-		game->p2_name = ft_strcdup(ft_strrchr(*line, '/') + 1, '.');
+		game->p2_name = ft_strcdup((char *)ft_strrchr(*line, '/') + 1, '.');
 	if (game->p1_name != NULL && game->p2_name != NULL)
 		game->action = E_GET_BOARD_SIZE;
 	else if (ft_strstr(*line, PLATEAU) != NULL)
