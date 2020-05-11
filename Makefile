@@ -6,7 +6,7 @@
 #    By: ffoissey <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/11/05 18:25:23 by ffoissey          #+#    #+#              #
-#    Updated: 2019/05/18 18:27:45 by ffoissey         ###   ########.fr        #
+#    Updated: 2020/05/11 14:20:33 by ffoissey         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,6 +48,7 @@ DEBUG_LIBFT = $(PATH_LIBFT)db_libft.a
 CFLAGS += -Wall
 CFLAGS += -Wextra
 CFLAGS += -Werror
+CFLAGS += -O3
 
 # Compiler Debug Flags
 DBFLAGS += $(CFLAGS)
